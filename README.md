@@ -74,17 +74,6 @@ Part of the [Nightfox](https://github.com/EdenEast/nightfox.nvim) family.
 | Red | `#ee5396` | Errors |
 | Yellow | `#ffe97b` | Warnings |
 
-## Claude Code Setup
-
-Dual-provider configuration for running Claude Max and Z.AI GLM simultaneously:
-
-```bash
-claude    # → Uses ~/.claude/ (Claude Max subscription)
-glm       # → Uses ~/.claude-glm/ (Z.AI GLM endpoint)
-```
-
-Fully isolated configs - separate history, projects, and settings.
-
 ---
 
 <details>
