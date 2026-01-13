@@ -1,5 +1,8 @@
 <h1 align="center">~/.dotfiles</h1>
-<p align="center">macOS dotfiles · Carbonfox theme · Vim-centric workflow</p>
+
+<p align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=JetBrains+Mono&size=18&duration=3000&pause=1000&color=78A9FF&center=true&vCenter=true&width=435&lines=vim+enthusiast;keyboard+driven+workflow;carbonfox+everything;i+use+arch+btw+%F0%9F%98%8F" alt="Typing SVG" />
+</p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/macOS-Sequoia-000000?logo=apple&logoColor=white" alt="macOS">
@@ -8,6 +11,8 @@
   <img src="https://img.shields.io/badge/Zsh-F15A24?logo=zsh&logoColor=white" alt="Zsh">
   <img src="https://img.shields.io/badge/tmux-1BB91F?logo=tmux&logoColor=white" alt="tmux">
   <img src="https://img.shields.io/badge/Ghostty-161616?logo=ghost&logoColor=white" alt="Ghostty">
+  <br>
+  <img src="https://visitor-badge.laobi.icu/badge?page_id=vp275.dotfiles_mac&left_color=%23161616&right_color=%2378a9ff" alt="Visitors">
 </p>
 
 ---
@@ -81,6 +86,28 @@ glm       # → Uses ~/.claude-glm/ (Z.AI GLM endpoint)
 Fully isolated configs - separate history, projects, and settings.
 
 ---
+
+<details>
+<summary><b>GitHub Stats</b></summary>
+<br>
+<p align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=vp275&show_icons=true&theme=dark&hide_border=true&bg_color=161616&title_color=78a9ff&icon_color=42be65&text_color=f2f4f8" alt="GitHub Stats" />
+</p>
+</details>
+
+<details>
+<summary><b>Random Dev Joke</b></summary>
+<br>
+<p align="center">
+  <img src="https://readme-jokes.vercel.app/api?theme=cobalt&hideBorder&bgColor=%23161616&qColor=%2378a9ff&aColor=%2342be65" alt="Jokes Card" />
+</p>
+</details>
+
+---
+
+<p align="center">
+  <img src="https://quotes-github-readme.vercel.app/api?type=horizontal&theme=dark&quote=Talk%20is%20cheap.%20Show%20me%20the%20code.&author=Linus%20Torvalds" alt="Quote" />
+</p>
 
 <p align="center">
   <sub>Managed with Git · No symlink manager needed</sub>
