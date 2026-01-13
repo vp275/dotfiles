@@ -77,14 +77,6 @@ Part of the [Nightfox](https://github.com/EdenEast/nightfox.nvim) family.
 ---
 
 <p align="center">
-  <img src="https://img.shields.io/github/stars/vp275/dotfiles_mac?style=flat&color=78a9ff&label=Stars" alt="Stars">
-  <img src="https://img.shields.io/github/last-commit/vp275/dotfiles_mac?style=flat&color=42be65&label=Last%20Commit" alt="Last Commit">
-  <img src="https://img.shields.io/github/repo-size/vp275/dotfiles_mac?style=flat&color=be95ff&label=Size" alt="Repo Size">
-</p>
-
----
-
-<p align="center">
   <img src="https://quotes-github-readme.vercel.app/api?type=horizontal&theme=dark&quote=Talk%20is%20cheap.%20Show%20me%20the%20code.&author=Linus%20Torvalds" alt="Quote" />
 </p>
 
