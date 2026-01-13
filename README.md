@@ -76,21 +76,9 @@ Part of the [Nightfox](https://github.com/EdenEast/nightfox.nvim) family.
 
 ---
 
-<details>
-<summary><b>GitHub Stats</b></summary>
-<br>
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=vp275&show_icons=true&theme=dark&hide_border=true&bg_color=161616&title_color=78a9ff&icon_color=42be65&text_color=f2f4f8" alt="GitHub Stats" />
+  <img src="https://github-readme-stats.vercel.app/api?username=vp275&show_icons=true&hide_border=true&bg_color=161616&title_color=78a9ff&icon_color=42be65&text_color=f2f4f8&cache_seconds=86400" alt="GitHub Stats" />
 </p>
-</details>
-
-<details>
-<summary><b>Random Dev Joke</b></summary>
-<br>
-<p align="center">
-  <img src="https://readme-jokes.vercel.app/api?theme=cobalt&hideBorder&bgColor=%23161616&qColor=%2378a9ff&aColor=%2342be65" alt="Jokes Card" />
-</p>
-</details>
 
 ---
 
