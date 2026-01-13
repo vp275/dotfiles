@@ -77,7 +77,9 @@ Part of the [Nightfox](https://github.com/EdenEast/nightfox.nvim) family.
 ---
 
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=vp275&show_icons=true&hide_border=true&bg_color=161616&title_color=78a9ff&icon_color=42be65&text_color=f2f4f8&cache_seconds=86400" alt="GitHub Stats" />
+  <img src="https://img.shields.io/github/stars/vp275/dotfiles_mac?style=flat&color=78a9ff&label=Stars" alt="Stars">
+  <img src="https://img.shields.io/github/last-commit/vp275/dotfiles_mac?style=flat&color=42be65&label=Last%20Commit" alt="Last Commit">
+  <img src="https://img.shields.io/github/repo-size/vp275/dotfiles_mac?style=flat&color=be95ff&label=Size" alt="Repo Size">
 </p>
 
 ---
