@@ -1,0 +1,30 @@
+# macOS
+.DS_Store
+
+# Secrets
+zsh/.zshenv.local
+
+# Auto-generated / app data (not config)
+.claude/
+configstore/
+direnv/
+emacs/
+flameshot/
+gcloud/
+gh/
+htop/
+mpv/
+myFiles/
+opencode/
+qBittorrent/
+raycast/
+tuir/
+uv/
+yarn/
+
+# Backups
+*.bak.*
+tmux.bak.*
+
+# Cache
+*.cache/
