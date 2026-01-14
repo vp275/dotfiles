@@ -27,6 +27,10 @@ Loaded at top of `.zshrc` before p10k instant prompt.
 - Sets `ANTHROPIC_AUTH_TOKEN`, `ANTHROPIC_BASE_URL`, `API_TIMEOUT_MS`
 - All env vars scoped to that process only (no leakage)
 
+**ccusage()** - Aggregates usage stats from both Claude and GLM configs:
+- Sets `CLAUDE_CONFIG_DIR` to comma-separated list of both config directories
+- Reports combined usage from `~/.claude` and `~/.claude-glm`
+
 ## Claude Code Dual-Provider Setup
 
 | Command | Provider | Config Dir | Use Case |
