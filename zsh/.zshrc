@@ -196,3 +196,8 @@ glm() {
     API_TIMEOUT_MS="3000000" \
     command claude "$@"
 }
+
+# ccusage wrapper to aggregate usage from both Claude and GLM configs
+ccusage() {
+    CLAUDE_CONFIG_DIR="$HOME/.claude,$HOME/.claude-glm" command ccusage "$@"
+}
