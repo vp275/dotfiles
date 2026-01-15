@@ -1,0 +1,30 @@
+# Mercedes Petronas Theme
+# Black + Teal color scheme inspired by Mercedes-AMG Petronas F1 team
+
+# Standard colors (0-7)
+palette = 0=#0A0A0A
+palette = 1=#ee5396
+palette = 2=#25be6a
+palette = 3=#00D2BE
+palette = 4=#78a9ff
+palette = 5=#be95ff
+palette = 6=#00D2BE
+palette = 7=#D8D8D8
+
+# Bright colors (8-15)
+palette = 8=#555555
+palette = 9=#f16da6
+palette = 10=#46c880
+palette = 11=#33E0CE
+palette = 12=#8cb6ff
+palette = 13=#c8a5ff
+palette = 14=#33E0CE
+palette = 15=#f2f4f8
+
+# Core colors
+background = #0A0A0A
+foreground = #f2f4f8
+cursor-color = #00D2BE
+cursor-text = #0A0A0A
+selection-background = #1A1A1A
+selection-foreground = #f2f4f8

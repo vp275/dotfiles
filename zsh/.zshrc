@@ -96,6 +96,12 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
+# Syntax highlighting colors (Mercedes theme - teal instead of green)
+ZSH_HIGHLIGHT_STYLES[command]='fg=cyan,bold'
+ZSH_HIGHLIGHT_STYLES[alias]='fg=cyan,bold'
+ZSH_HIGHLIGHT_STYLES[builtin]='fg=cyan,bold'
+ZSH_HIGHLIGHT_STYLES[function]='fg=cyan,bold'
+
 # User configuration
 
 # Keep Puppeteer/fast-cli cache out of ~/.cache to avoid cleanup.

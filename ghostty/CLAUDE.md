@@ -12,9 +12,10 @@ ghostty +show-config  # Show effective config vs defaults
 ## Key Settings
 
 **Theme & Appearance:**
-- `theme = carbonfox` (consistent with nvim/doom)
+- `theme = mercedes-petronas` (custom theme in `~/.config/ghostty/themes/`)
+- Mercedes Petronas colors: black (#0A0A0A) background, teal (#00D2BE) cursor/accents
 - `font-size = 18`
-- `background-opacity = 1`, `background-blur-radius = 201`
+- `background-opacity = .9`, `background-blur-radius = 100`
 
 **Clipboard:**
 - `clipboard-write = "allow"` - Programs (Vim) can write via OSC 52
