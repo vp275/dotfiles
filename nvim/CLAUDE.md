@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Minimal Neovim configuration using lazy.nvim plugin manager with carbonfox theme.
+Neovim configuration using lazy.nvim plugin manager with carbonfox theme.
 
 ## Plugin Manager
 
@@ -28,8 +28,55 @@ return {
 | `lualine.lua` | `nvim-lualine/lualine.nvim` | Status line with carbonfox theme |
 | `render-markdown.lua` | `MeanderingProgrammer/render-markdown.nvim` | Renders markdown with formatting |
 | `render-markdown.lua` | `nvim-treesitter/nvim-treesitter` | Syntax parsing (markdown installed) |
+| `telescope.lua` | `nvim-telescope/telescope.nvim` | Fuzzy finder for files, grep, buffers |
+| `telescope.lua` | `telescope-fzf-native.nvim` | Native fzf for fast fuzzy matching |
+| `neo-tree.lua` | `nvim-neo-tree/neo-tree.nvim` | File tree sidebar |
+| `which-key.lua` | `folke/which-key.nvim` | Keybinding hints popup |
+| `comment.lua` | `numToStr/Comment.nvim` | Smart code commenting |
 
-Dependencies: `nvim-tree/nvim-web-devicons` (icons for lualine and render-markdown)
+Dependencies: `nvim-lua/plenary.nvim`, `nvim-tree/nvim-web-devicons`, `MunifTanjim/nui.nvim`
+
+## Keybindings
+
+Leader key is `\` (backslash) by default.
+
+### Telescope (fuzzy finder)
+
+| Key | Action |
+|-----|--------|
+| `<leader>ff` | Find files |
+| `<leader>fg` | Live grep (search text across project) |
+| `<leader>fb` | List open buffers |
+| `<leader>fr` | Recent files |
+| `<leader>/` | Search in current buffer |
+
+### Neo-tree (file explorer)
+
+| Key | Action |
+|-----|--------|
+| `<leader>e` | Toggle file tree |
+| `<leader>o` | Focus file tree |
+| `l` | Open file/directory (in tree) |
+| `h` | Close node/go up (in tree) |
+| `a` | Add file/folder |
+| `d` | Delete |
+| `r` | Rename |
+| `?` | Show all keybinds |
+
+### Comment.nvim
+
+| Key | Action |
+|-----|--------|
+| `gcc` | Toggle comment on line |
+| `gc` + motion | Comment with motion (e.g., `gcap` for paragraph) |
+| `gc` in visual | Comment selection |
+
+### Which-key
+
+| Key | Action |
+|-----|--------|
+| `<leader>?` | Show buffer keymaps |
+| (auto) | Shows hints when you pause mid-keypress |
 
 ## Basic Settings (init.lua)
 
