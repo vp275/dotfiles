@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-macOS user dotfiles (`~/.config`). Vim-centric, keyboard-driven workflow with carbonfox theme throughout.
+macOS user dotfiles (`~/.config`). Vim-centric, keyboard-driven workflow with Mercedes Petronas theme (black + teal). See `theme-colors.md` for the full color palette.
 
 ## App Index
 
@@ -27,6 +27,19 @@ Other folders (gcloud, git, ranger, etc.) are simple or auto-managed configs wit
 
 **Secrets**: API keys live in `zsh/.zshenv.local` (gitignored). Configs reference env vars like `$GEMINI_API_KEY`, `$ZAI_AUTH_TOKEN`.
 
-**Symlink**: `~/.zshrc` → `~/.config/zsh/.zshrc`
+**Symlinks**: Many dotfiles live here but symlink to `~/`:
+- `~/.zshrc` → `zsh/.zshrc`
+- `~/.p10k.zsh` → `p10k/p10k.zsh`
+- `~/.gitconfig` → `git/config`
+- `~/.taskrc` → `task/taskrc`
+- `~/.fzf.zsh` → `fzf/fzf.zsh`
+- `~/.claude/settings.json` → `claude/settings.json`
+- `~/.claude-glm/settings.json` → `claude-glm/settings.json`
 
 **Claude Code**: Dual-provider setup via `glm()` function in zshrc. `claude` uses Claude Max (`~/.claude/`), `glm` uses Z.AI GLM (`~/.claude-glm/`). Fully isolated configs, can run simultaneously. See `zsh/CLAUDE.md` for details.
+
+## Theme
+
+Mercedes Petronas theme applied to: Ghostty, tmux, p10k, ranger, zsh-syntax-highlighting. Neovim uses carbonfox.
+
+Key colors: `#00D2BE` (teal), `#0A0A0A` (black), `#D8D8D8` (silver), `#CC2936` (scarlet for errors).
