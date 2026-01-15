@@ -33,10 +33,29 @@ Personal color scheme inspired by Mercedes-AMG Petronas F1 team.
 | Green | `#25be6a` | Success indicators |
 | Light Teal | `#7AEEE0` | Execution time |
 
+## p10k VCS (Git) States
+
+| State | Background | Foreground | When |
+|-------|------------|------------|------|
+| CLEAN | `#0A0A0A` (black) | `#f2f4f8` (white) | All committed |
+| MODIFIED | `#D8D8D8` (silver) | `#161616` (black) | Staged/unstaged changes |
+| UNTRACKED | `#FFCC00` (yellow) | `#161616` (black) | Untracked files |
+| CONFLICTED | `#CC2936` (scarlet) | `#f2f4f8` (white) | Merge conflicts |
+
+## p10k Status
+
+| State | Background | When |
+|-------|------------|------|
+| OK | `#151515` (near black) | Success (exit 0) |
+| ERROR | `#CC2936` (scarlet) | Failure/interrupt |
+
+Prompt char: `#00D2BE` (teal) on success.
+
 ## Applied To
 
 - [x] Powerlevel10k (p10k) prompt
 - [x] Ghostty terminal (mercedes-petronas theme)
 - [x] tmux statusline
 - [x] ranger (mercedes colorscheme)
+- [x] zsh-syntax-highlighting (teal for valid commands)
 - [x] Neovim (keeping carbonfox - too many colors to replace)
