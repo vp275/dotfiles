@@ -28,3 +28,7 @@ tmux.bak.*
 
 # Cache
 *.cache/
+
+# Python artifacts
+__pycache__/
+__init__.py
