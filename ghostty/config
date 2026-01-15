@@ -1,6 +1,6 @@
 theme = carbonfox
-background-opacity = .3
-background-blur-radius = 40
+background-opacity = .1
+background-blur-radius = 190
 font-size = 20
 # Allow programs (like Vim) to write to the system clipboard via OSC 52
 clipboard-write = "allow"
