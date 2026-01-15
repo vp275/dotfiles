@@ -136,6 +136,13 @@ alias theta="~/thetadata/theta.bash"
 export PATH="$PATH:$HOME/.config/emacs/bin"
 alias py=".venv/bin/python3"
 alias fim="vim \$(fzf)"
+
+# Recent files from neovim, pick with fzf (filters to existing files only)
+fr() {
+  local file
+  file=$(nvim --headless +'lua for _,f in ipairs(vim.v.oldfiles) do print(f) end' +q 2>&1 | grep '^/' | tr -d '\r' | while read -r f; do [[ -f "$f" ]] && echo "$f"; done | fzf)
+  [[ -n "$file" ]] && nvim "$file"
+}
 alias fopen="open \"\$(fzf)\""
 alias ffind="open -R \"\$(fzf)\""
 alias fcd="cd \"\$(dirname \"\$(fzf)\")\" && ls"
@@ -186,7 +193,12 @@ alias vi="nvim"
 export PATH="/Users/vp/.antigravity/antigravity/bin:$PATH"
 
 # === CLAUDE CODE PROVIDER SWITCHER ===
-# Claude Max: just use `claude` directly (no wrapper needed)
+alias cl="claude"
+alias cr="claude --resume"
+alias clc="claude --continue"
+alias cld="claude --dangerously-skip-permissions"
+alias crd="claude --resume --dangerously-skip-permissions"
+alias clcd="claude --continue --dangerously-skip-permissions"
 
 # Z.AI GLM (completely isolated config directory)
 glm() {
@@ -201,3 +213,9 @@ glm() {
 ccusage() {
     CLAUDE_CONFIG_DIR="$HOME/.claude,$HOME/.claude-glm" command ccusage "$@"
 }
+
+# Usage aliases with model breakdown
+alias ccu="ccusage --since \$(date +%Y%m%d) -b"
+alias ccuw="ccusage weekly -b"
+alias ccum="ccusage monthly -b"
+alias ccup="ccusage -i"

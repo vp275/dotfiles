@@ -31,6 +31,8 @@ Loaded at top of `.zshrc` before p10k instant prompt.
 - Sets `CLAUDE_CONFIG_DIR` to comma-separated list of both config directories
 - Reports combined usage from `~/.claude` and `~/.claude-glm`
 
+**fr()** - Recent files picker using neovim's oldfiles + fzf (filters to existing files only)
+
 ## Claude Code Dual-Provider Setup
 
 | Command | Provider | Config Dir | Use Case |
@@ -53,6 +55,26 @@ Both can run simultaneously with no conflicts - separate history, projects, sett
 | `tw` | `task` | Taskwarrior |
 | `caff`/`uncaff` | caffeinate control | Keep-awake scripts |
 | `mynet`/`offmynet` | network scripts | Fast network toggle |
+
+### Claude Code Aliases
+
+| Alias | Command | Purpose |
+|-------|---------|---------|
+| `cl` | `claude` | Launch Claude Code |
+| `cr` | `claude --resume` | Resume picker |
+| `clc` | `claude --continue` | Continue last chat |
+| `cld` | `claude --dangerously-skip-permissions` | Skip permissions |
+| `crd` | `claude --resume --dangerously-skip-permissions` | Resume + skip permissions |
+| `clcd` | `claude --continue --dangerously-skip-permissions` | Continue + skip permissions |
+
+### ccusage Aliases
+
+| Alias | Command | Purpose |
+|-------|---------|---------|
+| `ccu` | `ccusage --since $(date +%Y%m%d) -b` | Today's usage with breakdown |
+| `ccuw` | `ccusage weekly -b` | Weekly usage |
+| `ccum` | `ccusage monthly -b` | Monthly usage |
+| `ccup` | `ccusage -i` | Usage by project |
 
 ## Environment
 

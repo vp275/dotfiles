@@ -33,12 +33,15 @@ return {
 | `neo-tree.lua` | `nvim-neo-tree/neo-tree.nvim` | File tree sidebar |
 | `which-key.lua` | `folke/which-key.nvim` | Keybinding hints popup |
 | `comment.lua` | `numToStr/Comment.nvim` | Smart code commenting |
+| `zen-mode.lua` | `folke/zen-mode.nvim` | Distraction-free writing mode |
+| `zen-mode.lua` | `folke/twilight.nvim` | Dims inactive code (auto-enabled with zen) |
+| `claude-tmux.lua` | (keymaps only) | Opens Claude/GLM in tmux split |
 
 Dependencies: `nvim-lua/plenary.nvim`, `nvim-tree/nvim-web-devicons`, `MunifTanjim/nui.nvim`
 
 ## Keybindings
 
-Leader key is `\` (backslash) by default.
+Leader key is `Space`.
 
 ### Telescope (fuzzy finder)
 
@@ -78,12 +81,28 @@ Leader key is `\` (backslash) by default.
 | `<leader>?` | Show buffer keymaps |
 | (auto) | Shows hints when you pause mid-keypress |
 
+### Zen Mode
+
+| Key | Action |
+|-----|--------|
+| `<leader>z` | Toggle zen mode (centers buffer, hides UI, dims inactive code) |
+
+### Claude/GLM (tmux integration)
+
+| Key | Action |
+|-----|--------|
+| `<leader>cc` | Open Claude in right tmux pane with current file |
+| `<leader>cC` | Open Claude in right tmux pane (no file) |
+| `<leader>cg` | Open GLM in right tmux pane with current file |
+| `<leader>cr` | Open Claude resume picker in right tmux pane |
+
 ## Basic Settings (init.lua)
 
 - Line numbers: absolute + relative (`number`, `relativenumber`)
 - System clipboard integration (`clipboard = "unnamed,unnamedplus"`)
 - Text width: 80 columns
 - Show command and ruler enabled
+- Auto-reload files changed externally (`autoread` + checktime autocmd)
 
 ## Theme
 
