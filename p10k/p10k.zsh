@@ -200,8 +200,8 @@
   ################################[ prompt_char: prompt symbol ]################################
   # Transparent background.
   typeset -g POWERLEVEL9K_PROMPT_CHAR_BACKGROUND=
-  # Green prompt symbol if the last command succeeded.
-  typeset -g POWERLEVEL9K_PROMPT_CHAR_OK_{VIINS,VICMD,VIVIS,VIOWR}_FOREGROUND=76
+  # Teal prompt symbol if the last command succeeded.
+  typeset -g POWERLEVEL9K_PROMPT_CHAR_OK_{VIINS,VICMD,VIVIS,VIOWR}_FOREGROUND='#00D2BE'
   # Red prompt symbol if the last command failed.
   typeset -g POWERLEVEL9K_PROMPT_CHAR_ERROR_{VIINS,VICMD,VIVIS,VIOWR}_FOREGROUND=196
   # Default prompt symbol.
@@ -362,14 +362,14 @@
 
   #####################################[ vcs: git status ]######################################
   # Version control background colors. (carbonfox theme)
-  typeset -g POWERLEVEL9K_VCS_CLEAN_BACKGROUND='#00A896'
-  typeset -g POWERLEVEL9K_VCS_CLEAN_FOREGROUND='#161616'
+  typeset -g POWERLEVEL9K_VCS_CLEAN_BACKGROUND='#0A0A0A'
+  typeset -g POWERLEVEL9K_VCS_CLEAN_FOREGROUND='#f2f4f8'
   typeset -g POWERLEVEL9K_VCS_MODIFIED_BACKGROUND='#D8D8D8'
   typeset -g POWERLEVEL9K_VCS_MODIFIED_FOREGROUND='#161616'
-  typeset -g POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND='#08bdba'
+  typeset -g POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND='#FFCC00'
   typeset -g POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND='#161616'
-  typeset -g POWERLEVEL9K_VCS_CONFLICTED_BACKGROUND='#ee5396'
-  typeset -g POWERLEVEL9K_VCS_CONFLICTED_FOREGROUND='#161616'
+  typeset -g POWERLEVEL9K_VCS_CONFLICTED_BACKGROUND='#CC2936'
+  typeset -g POWERLEVEL9K_VCS_CONFLICTED_FOREGROUND='#f2f4f8'
   typeset -g POWERLEVEL9K_VCS_LOADING_BACKGROUND='#1A1A1A'
   typeset -g POWERLEVEL9K_VCS_LOADING_FOREGROUND='#f2f4f8'
 
@@ -400,7 +400,7 @@
 
     # Styling for different parts of Git status.
     local       meta='%7F' # white foreground
-    local      clean='%0F' # black foreground
+    local      clean='%7F' # white foreground
     local   modified='%0F' # black foreground
     local  untracked='%0F' # black foreground
     local conflicted='%1F' # red foreground
@@ -413,7 +413,7 @@
       # Otherwise show the first 12 … the last 12.
       # Tip: To always show local branch name in full without truncation, delete the next line.
       (( $#branch > 32 )) && branch[13,-13]="…"  # <-- this line
-      res+="${clean}${(g::)POWERLEVEL9K_VCS_BRANCH_ICON}${branch//\%/%%}"
+      res+="${(g::)POWERLEVEL9K_VCS_BRANCH_ICON}${branch//\%/%%}"
     fi
 
     if [[ -n $VCS_STATUS_TAG
