@@ -85,4 +85,14 @@ Both can run simultaneously with no conflicts - separate history, projects, sett
 
 ## Prompt Configuration
 
-Powerlevel10k configured via `~/.p10k.zsh`. Run `p10k configure` to reconfigure.
+Powerlevel10k configured via `~/.config/p10k/p10k.zsh` (symlinked to `~/.p10k.zsh`).
+
+## Syntax Highlighting
+
+zsh-syntax-highlighting uses teal for valid commands (matches Mercedes theme):
+```zsh
+ZSH_HIGHLIGHT_STYLES[command]='fg=cyan,bold'
+ZSH_HIGHLIGHT_STYLES[alias]='fg=cyan,bold'
+ZSH_HIGHLIGHT_STYLES[builtin]='fg=cyan,bold'
+ZSH_HIGHLIGHT_STYLES[function]='fg=cyan,bold'
+```

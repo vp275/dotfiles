@@ -51,4 +51,10 @@ Current: tpm (plugin manager only)
 
 ## Status Bar
 
-Custom status bar shows: session name, S&P 500, VIX, NY time, local time. Stock tickers require `~/.local/bin/sp500-ticker` and `~/.local/bin/vix-ticker`.
+Mercedes Petronas themed status bar:
+- Background: `#0A0A0A` (black)
+- Session name: `#00D2BE` (teal)
+- Current window: teal background with dark text
+- Time: teal accent
+
+Shows: session name, window list, time.
