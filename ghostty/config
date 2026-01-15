@@ -1,7 +1,7 @@
 theme = carbonfox
-background-opacity = .1
+background-opacity = .9
 background-blur-radius = 190
-font-size = 20
+font-size = 18
 # Allow programs (like Vim) to write to the system clipboard via OSC 52
 clipboard-write = "allow"
 
@@ -44,6 +44,7 @@ keybind = cmd+]=text:\x1b]
 keybind = cmd+bracket_left=text:\x1b[
 keybind = cmd+bracket_right=text:\x1b]
 keybind = cmd+r=text:\x1br
+keybind = cmd+shift+r=text:\x1bR
 keybind = cmd+f=text:\x1bf
 keybind = ctrl+tab=text:\x1b[1;5C
 keybind = ctrl+shift+tab=text:\x1b[1;5D
@@ -55,6 +56,8 @@ keybind = cmd+z=text:\x1bz
 keybind = cmd+e=text:\x1be
 keybind = cmd+s=text:\x1bs
 keybind = cmd+z=text:\x1bz
+keybind = cmd+a=text:\x1ba
+keybind = cmd+t=text:\x1bt
 
 # Auto-start tmux
 command = /opt/homebrew/bin/tmux new-session -A -s main

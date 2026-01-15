@@ -10,13 +10,14 @@ Meta (M-) bindings work because Ghostty forwards Cmd as Meta. These feel like na
 |---------|--------|
 | M-d | Split horizontal |
 | M-D | Split vertical |
-| M-t / M-T | New window |
+| M-r | New window |
 | M-w | Close pane |
 | M-W | Close window |
 | M-1 to M-9 | Switch to window 1-9 |
 | M-[ / M-] | Previous/next window |
-| M-r | Reload config |
+| M-R | Reload config |
 | M-f | Search in copy mode |
+| M-a | Enter copy mode |
 | M-e | Choose tree |
 | M-s | Choose session |
 | M-z | Zoom pane |

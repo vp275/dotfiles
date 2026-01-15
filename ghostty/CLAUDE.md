@@ -32,12 +32,14 @@ Ghostty intercepts Cmd keys and sends them as Meta (Escape prefix `\x1b`) sequen
 |-----------------|---------------|-------------|
 | `Cmd+d` | `M-d` (\x1bd) | Split pane vertical |
 | `Cmd+Shift+d` | `M-D` (\x1bD) | Split pane horizontal |
-| `Cmd+t` | `M-t` (\x1bt) | New window |
+| `Cmd+r` | `M-r` (\x1br) | New window |
+| `Cmd+Shift+r` | `M-R` (\x1bR) | Reload tmux config |
 | `Cmd+w` | `M-w` (\x1bw) | Close pane |
 | `Cmd+1-9` | `M-1-9` | Switch to window 1-9 |
 | `Cmd+[` / `Cmd+]` | `M-[` / `M-]` | Navigate panes/windows |
-| `Cmd+r` | `M-r` (\x1br) | Reload tmux config |
 | `Cmd+f` | `M-f` (\x1bf) | tmux search/find |
+| `Cmd+a` | `M-a` (\x1ba) | Enter copy mode |
+| `Cmd+t` | `M-t` (\x1bt) | Toggle thinking (Claude Code) |
 
 The escape sequence `\x1b` is the Meta prefix. For example, `\x1bd` = Escape+d = Meta-d.
 

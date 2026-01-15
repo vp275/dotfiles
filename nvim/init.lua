@@ -12,8 +12,17 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- Leader key (must be before lazy)
+vim.g.mapleader = " "
+
 -- Basic settings (from your .vimrc)
 vim.opt.syntax = "on"
+vim.opt.autoread = true
+
+-- Auto-reload files when changed externally
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold" }, {
+  command = "checktime",
+})
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.showcmd = true
