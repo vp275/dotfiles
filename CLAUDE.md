@@ -6,38 +6,44 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 User dotfiles (`~/.dotfiles`) managed with GNU Stow. Vim-centric, keyboard-driven workflow with Mercedes Petronas theme (black + teal). See `theme-colors.md` for the full color palette.
 
+## Common Commands
+
+```bash
+# Deploy configs
+cd ~/.dotfiles && stow common mac    # Mac
+cd ~/.dotfiles && stow common linux  # Linux
+
+# Validate configs
+ghostty +validate-config --config-file ~/.config/ghostty/config
+aerospace reload-config
+
+# Reload configs
+tmux source-file ~/.config/tmux/tmux.conf  # or M-R in tmux
+~/.config/emacs/bin/doom sync              # after init.el/packages.el changes
+
+# Neovim plugins
+:Lazy                                       # open plugin manager UI
+```
+
 ## Directory Structure
 
 ```
 ~/.dotfiles/
-├── common/         # Cross-platform configs (zsh, p10k, git, nvim, tmux, etc.)
+├── common/         # Cross-platform configs (zsh, p10k, git, nvim, tmux, doom)
 ├── mac/            # Mac-only apps (aerospace, ghostty, karabiner) + config.local
 ├── linux/          # Linux-only apps (alacritty) + config.local
-├── CLAUDE.md       # This file
-├── README.md       # Usage instructions
 └── theme-colors.md # Color palette reference
 ```
 
-**Deploy with Stow:**
-```bash
-cd ~/.dotfiles
-stow common mac    # Mac
-stow common linux  # Linux (future)
-```
+## App-Specific Docs
 
-## App Index
-
-For detailed guidance, see each app's `CLAUDE.md`:
-
-| Package | Folder | Purpose | Has CLAUDE.md |
-|---------|--------|---------|---------------|
-| common | `common/.config/zsh/` | Shell config (oh-my-zsh, p10k) | Yes |
-| common | `common/.config/nvim/` | Neovim with lazy.nvim | Yes |
-| common | `common/.config/tmux/` | Terminal multiplexer | Yes |
-| common | `common/.config/doom/` | Doom Emacs config (GTD, org-roam, gptel) | Yes |
-| mac | `mac/.config/aerospace/` | i3-like tiling window manager | Yes |
-| mac | `mac/.config/ghostty/` | Terminal emulator (Mac) | Yes |
-| linux | `linux/.config/alacritty/` | Terminal emulator (Linux) | No |
+Each app has its own CLAUDE.md with keybindings, settings, and gotchas:
+- `common/.config/zsh/CLAUDE.md` - Shell, plugins, aliases, Claude Code dual-provider setup
+- `common/.config/nvim/CLAUDE.md` - Neovim keybindings (leader=Space), lazy.nvim plugins
+- `common/.config/tmux/CLAUDE.md` - Meta bindings table, TPM plugins
+- `common/.config/doom/CLAUDE.md` - Literate config (emacs.org), GTD setup, gptel
+- `mac/.config/aerospace/CLAUDE.md` - Workspace assignments, app matching rules
+- `mac/.config/ghostty/CLAUDE.md` - Cmd-to-Meta routing table (critical for terminal stack)
 
 ## Key Architecture
 
@@ -45,14 +51,14 @@ For detailed guidance, see each app's `CLAUDE.md`:
 
 **Secrets**: API keys live in `{mac,linux}/.config/zsh/.zshenv.local` (gitignored). Configs reference env vars like `$GEMINI_API_KEY`, `$ZAI_AUTH_TOKEN`.
 
-**Stow symlinks**: Stow creates symlinks from ~/ and ~/.config/ to ~/.dotfiles/:
-- `~/.zshrc` → `.dotfiles/common/.zshrc`
-- `~/.p10k.zsh` → `.dotfiles/common/.p10k.zsh`
-- `~/.gitconfig` → `.dotfiles/common/.gitconfig`
-- `~/.fzf.zsh` → `.dotfiles/common/.fzf.zsh`
-- `~/.claude/` → `.dotfiles/common/.claude/`
-- `~/.config/nvim/` → `.dotfiles/common/.config/nvim/`
-- `~/.config/git/config.local` → `.dotfiles/{mac,linux}/.config/git/config.local`
+**Stow symlinks**: Stow creates symlinks from `~/` and `~/.config/` into this repo:
+- `~/.zshrc` → `common/.zshrc`
+- `~/.p10k.zsh` → `common/.p10k.zsh`
+- `~/.gitconfig` → `common/.gitconfig`
+- `~/.fzf.zsh` → `common/.fzf.zsh`
+- `~/.claude/` → `common/.claude/`
+- `~/.config/nvim/` → `common/.config/nvim/`
+- `~/.config/git/config.local` → `{mac,linux}/.config/git/config.local`
 
 **Platform conditionals**: Cross-platform configs use runtime detection:
 - `.zshrc`: `IS_MAC` variable for plugins (macos, brew), paths, aliases (open vs xdg-open)
