@@ -41,7 +41,7 @@ stow common linux
 | [nvim](common/.config/nvim/) | common | Neovim with lazy.nvim | [CLAUDE.md](common/.config/nvim/CLAUDE.md) |
 | [doom](common/.config/doom/) | common | Doom Emacs (GTD, org-roam, gptel) | [CLAUDE.md](common/.config/doom/CLAUDE.md) |
 | [tmux](common/.config/tmux/) | common | Terminal multiplexer | [CLAUDE.md](common/.config/tmux/CLAUDE.md) |
-| [zsh](mac/.config/zsh/) | mac | Shell (oh-my-zsh, p10k) | [CLAUDE.md](mac/.config/zsh/CLAUDE.md) |
+| [zsh](common/.config/zsh/) | common | Shell (oh-my-zsh, p10k) | [CLAUDE.md](common/.config/zsh/CLAUDE.md) |
 | [ghostty](mac/.config/ghostty/) | mac | Terminal emulator | [CLAUDE.md](mac/.config/ghostty/CLAUDE.md) |
 | [ranger](common/.config/ranger/) | common | File manager | - |
 | [karabiner](mac/.config/karabiner/) | mac | Keyboard customization | - |
@@ -52,32 +52,39 @@ stow common linux
 
 ```
 ~/.dotfiles/
-├── common/                 # Cross-platform configs
-│   ├── .config/
-│   │   ├── nvim/          # Neovim + lazy.nvim plugins
-│   │   ├── tmux/          # tmux + TPM plugins
-│   │   ├── doom/          # Doom Emacs (literate org config)
-│   │   ├── ranger/        # File manager (mercedes theme)
-│   │   ├── bat/           # Syntax highlighting
-│   │   ├── btop/          # System monitor
-│   │   └── neofetch/      # System info
-│   └── .taskrc            # Taskwarrior config
-│
-├── mac/                    # Mac-specific configs
-│   ├── .zshrc             # Shell config
-│   ├── .p10k.zsh          # Powerlevel10k prompt
-│   ├── .gitconfig         # Git config
-│   ├── .fzf.zsh           # FZF for zsh
+├── common/                 # Cross-platform configs (95% of everything)
+│   ├── .zshrc             # Shell config (with platform conditionals)
+│   ├── .p10k.zsh          # Powerlevel10k prompt (Mercedes theme)
+│   ├── .gitconfig         # Git config (uses [include] for credential helper)
+│   ├── .fzf.zsh           # FZF for zsh (with path conditionals)
 │   ├── .claude/           # Claude Code settings
+│   ├── .taskrc            # Taskwarrior config
 │   └── .config/
-│       ├── aerospace/     # Tiling WM
-│       ├── ghostty/       # Terminal (mercedes-petronas theme)
-│       ├── karabiner/     # Key remapping
-│       ├── linearmouse/   # Mouse settings
-│       ├── zsh/           # Supporting zsh files
-│       └── git/           # Git ignore, local config
+│       ├── nvim/          # Neovim + lazy.nvim plugins
+│       ├── tmux/          # tmux + TPM (with clipboard conditionals)
+│       ├── doom/          # Doom Emacs (literate org config)
+│       ├── zsh/           # CLAUDE.md docs
+│       ├── git/           # Git ignore
+│       ├── ranger/        # File manager (mercedes theme)
+│       ├── bat/           # Syntax highlighting
+│       ├── btop/          # System monitor
+│       └── neofetch/      # System info
 │
-├── linux/                  # Linux-specific (placeholder)
+├── mac/                    # Mac-only apps + config.local overrides
+│   └── .config/
+│       ├── aerospace/     # Tiling WM (Mac-only)
+│       ├── ghostty/       # Terminal (Mac-only)
+│       ├── karabiner/     # Key remapping (Mac-only)
+│       ├── linearmouse/   # Mouse settings (Mac-only)
+│       ├── git/           # config.local (osxkeychain)
+│       └── zsh/           # .zshenv.local, .zshrc.local
+│
+├── linux/                  # Linux-only apps + config.local overrides
+│   └── .config/
+│       ├── alacritty/     # Terminal (Linux-only)
+│       ├── git/           # config.local (libsecret)
+│       └── zsh/           # .zshenv.local, .zshrc.local
+│
 ├── CLAUDE.md              # AI assistant guidance
 ├── README.md              # This file
 └── theme-colors.md        # Color palette reference
