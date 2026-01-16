@@ -5,7 +5,5 @@
 	defaultBranch = main
 [core]
 	excludesfile = ~/.config/git/ignore
-[credential]
-	helper = osxkeychain
 [include]
 	path = ~/.config/git/config.local
