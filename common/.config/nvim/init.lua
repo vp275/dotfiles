@@ -32,3 +32,7 @@ vim.opt.textwidth = 80
 
 -- Load plugins
 require("lazy").setup("plugins")
+
+-- Load Mercedes Petronas theme (from colors/mercedes-petronas.lua)
+-- To switch back to carbonfox: vim.cmd("colorscheme carbonfox")
+vim.cmd("colorscheme mercedes-petronas")

@@ -123,7 +123,7 @@ export PUPPETEER_CACHE_DIR="$HOME/.local/share/puppeteer"
 # Preferred editor for local and remote sessions
 export EDITOR='nvim'
 export VISUAL='nvim'
-export BAT_THEME='carbonfox'
+export BAT_THEME='Mercedes-Petronas'
 
 # Compilation flags
 # export ARCHFLAGS="-arch $(uname -m)"
