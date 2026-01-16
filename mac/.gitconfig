@@ -1,0 +1,11 @@
+[user]
+	name = vp275
+	email = 41702642+vp275@users.noreply.github.com
+[init]
+	defaultBranch = main
+[core]
+	excludesfile = ~/.config/git/ignore
+[credential]
+	helper = osxkeychain
+[include]
+	path = ~/.config/git/config.local
