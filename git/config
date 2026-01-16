@@ -1,9 +1,0 @@
-[credential]
-	helper = osxkeychain
-[user]
-	name = vp275
-	email = 41702642+vp275@users.noreply.github.com
-[init]
-	defaultBranch = main
-[core]
-	excludesfile = /Users/vp/.config/git/ignore

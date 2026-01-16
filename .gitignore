@@ -1,26 +1,14 @@
 # macOS
 .DS_Store
 
-# Secrets
-zsh/.zshenv.local
+# Secrets and machine-specific overrides (not version controlled)
+**/.zshenv.local
+**/.zshrc.local
+**/config.local
 
-# Auto-generated / app data (not config)
-.claude/
-configstore/
-direnv/
-emacs/
-flameshot/
-gcloud/
-gh/
-htop/
-mpv/
-myFiles/
-opencode/
-qBittorrent/
-raycast/
-tuir/
-uv/
-yarn/
+# Python artifacts
+__pycache__/
+__init__.py
 
 # Backups
 *.bak.*
@@ -28,7 +16,3 @@ tmux.bak.*
 
 # Cache
 *.cache/
-
-# Python artifacts
-__pycache__/
-__init__.py

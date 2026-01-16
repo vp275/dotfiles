@@ -1,0 +1,68 @@
+theme = mercedes-petronas
+background-opacity = .9
+background-blur-radius = 100
+font-family = "JetBrainsMono Nerd Font"
+font-style = "Light"
+font-size = 20
+# Allow programs (like Vim) to write to the system clipboard via OSC 52
+clipboard-write = "allow"
+
+# If you want to paste from the system clipboard into the terminal without
+# a prompt, switch this to "allow"; "ask" (the default) will prompt you.
+clipboard-read  = "allow"
+
+# Keep selection & system clipboards in sync when selecting text
+copy-on-select = "clipboard"
+
+
+# ~/.config/ghostty/config
+# Route Command keys to tmux (Meta-...).
+keybind = cmd+d=text:\x1bd
+keybind = cmd+shift+d=text:\x1bD
+keybind = cmd+t=text:\x1bt
+keybind = cmd+shift+t=text:\x1bT
+keybind = cmd+w=text:\x1bw
+keybind = cmd+shift+w=text:\x1bW
+keybind = cmd+1=text:\x1b1
+keybind = cmd+2=text:\x1b2
+keybind = cmd+3=text:\x1b3
+keybind = cmd+4=text:\x1b4
+keybind = cmd+5=text:\x1b5
+keybind = cmd+6=text:\x1b6
+keybind = cmd+7=text:\x1b7
+keybind = cmd+8=text:\x1b8
+keybind = cmd+9=text:\x1b9
+keybind = cmd+digit_1=text:\x1b1
+keybind = cmd+digit_2=text:\x1b2
+keybind = cmd+digit_3=text:\x1b3
+keybind = cmd+digit_4=text:\x1b4
+keybind = cmd+digit_5=text:\x1b5
+keybind = cmd+digit_6=text:\x1b6
+keybind = cmd+digit_7=text:\x1b7
+keybind = cmd+digit_8=text:\x1b8
+keybind = cmd+digit_9=text:\x1b9
+keybind = cmd+[=text:\x1b[
+keybind = cmd+]=text:\x1b]
+keybind = cmd+bracket_left=text:\x1b[
+keybind = cmd+bracket_right=text:\x1b]
+keybind = cmd+r=text:\x1br
+keybind = cmd+shift+r=text:\x1bR
+keybind = cmd+f=text:\x1bf
+keybind = ctrl+tab=text:\x1b[1;5C
+keybind = ctrl+shift+tab=text:\x1b[1;5D
+keybind = cmd+backquote=text:\x1b\x60
+keybind = cmd+shift+backquote=text:\x1b\x7e
+keybind = cmd+e=text:\x1be
+keybind = cmd+s=text:\x1bs
+keybind = cmd+z=text:\x1bz
+keybind = cmd+e=text:\x1be
+keybind = cmd+s=text:\x1bs
+keybind = cmd+z=text:\x1bz
+keybind = cmd+a=text:\x1ba
+keybind = cmd+t=text:\x1bt
+
+# Auto-start tmux
+command = /opt/homebrew/bin/tmux new-session -A -s main
+
+# Machine-specific overrides (not version controlled)
+config-file = ~/.config/ghostty/config.local
