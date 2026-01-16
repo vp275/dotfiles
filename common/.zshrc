@@ -2,6 +2,13 @@
 # Load local secrets (API keys, tokens)
 [[ -f ~/.config/zsh/.zshenv.local ]] && source ~/.config/zsh/.zshenv.local
 
+# ===== PLATFORM DETECTION =====
+if [[ "$OSTYPE" == darwin* ]]; then
+    IS_MAC=true
+else
+    IS_MAC=false
+fi
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -86,13 +93,14 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-	git macos zsh-syntax-highlighting zsh-autosuggestions
+	git zsh-syntax-highlighting zsh-autosuggestions
 	fzf
 	fzf-tab
 	z
-	brew
 	colored-man-pages
 )
+# Mac-only plugins
+$IS_MAC && plugins+=(macos brew)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -149,31 +157,46 @@ fr() {
   file=$(nvim --headless +'lua for _,f in ipairs(vim.v.oldfiles) do print(f) end' +q 2>&1 | grep '^/' | tr -d '\r' | while read -r f; do [[ -f "$f" ]] && echo "$f"; done | fzf)
   [[ -n "$file" ]] && nvim "$file"
 }
-alias fopen="open \"\$(fzf)\""
-alias ffind="open -R \"\$(fzf)\""
+
+# Platform-specific file opening aliases
+if $IS_MAC; then
+    alias fopen="open \"\$(fzf)\""
+    alias ffind="open -R \"\$(fzf)\""
+else
+    alias fopen="xdg-open \"\$(fzf)\""
+    alias ffind="xdg-open \"\$(dirname \"\$(fzf)\")\""
+fi
+
 alias fcd="cd \"\$(dirname \"\$(fzf)\")\" && ls"
 alias tw="task"
 
-# Added by Windsurf
-export PATH="$HOME/.codeium/windsurf/bin:$PATH"
+# Mac-specific paths and tools
+if $IS_MAC; then
+    # Added by Windsurf
+    export PATH="$HOME/.codeium/windsurf/bin:$PATH"
+    # opencode
+    export PATH="$HOME/.opencode/bin:$PATH"
+    # MacPorts
+    export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
+
+    # Network optimization aliases
+    alias mynet='~/.config/myFiles/network/enable_fast_network.sh'
+    alias offmynet='~/.config/myFiles/network/disable_fast_network.sh'
+
+    # IBKR trading scripts
+    export PATH="$PATH:$HOME/pspl/ibkr/cron"
+    alias nxc="nextcron"
+
+    # Caffeinate control aliases
+    alias caff="$HOME/pspl/ibkr/cron/on_caffeinate"
+    alias uncaff="$HOME/pspl/ibkr/cron/off_caffeinate"
+
+    # Added by Antigravity
+    export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
+fi
+
 # Gemini API keys disabled on 2025-08-13
-# opencode
-export PATH="$HOME/.opencode/bin:$PATH"
 # GEMINI_API_KEY loaded from .zshenv.local
-export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
-
-# Network optimization aliases
-alias mynet='~/.config/myFiles/network/enable_fast_network.sh'
-alias offmynet='~/.config/myFiles/network/disable_fast_network.sh'
-
-# IBKR trading scripts
-export PATH="$PATH:$HOME/pspl/ibkr/cron"
-alias nxc="nextcron"
-
-# Caffeinate control aliases
-alias caff="$HOME/pspl/ibkr/cron/on_caffeinate"
-alias uncaff="$HOME/pspl/ibkr/cron/off_caffeinate"
-
 
 # Ranger function to cd to last directory on quit with Q
 ranger() {
@@ -194,9 +217,6 @@ ranger() {
 alias rr="ranger"
 alias vim="nvim"
 alias vi="nvim"
-
-# Added by Antigravity
-export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 
 # === CLAUDE CODE PROVIDER SWITCHER ===
 alias cl="claude"
