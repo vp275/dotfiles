@@ -1,0 +1,47 @@
+# Alacritty config for macOS - Dropdown terminal
+# Use Ghostty for main terminal work, Alacritty for quick floating access
+
+[general]
+import = ["~/.config/alacritty/themes/mercedes-petronas.toml"]
+
+[env]
+TERM = "xterm-256color"
+
+[font]
+size = 19
+
+[font.normal]
+family = "JetBrainsMono Nerd Font"
+style = "Light"
+
+[font.bold]
+family = "JetBrainsMono Nerd Font"
+style = "Regular"
+
+[font.italic]
+family = "JetBrainsMono Nerd Font"
+style = "Light Italic"
+
+[font.bold_italic]
+family = "JetBrainsMono Nerd Font"
+style = "Italic"
+
+[window]
+opacity = 0.9
+blur = true
+decorations = "Buttonless"
+dynamic_padding = true
+
+[window.padding]
+x = 12
+y = 16
+
+[window.dimensions]
+columns = 120
+lines = 25
+
+# Option key sends escape sequences (Meta)
+[keyboard]
+bindings = [
+  { key = "Back", mods = "Alt", chars = "\u001b\u007f" },
+]
