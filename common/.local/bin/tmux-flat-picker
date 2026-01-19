@@ -1,0 +1,11 @@
+#!/bin/bash
+# Flat table picker for tmux sessions/windows/panes
+
+{
+    printf "SESSION\tWIN\tNAME\tCMD\tPATH\n"
+    tmux list-windows -a -F "#{session_name}	#{window_index}	#{window_name}	#{pane_current_command}	#{pane_current_path}"
+} | \
+    column -t -s '	' | \
+    fzf --header-lines=1 --reverse --border | \
+    awk '{print $1":"$2}' | \
+    xargs -I {} tmux switch-client -t {}

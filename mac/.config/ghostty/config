@@ -54,15 +54,12 @@ keybind = cmd+backquote=text:\x1b\x60
 keybind = cmd+shift+backquote=text:\x1b\x7e
 keybind = cmd+e=text:\x1be
 keybind = cmd+s=text:\x1bs
-keybind = cmd+z=text:\x1bz
-keybind = cmd+e=text:\x1be
-keybind = cmd+s=text:\x1bs
+keybind = cmd+shift+s=text:\x1bS
 keybind = cmd+z=text:\x1bz
 keybind = cmd+a=text:\x1ba
 keybind = cmd+t=text:\x1bt
-# Cmd+Tab/Cmd+Shift+Tab for tmux window switching (via Karabiner F18/F19)
-keybind = f18=text:\x1b[32~
-keybind = f19=text:\x1b[33~
+keybind = cmd+n=text:\x1bn
+keybind = cmd+o=text:\x1bo
 
 # Auto-start tmux
 command = /opt/homebrew/bin/tmux new-session -A -s main

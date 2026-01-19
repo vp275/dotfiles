@@ -9,44 +9,7 @@
                     "from": { "key_code": "caps_lock" },
                     "to": [{ "key_code": "escape" }]
                 }
-            ],
-            "complex_modifications": {
-                "rules": [
-                    {
-                        "description": "Cmd+Tab to F18 in Ghostty (for tmux window switching)",
-                        "manipulators": [
-                            {
-                                "type": "basic",
-                                "from": {
-                                    "key_code": "tab",
-                                    "modifiers": { "mandatory": ["command"] }
-                                },
-                                "to": [{ "key_code": "f18" }],
-                                "conditions": [
-                                    {
-                                        "type": "frontmost_application_if",
-                                        "bundle_identifiers": ["com.mitchellh.ghostty"]
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "basic",
-                                "from": {
-                                    "key_code": "tab",
-                                    "modifiers": { "mandatory": ["command", "shift"] }
-                                },
-                                "to": [{ "key_code": "f19" }],
-                                "conditions": [
-                                    {
-                                        "type": "frontmost_application_if",
-                                        "bundle_identifiers": ["com.mitchellh.ghostty"]
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }
+            ]
         }
     ]
 }
