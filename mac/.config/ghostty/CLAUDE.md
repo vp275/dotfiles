@@ -15,7 +15,7 @@ ghostty +show-config  # Show effective config vs defaults
 - `theme = mercedes-petronas` (custom theme in `~/.config/ghostty/themes/`)
 - Mercedes Petronas colors: black (#0A0A0A) background, teal (#00D2BE) cursor/accents
 - `font-size = 18`
-- `background-opacity = .9`, `background-blur-radius = 100`
+- `background-opacity = .95`, `background-blur-radius = 200`
 
 **Clipboard:**
 - `clipboard-write = "allow"` - Programs (Vim) can write via OSC 52
@@ -31,16 +31,27 @@ Ghostty intercepts Cmd keys and sends them as Meta (Escape prefix `\x1b`) sequen
 
 | Ghostty Cmd Key | Sends to tmux | tmux Action |
 |-----------------|---------------|-------------|
-| `Cmd+d` | `M-d` (\x1bd) | Split pane vertical |
-| `Cmd+Shift+d` | `M-D` (\x1bD) | Split pane horizontal |
-| `Cmd+r` | `M-r` (\x1br) | New window |
-| `Cmd+Shift+r` | `M-R` (\x1bR) | Reload tmux config |
-| `Cmd+w` | `M-w` (\x1bw) | Close pane |
+| `Cmd+d` | `M-d` | Split pane horizontal |
+| `Cmd+Shift+d` | `M-D` | Split pane vertical |
+| `Cmd+r` | `M-r` | New window |
+| `Cmd+Shift+r` | `M-R` | Reload tmux config |
+| `Cmd+w` | `M-w` | Close pane |
+| `Cmd+Shift+w` | `M-W` | Close window |
 | `Cmd+1-9` | `M-1-9` | Switch to window 1-9 |
-| `Cmd+[` / `Cmd+]` | `M-[` / `M-]` | Navigate panes/windows |
-| `Cmd+f` | `M-f` (\x1bf) | tmux search/find |
-| `Cmd+a` | `M-a` (\x1ba) | Enter copy mode |
-| `Cmd+t` | `M-t` (\x1bt) | Toggle thinking (Claude Code) |
+| `Cmd+[` / `Cmd+]` | `M-[` / `M-]` | Previous/next window |
+| `Cmd+f` | `M-f` | tmux search/find |
+| `Cmd+a` | `M-a` | Enter copy mode |
+| `Cmd+z` | `M-z` | Zoom pane |
+| `Cmd+e` | `M-e` | Flat picker (windows) |
+| `Cmd+Shift+e` | `M-E` | Session picker |
+| `Cmd+s` | `M-s` | Choose session |
+| `Cmd+Shift+s` | `M-S` | Save session (resurrect) |
+| `Cmd+t` | `M-t` | New window |
+| `Cmd+Shift+t` | `M-T` | Restore session (resurrect) |
+| `Cmd+n` | `M-n` | New session (with name) |
+| `Cmd+o` | `M-o` | Sessionx picker |
+| `Ctrl+Tab` | `C-Right` | Next window |
+| `Ctrl+Shift+Tab` | `C-Left` | Previous window |
 
 The escape sequence `\x1b` is the Meta prefix. For example, `\x1bd` = Escape+d = Meta-d.
 
@@ -50,6 +61,7 @@ The escape sequence `\x1b` is the Meta prefix. For example, `\x1bd` = Escape+d =
 - All window/pane management happens in tmux, not Ghostty
 - Ghostty runs as a single window; tmux provides the multiplexing
 - Changes to keybinds here must coordinate with `~/.config/tmux/tmux.conf` Meta bindings
+- Restart Ghostty to apply keybind changes (no hot reload)
 
 ## Config Syntax
 

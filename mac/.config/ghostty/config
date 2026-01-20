@@ -53,6 +53,7 @@ keybind = ctrl+shift+tab=text:\x1b[1;5D
 keybind = cmd+backquote=text:\x1b\x60
 keybind = cmd+shift+backquote=text:\x1b\x7e
 keybind = cmd+e=text:\x1be
+keybind = cmd+shift+e=text:\x1bE
 keybind = cmd+s=text:\x1bs
 keybind = cmd+shift+s=text:\x1bS
 keybind = cmd+z=text:\x1bz

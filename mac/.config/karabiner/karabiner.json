@@ -9,7 +9,21 @@
                     "from": { "key_code": "caps_lock" },
                     "to": [{ "key_code": "escape" }]
                 }
-            ]
+            ],
+            "complex_modifications": {
+                "rules": [
+                    {
+                        "description": "Mouse thumb button to Ctrl+Z (Wispr Flow)",
+                        "manipulators": [
+                            {
+                                "type": "basic",
+                                "from": { "pointing_button": "button4" },
+                                "to": [{ "key_code": "z", "modifiers": ["left_control"] }]
+                            }
+                        ]
+                    }
+                ]
+            }
         }
     ]
 }
