@@ -10,7 +10,7 @@ Meta (M-) bindings work because Ghostty forwards Cmd as Meta. These feel like na
 |---------|--------|
 | M-d | Split horizontal |
 | M-D | Split vertical |
-| M-r | New window |
+| M-t | New window |
 | M-w | Close pane |
 | M-W | Close window |
 | M-1 to M-9 | Switch to window 1-9 |
