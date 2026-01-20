@@ -33,7 +33,7 @@ Ghostty intercepts Cmd keys and sends them as Meta (Escape prefix `\x1b`) sequen
 |-----------------|---------------|-------------|
 | `Cmd+d` | `M-d` | Split pane horizontal |
 | `Cmd+Shift+d` | `M-D` | Split pane vertical |
-| `Cmd+r` | `M-r` | New window |
+| `Cmd+t` | `M-t` | New window |
 | `Cmd+Shift+r` | `M-R` | Reload tmux config |
 | `Cmd+w` | `M-w` | Close pane |
 | `Cmd+Shift+w` | `M-W` | Close window |
