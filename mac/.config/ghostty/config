@@ -63,7 +63,7 @@ keybind = cmd+n=text:\x1bn
 keybind = cmd+o=text:\x1bo
 
 # Auto-start tmux
-command = /opt/homebrew/bin/tmux new-session -A -s main
+command = /opt/homebrew/bin/tmux new-session -A -s '⭐ main'
 
 # Machine-specific overrides (not version controlled)
 config-file = ~/.config/ghostty/config.local
