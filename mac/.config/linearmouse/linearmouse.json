@@ -19,7 +19,7 @@
       },
       "scrolling" : {
         "acceleration" : {
-          "vertical" : 0.09
+          "vertical" : 1.69
         },
         "distance" : {
           "vertical" : "auto"
@@ -28,7 +28,26 @@
           "vertical" : true
         },
         "speed" : {
-          "vertical" : 28.35
+          "vertical" : 60.99
+        }
+      }
+    },
+    {
+      "if" : {
+        "app" : "com.mitchellh.ghostty",
+        "device" : {
+          "category" : "mouse",
+          "productID" : "0xa3",
+          "productName" : "Razer Cobra",
+          "vendorID" : "0x1532"
+        }
+      },
+      "scrolling" : {
+        "acceleration" : {
+          "vertical" : 0.2
+        },
+        "speed" : {
+          "vertical" : 11.16
         }
       }
     },

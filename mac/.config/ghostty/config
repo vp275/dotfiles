@@ -3,7 +3,7 @@ background-opacity = .95
 background-blur-radius = 200
 font-family = "JetBrainsMono Nerd Font"
 font-style = "Light"
-font-size = 18
+font-size = 20
 # Allow programs (like Vim) to write to the system clipboard via OSC 52
 clipboard-write = "allow"
 
