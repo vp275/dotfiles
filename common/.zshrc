@@ -218,6 +218,10 @@ alias rr="ranger"
 alias vim="nvim"
 alias vi="nvim"
 
+# === CLAUDE CODE KEYBINDINGS ===
+# Unbind Ctrl+T (transpose-chars) so it passes through to Claude Code Tasks
+bindkey -r '^T'
+
 # === CLAUDE CODE PROVIDER SWITCHER ===
 alias cl="claude"
 alias cr="claude --resume"
