@@ -1,11 +1,15 @@
 #!/bin/bash
-# Flat table picker for tmux sessions/windows/panes
+# Window picker across all tmux sessions
 
-{
-    printf "SESSION\tWIN\tNAME\tCMD\tPATH\n"
-    tmux list-windows -a -F "#{session_name}\t#{window_index}\t#{window_name}\t#{pane_current_command}\t#{pane_current_path}"
-} | \
-    column -t -s '	' | \
-    fzf --header-lines=1 --reverse --border | \
-    sed -E 's/^(.*[^ ])  +([0-9]+)  +.*/\1:\2/' | \
-    xargs -I {} tmux switch-client -t {}
+selected=$(tmux list-windows -a -F "#{session_name}	#{window_index}	#{window_name}	#{pane_current_command}	#{pane_current_path}" | \
+    awk -F'\t' -v home="$HOME" '{
+        gsub(home, "~", $5)
+        printf "%s\x1f%s\t%-2s  %-16s %-12s %s\n", $1":"$2, $1, $2, $3, $4, $5
+    }' | \
+    fzf --reverse --border --delimiter=$'\x1f' --with-nth=2 \
+        --header="SESSION  #   NAME             CMD          PATH")
+
+if [ -n "$selected" ]; then
+    target=$(printf '%s' "$selected" | cut -d$'\x1f' -f1)
+    tmux switch-client -t "$target"
+fi
