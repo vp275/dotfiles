@@ -61,6 +61,7 @@ keybind = cmd+a=text:\x1ba
 keybind = cmd+t=text:\x1bt
 keybind = cmd+n=text:\x1bn
 keybind = cmd+o=text:\x1bo
+keybind = cmd+x=text:\x1bx
 
 # Auto-start tmux
 command = /opt/homebrew/bin/tmux new-session -A -s '⭐ main'
