@@ -1,11 +1,24 @@
 #!/bin/bash
-# Window picker across all tmux sessions
+# Window picker across all tmux sessions (sorted by last focused time)
 
-selected=$(tmux list-windows -a -F "#{session_name}	#{window_index}	#{window_name}	#{pane_current_command}	#{pane_current_path}" | \
-    awk -F'\t' -v home="$HOME" '{
-        gsub(home, "~", $5)
-        printf "%s\x1f%s\t%-2s  %-16s %-12s %s\n", $1":"$2, $1, $2, $3, $4, $5
+history_file="/tmp/tmux-window-history"
+touch "$history_file"
+
+selected=$(tmux list-windows -a -F "#{session_name}:#{window_index}	#{session_name}	#{window_index}	#{window_name}	#{pane_current_command}	#{pane_current_path}" | \
+    awk -F'\t' -v home="$HOME" -v hfile="$history_file" '
+    BEGIN {
+        while ((getline line < hfile) > 0) {
+            split(line, a, "\t")
+            hist[a[2]] = a[1]
+        }
+    }
+    {
+        gsub(home, "~", $6)
+        ts = hist[$1] + 0
+        printf "%d\t%s\x1f%s\t%-2s  %-16s %-12s %s\n", ts, $1, $2, $3, $4, $5, $6
     }' | \
+    sort -t'	' -k1,1rn | \
+    cut -f2- | \
     fzf --reverse --border --delimiter=$'\x1f' --with-nth=2 \
         --header="SESSION  #   NAME             CMD          PATH")
 
