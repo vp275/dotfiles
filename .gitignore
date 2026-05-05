@@ -6,6 +6,10 @@
 **/.zshrc.local
 **/config.local
 
+# GCP credentials
+**/gcloud/
+*-service-account.json
+
 # Python artifacts
 __pycache__/
 __init__.py
