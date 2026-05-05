@@ -1,5 +1,8 @@
 # Aerospace Configuration Changelog
 
+## 2026-05-05
+- Added catch-all `on-window-detected` rule at the end of the rule list: any app without an explicit workspace assignment is moved to the first empty workspace on the focused monitor (uses the same shell pattern as `alt-shift-backtick`). Apps with specific rules above are unaffected because matching rules set `check-further-callbacks = false` by default. The catch-all must remain the last `[[on-window-detected]]` block in the file.
+
 ## 2026-01-08
 - Changed `alt-tab` from `workspace-back-and-forth` to cycle through non-empty workspaces on the focused monitor
 
