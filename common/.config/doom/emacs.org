@@ -12,15 +12,13 @@
 ;; Enable native compilation
 (when (featurep 'native-compile)
   (setq native-comp-async-report-warnings-errors nil)
-  (setq native-comp-deferred-compilation t))
+  (setq native-comp-jit-compilation t))
 
 ;; Increase garbage collection threshold
 (setq gc-cons-threshold 100000000) ;; 100mb
 
 ;; Increase the amount of data which Emacs reads from processes
 (setq read-process-output-max (* 1024 1024)) ;; 1mb
-;; Fix double buffering issues on macOS
-(add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 ;; Adjust for high-DPI displays
 (setq frame-resize-pixelwise t)
 
@@ -50,6 +48,7 @@
 #+begin_src emacs-lisp
 (setq doom-theme 'doom-ayu-dark)
 (setq display-line-numbers-type t)
+(add-hook 'org-mode-hook (lambda () (display-line-numbers-mode -1)))
 (setq doom-modeline-major-mode-icon t)
 (setq org-ellipsis " ▾ ")
 (setq org-startup-folded 'content)
@@ -146,11 +145,12 @@
 #+end_src
 ** Org Tempo
 #+begin_src emacs-lisp
-(require 'org-tempo)
-(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-(add-to-list 'org-structure-template-alist '("py" . "src python"))
-(add-to-list 'org-structure-template-alist '("cc" . "src C"))
-(add-to-list 'org-structure-template-alist '("cf" . "src conf"))
+(after! org
+  (require 'org-tempo)
+  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+  (add-to-list 'org-structure-template-alist '("py" . "src python"))
+  (add-to-list 'org-structure-template-alist '("cc" . "src C"))
+  (add-to-list 'org-structure-template-alist '("cf" . "src conf")))
 
 #+end_src
 * Org Roam
@@ -170,7 +170,7 @@
   (+org-roam-enable-auto-backlinks-buffer-h t)
   )
 (after! org
-  (setq org-fold-core-style 'overlays)
+  (setq org-fold-core-style 'text-properties)
   )
 #+end_src
 
@@ -189,12 +189,13 @@
     (setq org-roam-ui-sync-theme t
           org-roam-ui-follow t
           org-roam-ui-update-on-save t
-          org-roam-ui-open-on-start t))
+          org-roam-ui-open-on-start nil))
 #+end_src
 ** Org roam protocol
 #+begin_src emacs-lisp
 
-(require 'org-roam-protocol)
+(after! org-roam
+  (require 'org-roam-protocol))
 #+end_src
 
 * Doc View
@@ -226,6 +227,19 @@
   ;; You can also set this as the default backend if you primarily use Gemini
   ;; (setq gptel-default-backend gptel-backend)
   )
+#+end_src
+
+* Ultra Scroll
+#+begin_src emacs-lisp
+(use-package! ultra-scroll
+  :config
+  (ultra-scroll-mode 1))
+#+end_src
+
+* Magit
+#+begin_src emacs-lisp
+(after! magit
+  (setq magit-refresh-status-buffer nil))
 #+end_src
 
 * claude code el
