@@ -2,6 +2,14 @@
 # Load local secrets (API keys, tokens)
 [[ -f ~/.config/zsh/.zshenv.local ]] && source ~/.config/zsh/.zshenv.local
 
+# Disable claude.ai MCP servers in Claude Code (keep them in desktop app only)
+export ENABLE_CLAUDEAI_MCP_SERVERS=false
+
+# Use experimental no-flicker renderer for Claude Code
+export CLAUDE_CODE_NO_FLICKER=1
+# Force truecolor in tmux (workaround for anthropics/claude-code#35148)
+export CLAUDE_CODE_TMUX_TRUECOLOR=1
+
 # ===== PLATFORM DETECTION =====
 if [[ "$OSTYPE" == darwin* ]]; then
     IS_MAC=true
@@ -74,7 +82,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
+DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
@@ -92,15 +100,24 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
+ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+ZSH_AUTOSUGGEST_USE_ASYNC=1
+
 plugins=(
-	git zsh-syntax-highlighting zsh-autosuggestions
+	git zsh-autosuggestions
 	fzf
 	fzf-tab
 	z
 	colored-man-pages
+	zsh-syntax-highlighting
 )
 # Mac-only plugins
 $IS_MAC && plugins+=(macos brew)
+
+# Keep completion search paths stable so Oh My Zsh can reuse .zcompdump.
+typeset -U fpath
+[[ -d "$HOME/.oh-my-zsh/custom/plugins/fzf-tab/lib" ]] && fpath+=("$HOME/.oh-my-zsh/custom/plugins/fzf-tab/lib")
+$IS_MAC && [[ -d /opt/homebrew/share/zsh/site-functions ]] && fpath+=(/opt/homebrew/share/zsh/site-functions)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -139,12 +156,13 @@ export BAT_THEME='Mercedes-Petronas'
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias szsh='source ~/.zshrc'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 export TERM="xterm-256color"
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+(( ${plugins[(Ie)fzf]} )) || [[ ! -f ~/.fzf.zsh ]] || source ~/.fzf.zsh
 
 alias theta="~/thetadata/theta.bash"
 export PATH="$PATH:$HOME/.config/emacs/bin"
@@ -176,11 +194,14 @@ if $IS_MAC; then
     export PATH="$HOME/.codeium/windsurf/bin:$PATH"
     # opencode
     export PATH="$HOME/.opencode/bin:$PATH"
+    # gsd-browser
+    export PATH="$HOME/.gsd-browser/bin:$PATH"
     # MacPorts
     export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 
     # Network optimization aliases
     alias mynet='~/.config/myFiles/network/enable_fast_network.sh'
+    alias mynet_warp='~/.config/myFiles/network/enable_warp_network.sh'
     alias offmynet='~/.config/myFiles/network/disable_fast_network.sh'
 
     # IBKR trading scripts
@@ -195,8 +216,8 @@ if $IS_MAC; then
     export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 fi
 
-# Gemini API keys disabled on 2025-08-13
-# GEMINI_API_KEY loaded from .zshenv.local
+# Vertex AI config (GOOGLE_CLOUD_PROJECT, GOOGLE_CLOUD_LOCATION) set in ~/.zshenv
+# Auth via ADC (gcloud auth application-default login), no API keys
 
 # Ranger function to cd to last directory on quit with Q
 ranger() {
@@ -230,25 +251,24 @@ alias cld="claude --dangerously-skip-permissions"
 alias crd="claude --resume --dangerously-skip-permissions"
 alias clcd="claude --continue --dangerously-skip-permissions"
 
-# Z.AI GLM (completely isolated config directory)
-glm() {
-    CLAUDE_CONFIG_DIR="$HOME/.claude-glm" \
-    ANTHROPIC_AUTH_TOKEN="$ZAI_AUTH_TOKEN" \
-    ANTHROPIC_BASE_URL="https://api.z.ai/api/anthropic" \
-    API_TIMEOUT_MS="3000000" \
-    command claude "$@"
-}
-
-# ccusage wrapper to aggregate usage from both Claude and GLM configs
-ccusage() {
-    CLAUDE_CONFIG_DIR="$HOME/.claude,$HOME/.claude-glm" command ccusage "$@"
-}
 
 # Usage aliases with model breakdown
 alias ccu="ccusage --since \$(date +%Y%m%d) -b"
 alias ccuw="ccusage weekly -b"
 alias ccum="ccusage monthly -b"
 alias ccup="ccusage -i"
+alias ccv='claude --strict-mcp-config --mcp-config ~/.claude/mcp-none.json'
+alias ccvcd='claude --strict-mcp-config --mcp-config ~/.claude/mcp-none.json --continue --dangerously-skip-permissions'
+alias ccvd='claude --strict-mcp-config --mcp-config ~/.claude/mcp-none.json --dangerously-skip-permissions'
+
+# Remove oh-my-zsh git plugin alias that conflicts with gsd-pi CLI
+unalias gsd 2>/dev/null
+alias gsdc="gsd -c"
+alias gfix="gcloud auth application-default login"
 
 # Source machine-specific local overrides (not version controlled)
 [[ -f ~/.config/zsh/.zshrc.local ]] && source ~/.config/zsh/.zshrc.local
+
+# OpenClaw Completion
+source "/Users/vp/.openclaw/completions/openclaw.zsh"
+export PATH="$HOME/.local/bin:$PATH"
