@@ -1,15 +1,13 @@
 ;; Enable native compilation
 (when (featurep 'native-compile)
   (setq native-comp-async-report-warnings-errors nil)
-  (setq native-comp-deferred-compilation t))
+  (setq native-comp-jit-compilation t))
 
 ;; Increase garbage collection threshold
 (setq gc-cons-threshold 100000000) ;; 100mb
 
 ;; Increase the amount of data which Emacs reads from processes
 (setq read-process-output-max (* 1024 1024)) ;; 1mb
-;; Fix double buffering issues on macOS
-(add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 ;; Adjust for high-DPI displays
 (setq frame-resize-pixelwise t)
 
@@ -27,6 +25,7 @@
 
 (setq doom-theme 'doom-ayu-dark)
 (setq display-line-numbers-type t)
+(add-hook 'org-mode-hook (lambda () (display-line-numbers-mode -1)))
 (setq doom-modeline-major-mode-icon t)
 (setq org-ellipsis " ▾ ")
 (setq org-startup-folded 'content)
@@ -96,11 +95,12 @@
   (setq org-auto-tangle-default t)
   )
 
-(require 'org-tempo)
-(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-(add-to-list 'org-structure-template-alist '("py" . "src python"))
-(add-to-list 'org-structure-template-alist '("cc" . "src C"))
-(add-to-list 'org-structure-template-alist '("cf" . "src conf"))
+(after! org
+  (require 'org-tempo)
+  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+  (add-to-list 'org-structure-template-alist '("py" . "src python"))
+  (add-to-list 'org-structure-template-alist '("cc" . "src C"))
+  (add-to-list 'org-structure-template-alist '("cf" . "src conf")))
 
 (setq org-roam-db-location "~/Dropbox/admin/org/org-roam/org-roam.db")
 (setq org-journal-dir "~/Dropbox/admin/org/journal")
@@ -115,7 +115,7 @@
   (+org-roam-enable-auto-backlinks-buffer-h t)
   )
 (after! org
-  (setq org-fold-core-style 'overlays)
+  (setq org-fold-core-style 'text-properties)
   )
 
 (use-package! websocket
@@ -131,9 +131,10 @@
     (setq org-roam-ui-sync-theme t
           org-roam-ui-follow t
           org-roam-ui-update-on-save t
-          org-roam-ui-open-on-start t))
+          org-roam-ui-open-on-start nil))
 
-(require 'org-roam-protocol)
+(after! org-roam
+  (require 'org-roam-protocol))
 
 (setq doc-view-resolution 300)
 (setq pdf-view-use-scaling t)
@@ -153,6 +154,13 @@
   ;; You can also set this as the default backend if you primarily use Gemini
   ;; (setq gptel-default-backend gptel-backend)
   )
+
+(use-package! ultra-scroll
+  :config
+  (ultra-scroll-mode 1))
+
+(after! magit
+  (setq magit-refresh-status-buffer nil))
 
 (use-package! claude-code-ide
   :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding

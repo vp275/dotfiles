@@ -57,5 +57,6 @@
 (package! simple-httpd)
 (package! org-roam-ui)
 (package! gptel :recipe (:nonrecursive t))
+(package! ultra-scroll)
 (package! claude-code-ide
   :recipe (:host github :repo "manzaltu/claude-code-ide.el"))
