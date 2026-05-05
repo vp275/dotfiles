@@ -68,10 +68,8 @@ Z = 'secondary'  # Journal/Knowledge
 if.app-id = 'com.mitchellh.ghostty'
 run = 'move-node-to-workspace 1'
 
-# Alacritty - Dropdown terminal (floating, no workspace assignment)
-[[on-window-detected]]
-if.app-id = 'org.alacritty'
-run = 'layout floating'
+# Alacritty - no workspace assignment (uses native macOS tabs)
+# Aerospace's on-window-detected interferes with tab creation
 
 # Workspace 2 - Calendar/Voice
 [[on-window-detected]]
@@ -231,6 +229,13 @@ run = 'move-node-to-workspace O'
 [[on-window-detected]]
 if.app-name-regex-substring = 'Spotify'
 run = 'move-node-to-workspace 10'
+
+# Catch-all: any app without an explicit assignment above goes to the first empty workspace.
+# KEEP THIS BLOCK LAST. Any [[on-window-detected]] added below this will never fire,
+# because earlier matching rules set check-further-callbacks = false by default and this
+# rule has no `if` clause so it matches everything that fell through.
+[[on-window-detected]]
+run = ['exec-and-forget /bin/bash -c "aerospace list-workspaces --monitor focused --empty | head -1 | xargs -I {} aerospace move-node-to-workspace {}"']
 
 # Possible values: (qwerty|dvorak|colemak)
 # See https://nikitabobko.github.io/AeroSpace/guide#key-mapping
