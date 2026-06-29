@@ -39,7 +39,6 @@ tmux source-file ~/.config/tmux/tmux.conf
 |   |-- .p10k.zsh           # Powerlevel10k prompt
 |   |-- .gitconfig          # Git config
 |   |-- .fzf.zsh            # FZF shell integration
-|   |-- .claude/            # Claude Code settings
 |   |-- .local/bin/         # Helper scripts
 |   `-- .config/
 |       |-- zsh/
@@ -97,7 +96,6 @@ Meta bindings available for terminals that send Meta.
 - `~/.p10k.zsh` -> `mac/.p10k.zsh`
 - `~/.gitconfig` -> `mac/.gitconfig`
 - `~/.fzf.zsh` -> `mac/.fzf.zsh`
-- `~/.claude/settings.json` -> `mac/.claude/settings.json`
 - `~/.config/nvim/` -> `mac/.config/nvim/`
 - `~/.config/tmux/` -> `mac/.config/tmux/`
 - `~/.config/doom/` -> `mac/.config/doom/`
