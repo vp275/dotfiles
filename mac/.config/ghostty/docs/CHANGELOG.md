@@ -1,5 +1,12 @@
 # Ghostty Config Changelog
 
+## 2026-06-29 — Start Ghostty in ranger
+
+- Added `command = /Users/vp/.local/bin/ghostty-ranger-session` so new Ghostty
+  sessions open into `ranger`.
+- Added a small wrapper that runs Homebrew's `ranger` first, then starts a login
+  `zsh` after ranger exits so quitting ranger does not close the terminal.
+
 ## 2026-06-16 — Strip to stock defaults, keep a minimal set
 
 ### Goal

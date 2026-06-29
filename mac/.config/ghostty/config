@@ -6,3 +6,6 @@ theme = mercedes-petronas
 background-opacity = 0.97
 font-size = 19
 macos-titlebar-style = native
+
+# Start each Ghostty session in ranger, then fall back to zsh when ranger exits.
+command = /Users/vp/.local/bin/ghostty-ranger-session
