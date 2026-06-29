@@ -24,7 +24,6 @@ Codex-facing guide for working in `/Users/vp/.dotfiles`.
 |   |-- .p10k.zsh
 |   |-- .gitconfig
 |   |-- .fzf.zsh
-|   |-- .claude/
 |   |-- .local/bin/
 |   `-- .config/
 |       |-- zsh/
@@ -100,7 +99,6 @@ Stow creates symlinks from `$HOME` and `$HOME/.config` into `mac/`. Examples:
 - `~/.p10k.zsh` points at `mac/.p10k.zsh`.
 - `~/.gitconfig` points at `mac/.gitconfig`.
 - `~/.fzf.zsh` points at `mac/.fzf.zsh`.
-- `~/.claude/settings.json` points at `mac/.claude/settings.json`.
 - `~/.config/nvim/` points at `mac/.config/nvim/`.
 - `~/.config/tmux/` points at `mac/.config/tmux/`.
 - `~/.config/doom/` points at `mac/.config/doom/`.

@@ -52,7 +52,6 @@ stow mac
 |   |-- .p10k.zsh           # Powerlevel10k prompt
 |   |-- .gitconfig          # Git config
 |   |-- .fzf.zsh            # FZF shell integration
-|   |-- .claude/            # Claude Code settings
 |   |-- .taskrc             # Taskwarrior config
 |   `-- .config/
 |       |-- aerospace/      # Tiling window manager
