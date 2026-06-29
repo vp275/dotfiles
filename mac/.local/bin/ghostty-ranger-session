@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+# Open Ghostty directly into ranger, but keep the terminal alive after quitting it.
+if [[ -x /opt/homebrew/bin/ranger ]]; then
+  /opt/homebrew/bin/ranger "$@"
+else
+  print -u2 "ghostty-ranger-session: ranger not found at /opt/homebrew/bin/ranger"
+fi
+
+exec /bin/zsh -l
