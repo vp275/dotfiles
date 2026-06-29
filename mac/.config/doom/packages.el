@@ -60,3 +60,9 @@
 (package! ultra-scroll)
 (package! claude-code-ide
   :recipe (:host github :repo "manzaltu/claude-code-ide.el"))
+
+;; agent-shell + deps (xenodium). Explicit recipes since these are newer than
+;; Doom's pinned MELPA snapshot.
+(package! shell-maker)
+(package! acp :recipe (:host github :repo "xenodium/acp.el"))
+(package! agent-shell :recipe (:host github :repo "xenodium/agent-shell"))

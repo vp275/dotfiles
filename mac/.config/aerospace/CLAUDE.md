@@ -45,15 +45,16 @@ aerospace list-workspaces        # See all workspaces
 
 | Workspace | Apps |
 |-----------|------|
+| 1 | Ghostty (floating), Alacritty (floating), cmux (floating), Warp (floating) |
 | 2 | Calendar, SuperWhisper (floating) |
 | 3 | Things |
 | 4-6 | TradingView, IB Gateway, TWS |
 | 8 | Discord, Telegram, WhatsApp |
 | 10 | Spotify, YouTube Music |
 | A | Excel, Word, sioyek |
-| B | Arc, Firefox, Brave |
-| C | ChatGPT, Chrome |
-| D | Emacs, Day One |
+| B | Arc, Firefox, Brave, Helium |
+| C | ChatGPT, Chrome, Codex (floating) |
+| D | Emacs |
 | E | Finder (floating), mpv (floating) |
 | F | Drafts |
 | G | Gemini |
@@ -61,18 +62,18 @@ aerospace list-workspaces        # See all workspaces
 | N | Safari, Notion |
 | O | Books (floating), Obsidian |
 | P | VS Code |
-| S | Comet (Reddit) |
+| S | Comet (Reddit), Day One |
 | V | Claude |
 | Y | YouTube |
 
 ## Floating Apps
 
-These apps launch floating instead of tiled: Ghostty, SuperWhisper, Finder, Books, mpv.
+These apps launch floating instead of tiled: Ghostty, Alacritty, cmux, Warp, SuperWhisper, Finder, Books, mpv.
 
 ## Gotchas
 
 - **App matching**: Uses `app-name-regex-substring` (partial match) or `app-id` for specific bundle IDs
-- **Ghostty is floating**: Uses native macOS tabs, so it floats. Terminal workspace switching happens via tmux.
+- **Terminals float on workspace 1**: Ghostty, Alacritty, cmux, and Warp all use `layout floating` and pin to workspace 1, since they rely on native macOS tabs/windows rather than aerospace tiling. (Ghostty workspace switching historically went through tmux.)
 - **Zero gaps**: `[gaps]` section has all values at 0
 - **Mouse follows monitor**: When focus changes monitors, mouse moves to center
 - **No sticky windows**: Feature not yet supported (issue #2)

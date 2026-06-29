@@ -1,14 +1,3 @@
-:PROPERTIES:
-:GPTEL_MODEL: gpt-4o-mini
-:END:
-#+title: Config
-
-#+STARTUP: show2levels
-#+PROPERTY: header-args:emacs-lisp :tangle ./config.el
-
-* Org Native Compilation
-#+begin_src emacs-lisp
-
 ;; Enable native compilation
 (when (featurep 'native-compile)
   (setq native-comp-async-report-warnings-errors nil)
@@ -22,19 +11,10 @@
 ;; Adjust for high-DPI displays
 (setq frame-resize-pixelwise t)
 
-
-#+end_src
-* Keybindings
-** Config
-#+begin_src emacs-lisp
-
 (map! :leader
       (:prefix ("f". "")
        :desc "Config"                    "x" #'(lambda () (interactive) (find-file "~/.config/doom/emacs.org")))
       )
-#+end_src
-** Gtd
-#+begin_src emacs-lisp
 
 (map! :leader
       (:prefix ("d". "")
@@ -42,38 +22,20 @@
        :desc "Gtd"                    "g" #'(lambda () (interactive) (find-file "~/Dropbox/admin/gtd/gtd.org"))
        )
       )
-#+end_src
-* Appearance
-** Main
-#+begin_src emacs-lisp
-(setq doom-theme 'doom-ayu-dark)
+
+(setq doom-theme 'doom-one)
 (setq display-line-numbers-type t)
 (add-hook 'org-mode-hook (lambda () (display-line-numbers-mode -1)))
 (setq doom-modeline-major-mode-icon t)
 (setq org-ellipsis " ▾ ")
 (setq org-startup-folded 'content)
-#+end_src
 
-** Fonts
-
-#+begin_src emacs-lisp
-(setq doom-font (font-spec :family "JetBrainsMono Nerd Font Mono" :size 20 :weight 'Light))
-(setq doom-variable-pitch-font (font-spec :family "JetBrainsMono Nerd Font Mono" :size 20 :weight 'Light))
-#+end_src
-
-** Transparency
-
-#+begin_src emacs-lisp
+(setq doom-font (font-spec :family "JetBrainsMono Nerd Font Mono" :size 22 :weight 'Light))
+(setq doom-variable-pitch-font (font-spec :family "JetBrainsMono Nerd Font Mono" :size 22 :weight 'Light))
 
 ;; Set frame transparency (93 = 93% opaque)
 (set-frame-parameter (selected-frame) 'alpha 100)
 (add-to-list 'default-frame-alist '(alpha . 100))
-
-#+end_src
-
-* Org Mode
-** Gtd
-#+begin_src emacs-lisp
 
 (setq org-directory "~/Dropbox/admin/gtd/")
 (after! org
@@ -91,17 +53,11 @@
 
   )
 
-#+end_src
-** Org Agenda
-
-#+begin_src emacs-lisp
 (setq org-agenda-files '("~/Dropbox/admin/gtd/"))
 (setq +org-capture-todo-file "~/Dropbox/admin/gtd/inbox.org")
 (setq org-deadline-warning-days 7)
 (setq org-agenda-tag-filter-preset '("-someday" "-inbox"))
-#+end_src
-** Org Capture Templates
-#+begin_src emacs-lisp
+
 ;; (setq org-capture-templates
 ;;       '(("i" "Inbox" entry
 ;;          (file +org-capture-todo-file)
@@ -124,10 +80,6 @@
          :empty-lines 0)
         ("t" "Todo" entry (file "~/Dropbox/admin/gtd/inbox.org")
          "* TODO %?\n  %i")))
-#+end_src
-
-** Org Auto Tangle
-#+begin_src emacs-lisp
 
 (map! :leader
       (:prefix ("t". "Org Babel Tangle")
@@ -142,20 +94,13 @@
   :config
   (setq org-auto-tangle-default t)
   )
-#+end_src
-** Org Tempo
-#+begin_src emacs-lisp
+
 (after! org
   (require 'org-tempo)
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
   (add-to-list 'org-structure-template-alist '("py" . "src python"))
   (add-to-list 'org-structure-template-alist '("cc" . "src C"))
   (add-to-list 'org-structure-template-alist '("cf" . "src conf")))
-
-#+end_src
-* Org Roam
-** Main
-#+begin_src emacs-lisp
 
 (setq org-roam-db-location "~/Dropbox/admin/org/org-roam/org-roam.db")
 (setq org-journal-dir "~/Dropbox/admin/org/journal")
@@ -172,10 +117,7 @@
 (after! org
   (setq org-fold-core-style 'text-properties)
   )
-#+end_src
 
-** Org Roam UI
-#+begin_src emacs-lisp
 (use-package! websocket
     :after org-roam)
 
@@ -190,34 +132,19 @@
           org-roam-ui-follow t
           org-roam-ui-update-on-save t
           org-roam-ui-open-on-start nil))
-#+end_src
-** Org roam protocol
-#+begin_src emacs-lisp
 
 (after! org-roam
   (require 'org-roam-protocol))
-#+end_src
-
-* Doc View
-#+begin_src emacs-lisp
 
 (setq doc-view-resolution 300)
 (setq pdf-view-use-scaling t)
-#+end_src
-* Xmind
-#+begin_src emacs-lisp
+
 (use-package xmind-org
   :after org ; Ensures that xmind-org is loaded for org
   :config
 
   )
-#+end_src
 
-
-
-
-* gptel
-#+begin_src emacs-lisp
 (use-package! gptel
   :config
   (setq gptel-backend (gptel-make-gemini "MyGemini" ; Choose a name for your backend
@@ -227,25 +154,33 @@
   ;; You can also set this as the default backend if you primarily use Gemini
   ;; (setq gptel-default-backend gptel-backend)
   )
-#+end_src
 
-* Ultra Scroll
-#+begin_src emacs-lisp
 (use-package! ultra-scroll
   :config
   (ultra-scroll-mode 1))
-#+end_src
 
-* Magit
-#+begin_src emacs-lisp
 (after! magit
   (setq magit-refresh-status-buffer nil))
-#+end_src
 
-* claude code el
-#+begin_src emacs-lisp
 (use-package! claude-code-ide
   :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
   :config
+  ;; Launch every Claude Code session with these flags
+  (setq claude-code-ide-cli-extra-flags "--model opus --effort high --dangerously-skip-permissions")
   (claude-code-ide-emacs-tools-setup)) ; Optionally enable Emacs MCP tools
-#+end_src
+
+;; Launch Claude Code with SPC c l
+(map! :leader
+      :desc "Launch Claude Code"
+      "c l" #'claude-code-ide)
+
+(use-package! agent-shell
+  :config
+  ;; Use the Claude Max subscription login (reuses your existing auth, no API key)
+  (setq agent-shell-anthropic-authentication
+        (agent-shell-anthropic-make-authentication :login t)))
+
+;; Launch an Anthropic/Claude agent-shell with SPC c a
+(map! :leader
+      :desc "Agent shell (Claude)"
+      "c a" #'agent-shell-anthropic-start-claude-code)

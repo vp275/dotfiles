@@ -20,4 +20,4 @@ tmux.bak.*
 
 # Cache
 *.cache/
-common/.config/tmux/plugins/
+mac/.config/tmux/plugins/

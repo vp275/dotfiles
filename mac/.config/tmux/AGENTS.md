@@ -1,14 +1,14 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-This repo is a tmux configuration bundle.
+This directory is the tmux configuration bundle inside the dotfiles repo.
 - `tmux.conf` is the single source of truth for tmux settings and keybindings.
 - `plugins/` contains TPM (`plugins/tpm`) and theme/plugins (for example `plugins/catppuccin`).
 - `README.md` documents keybinding intent and Ghostty interoperability notes.
 
 ## Build, Test, and Development Commands
 There is no build step; changes take effect after reloading tmux.
-- `tmux source-file ~/.config/tmux/tmux.conf` reloads the config (same as the `Cmd+r` binding).
+- `tmux source-file ~/.config/tmux/tmux.conf` reloads the config.
 - `~/.config/tmux/plugins/tpm/bin/install_plugins` installs plugins via TPM.
 - `~/.config/tmux/plugins/tpm/bin/update_plugins` updates plugins via TPM.
 - `ghostty +validate-config` validates Ghostty config after keybinding edits.
@@ -26,8 +26,11 @@ There is no automated test suite. Validate changes manually:
 - If the status bar shows command errors, verify `~/.local/bin/sp500-ticker` and `~/.local/bin/vix-ticker`, or adjust `status-right`.
 
 ## Commit & Pull Request Guidelines
-This directory is not currently a git repository, so there is no commit history to follow. If you add version control, keep commit messages short and imperative (for example, `tmux: tweak status bar colors`). For pull requests, include a brief description of the behavior change, list any keybinding updates, and attach a terminal screenshot if UI elements or colors changed.
+This directory is part of the parent dotfiles git repo. Keep commits short and
+descriptive if committing changes. For PRs, include behavior changes,
+keybinding updates, and a terminal screenshot if UI elements or colors changed.
 
 ## Configuration Tips
-- Ghostty must forward Command as Meta; keep `~/.config/ghostty/config` and `~/.config/Ghostty/config` in sync when changing bindings.
+- Current Ghostty does not forward Command as Meta. If restoring the archived
+  Cmd-to-Meta setup, update Ghostty and tmux docs together.
 - Prefer minimal changes to preserve muscle memory; document any nonstandard mappings in `README.md`.

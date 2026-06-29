@@ -66,10 +66,22 @@ Z = 'secondary'  # Journal/Knowledge
 # Workspace 1 - Terminal (Ghostty)
 [[on-window-detected]]
 if.app-id = 'com.mitchellh.ghostty'
-run = 'move-node-to-workspace 1'
+run = ['layout floating', 'move-node-to-workspace 1']
 
-# Alacritty - no workspace assignment (uses native macOS tabs)
-# Aerospace's on-window-detected interferes with tab creation
+# Workspace 1 - Terminal (Alacritty)
+[[on-window-detected]]
+if.app-id = 'org.alacritty'
+run = ['layout floating', 'move-node-to-workspace 1']
+
+# Workspace 1 - Terminal (cmux)
+[[on-window-detected]]
+if.app-id = 'com.cmuxterm.app'
+run = ['layout floating', 'move-node-to-workspace 1']
+
+# Workspace 1 - Terminal (Warp)
+[[on-window-detected]]
+if.app-id = 'dev.warp.Warp-Stable'
+run = ['layout floating', 'move-node-to-workspace 1']
 
 # Workspace 2 - Calendar/Voice
 [[on-window-detected]]
@@ -139,6 +151,10 @@ run = 'move-node-to-workspace B'
 if.app-id = 'com.brave.Browser'
 run = 'move-node-to-workspace B'
 
+[[on-window-detected]]
+if.app-id = 'net.imput.helium'
+run = 'move-node-to-workspace B'
+
 # Workspace C - AI/Chat
 [[on-window-detected]]
 if.app-name-regex-substring = 'ChatGPT'
@@ -186,11 +202,6 @@ run = 'move-node-to-workspace N'
 if.app-id = 'com.apple.iBooksX'
 run = ['layout floating', 'move-node-to-workspace O']
 
-# Workspace P - Programming/Code Editors
-[[on-window-detected]]
-if.app-name-regex-substring = 'Code'
-run = 'move-node-to-workspace P'
-
 # Workspace S - Social/Forums
 [[on-window-detected]]
 if.app-name-regex-substring = 'Comet'
@@ -215,10 +226,10 @@ run = 'move-node-to-workspace Y'
 if.app-name-regex-substring = 'mpv'
 run = 'layout floating'
 
-# Workspace D - Day One (with Emacs)
+# Workspace S - Day One (with Comet)
 [[on-window-detected]]
 if.app-name-regex-substring = 'Day One'
-run = 'move-node-to-workspace D'
+run = 'move-node-to-workspace S'
 
 # Workspace O - Obsidian (with Books)
 [[on-window-detected]]
@@ -229,6 +240,27 @@ run = 'move-node-to-workspace O'
 [[on-window-detected]]
 if.app-name-regex-substring = 'Spotify'
 run = 'move-node-to-workspace 10'
+
+# Workspace C - Codex (with ChatGPT, Chrome)
+[[on-window-detected]]
+if.app-name-regex-substring = 'Codex'
+run = ['layout floating', 'move-node-to-workspace C']
+
+# Menu bar / status bar app popovers: match-and-stop so the catch-all below
+# does not move them to an empty workspace. Add one block per offender.
+[[on-window-detected]]
+if.app-id = 'com.cloudflare.1dot1dot1dot1.macos'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'com.1password.1password'
+run = ['layout floating']
+
+# 1Password Quick Access launcher (Cmd+Shift+Space) runs under macOS's
+# LocalAuthentication agent, not the 1Password bundle.
+[[on-window-detected]]
+if.app-id = 'com.apple.LocalAuthentication.UIAgent'
+run = ['layout floating']
 
 # Catch-all: any app without an explicit assignment above goes to the first empty workspace.
 # KEEP THIS BLOCK LAST. Any [[on-window-detected]] added below this will never fire,

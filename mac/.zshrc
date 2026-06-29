@@ -201,7 +201,6 @@ if $IS_MAC; then
 
     # Network optimization aliases
     alias mynet='~/.config/myFiles/network/enable_fast_network.sh'
-    alias mynet_warp='~/.config/myFiles/network/enable_warp_network.sh'
     alias offmynet='~/.config/myFiles/network/disable_fast_network.sh'
 
     # IBKR trading scripts
@@ -245,12 +244,13 @@ bindkey -r '^T'
 
 # === CLAUDE CODE PROVIDER SWITCHER ===
 alias cl="claude"
-alias cr="claude --resume"
-alias clc="claude --continue"
-alias cld="claude --dangerously-skip-permissions"
-alias crd="claude --resume --dangerously-skip-permissions"
-alias clcd="claude --continue --dangerously-skip-permissions"
+alias cld="claude --dangerously-skip-permissions --model 'claude-opus-4-8[1m]' --effort high"
+alias clds="claude --dangerously-skip-permissions --model sonnet --effort high"
+alias cldr="claude --resume --dangerously-skip-permissions"
+alias cldc="claude --continue --dangerously-skip-permissions"
 
+
+alias cldp="claude --dangerously-skip-permissions --model sonnet --effort medium -p"
 
 # Usage aliases with model breakdown
 alias ccu="ccusage --since \$(date +%Y%m%d) -b"
@@ -272,3 +272,6 @@ alias gfix="gcloud auth application-default login"
 # OpenClaw Completion
 source "/Users/vp/.openclaw/completions/openclaw.zsh"
 export PATH="$HOME/.local/bin:$PATH"
+
+# omnara
+path=("/Users/vp/.omnara/bin" $path)
