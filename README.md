@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/tmux-1BB91F?logo=tmux&logoColor=white" alt="tmux">
   <img src="https://img.shields.io/badge/Ghostty-161616?logo=ghost&logoColor=white" alt="Ghostty">
   <br>
-  <img src="https://visitor-badge.laobi.icu/badge?page_id=vp275.dotfiles_mac&left_color=%23161616&right_color=%2300D2BE" alt="Visitors">
+  <img src="https://visitor-badge.laobi.icu/badge?page_id=vp275.dotfiles&left_color=%23161616&right_color=%2300D2BE" alt="Visitors">
 </p>
 
 ---
