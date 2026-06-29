@@ -25,7 +25,7 @@ Personal color scheme inspired by Mercedes-AMG Petronas F1 team.
 | Dark Text | `#161616` | Text on light/teal backgrounds |
 | Light Text | `#f2f4f8` | Text on dark backgrounds |
 
-## Accent Colors (unchanged from carbonfox)
+## Accent Colors
 
 | Name | Hex | Usage |
 |------|-----|-------|
@@ -58,4 +58,4 @@ Prompt char: `#00D2BE` (teal) on success.
 - [x] tmux statusline
 - [x] ranger (mercedes colorscheme)
 - [x] zsh-syntax-highlighting (teal for valid commands)
-- [x] Neovim (keeping carbonfox - too many colors to replace)
+- [x] Neovim (custom mercedes-petronas colorscheme)

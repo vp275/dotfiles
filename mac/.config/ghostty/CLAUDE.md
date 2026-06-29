@@ -1,6 +1,12 @@
 # CLAUDE.md
 
-Ghostty terminal emulator configuration for macOS. Core purpose: route Mac Cmd keys to tmux as Meta sequences for a seamless terminal stack.
+Ghostty terminal emulator configuration for macOS.
+
+**Current state (2026-06-16):** stripped to a minimal, near-stock config to use
+Ghostty's out-of-the-box behavior (native tabs/splits, native smooth scrollback,
+native Cmd shortcuts). The previous tmux-centric setup (Cmd→Meta routing +
+auto-launch tmux) is archived. See `docs/CHANGELOG.md` for the full before/after
+and restore instructions; the old config is at `docs/config.original-2026-06-16.bak`.
 
 ## Validation
 
@@ -9,25 +15,38 @@ ghostty +validate-config --config-file ~/.config/ghostty/config
 ghostty +show-config  # Show effective config vs defaults
 ```
 
-## Key Settings
+## Current Settings
 
-**Theme & Appearance:**
-- `theme = mercedes-petronas` (custom theme in `~/.config/ghostty/themes/`)
-- Mercedes Petronas colors: black (#0A0A0A) background, teal (#00D2BE) cursor/accents
-- `font-size = 18`
-- `background-opacity = .95`, `background-blur-radius = 200`
+The live config is intentionally small:
 
-**Clipboard:**
-- `clipboard-write = "allow"` - Programs (Vim) can write via OSC 52
-- `clipboard-read = "allow"` - Paste without prompt
-- `copy-on-select = "clipboard"` - Selection syncs to clipboard
+- `theme = mercedes-petronas` (custom theme in `~/.config/ghostty/themes/`) — black
+  (#0A0A0A) background, teal (#00D2BE) cursor/accents
+- `background-opacity = 0.97` — slight transparency
+- `font-size = 19` — on Ghostty's **default** font (no custom font-family/style)
+- `macos-titlebar-style = native`
 
-**Auto-start tmux:**
-- `command = /opt/homebrew/bin/tmux new-session -A -s main`
+The config file is the source of truth; do not trust exact values written here.
 
-## Cmd-to-Meta Keybind Routing (Critical)
+Everything else runs at Ghostty defaults, including:
+- **Font:** default family/weight; `font-thicken` defaults to `false` (text looks
+  thinner than Alacritty/Core Text apps; set `font-thicken = true` to match).
+- **Clipboard:** stock copy/paste works out of the box. Re-add
+  `clipboard-read = allow` only to silence OSC52 read prompts, or
+  `copy-on-select = clipboard` to auto-copy mouse selections.
+- **Keybinds:** native Ghostty Cmd shortcuts are active (tabs, splits, search,
+  font size, select-all, command palette `cmd+shift+p`, etc.).
+- **tmux:** not auto-launched. An existing session keeps running in the background;
+  reattach with `tmux attach -t '⭐ main'`.
 
-Ghostty intercepts Cmd keys and sends them as Meta (Escape prefix `\x1b`) sequences to tmux. This enables Mac-native shortcuts in terminal:
+## Archived: previous tmux-centric setup
+
+The setup below is **not active** — it is restored by copying
+`docs/config.original-2026-06-16.bak` back to `config`. Kept here for reference.
+
+### Cmd-to-Meta Keybind Routing
+
+Ghostty intercepted Cmd keys and sent them as Meta (Escape prefix `\x1b`) sequences
+to tmux, enabling Mac-native shortcuts that drove the multiplexer:
 
 | Ghostty Cmd Key | Sends to tmux | tmux Action |
 |-----------------|---------------|-------------|
@@ -55,12 +74,14 @@ Ghostty intercepts Cmd keys and sends them as Meta (Escape prefix `\x1b`) sequen
 
 The escape sequence `\x1b` is the Meta prefix. For example, `\x1bd` = Escape+d = Meta-d.
 
-## tmux Integration
+### tmux Integration
 
-- Ghostty auto-launches tmux session `main` on startup
-- All window/pane management happens in tmux, not Ghostty
-- Ghostty runs as a single window; tmux provides the multiplexing
-- Changes to keybinds here must coordinate with `~/.config/tmux/tmux.conf` Meta bindings
+- Ghostty auto-launched tmux session `⭐ main` on startup via
+  `command = /opt/homebrew/bin/tmux new-session -A -s '⭐ main'`
+- All window/pane management happened in tmux, not Ghostty
+- Changes to keybinds had to coordinate with `~/.config/tmux/tmux.conf` Meta bindings
+- Scrolling inside tmux is line-granular copy-mode, never as smooth as native
+  scrollback; step size tuned via WheelUpPane/WheelDownPane in `~/.config/tmux/tmux.conf`
 - Restart Ghostty to apply keybind changes (no hot reload)
 
 ## Config Syntax

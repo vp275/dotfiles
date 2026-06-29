@@ -1,5 +1,25 @@
 # Aerospace Configuration Changelog
 
+## 2026-06-29
+- Added Alacritty (`org.alacritty`) to workspace 1 with the same floating treatment as Ghostty: `run = ['layout floating', 'move-node-to-workspace 1']`.
+
+## 2026-06-08
+- Restored Ghostty floating layout: changed its rule from `run = 'move-node-to-workspace 1'` to `run = ['layout floating', 'move-node-to-workspace 1']`. The floating layout had been dropped despite the 2026-01-03 change and the CLAUDE.md "Ghostty is floating" note, so the config now matches the docs again.
+- Added cmux terminal (`com.cmuxterm.app`) with the same treatment as Ghostty: `run = ['layout floating', 'move-node-to-workspace 1']`. Previously it had no rule, so the catch-all moved it to the first empty workspace.
+- Added Warp terminal (`dev.warp.Warp-Stable`) with the same treatment: `run = ['layout floating', 'move-node-to-workspace 1']`. Re-adds a Warp assignment that was removed on 2025-08-20, this time floating.
+- Added Helium browser (`net.imput.helium`) to workspace B, matching the Brave rule (`run = 'move-node-to-workspace B'`, tiled, no floating).
+
+## 2026-05-28
+- Moved Day One from workspace D to workspace S (shared with Comet), freeing D for Emacs only
+
+## 2026-05-07
+- Added menu bar / popover exclusion rules above the catch-all so their windows are not moved to an empty workspace:
+  - Cloudflare WARP (`com.cloudflare.1dot1dot1dot1.macos`)
+  - 1Password (`com.1password.1password`)
+  - macOS LocalAuthentication agent (`com.apple.LocalAuthentication.UIAgent`), used by the 1Password Quick Access launcher (Cmd+Shift+Space) and Touch ID / system password prompts
+- Each exclusion uses `run = ['layout floating']` as a benign no-op that matches and stops further callbacks (an empty `run = []` did not reliably block the catch-all).
+- Add new offenders the same way: discover the bundle id via `aerospace list-apps` (or `aerospace list-windows --all` while the popover is visible) and insert a block above the catch-all.
+
 ## 2026-05-05
 - Added catch-all `on-window-detected` rule at the end of the rule list: any app without an explicit workspace assignment is moved to the first empty workspace on the focused monitor (uses the same shell pattern as `alt-shift-backtick`). Apps with specific rules above are unaffected because matching rules set `check-further-callbacks = false` by default. The catch-all must remain the last `[[on-window-detected]]` block in the file.
 

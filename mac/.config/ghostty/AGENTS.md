@@ -2,7 +2,10 @@
 
 ## Project Structure & Module Organization
 
-This directory is a Ghostty configuration. The only source of truth is the `config` file (`~/.config/ghostty/config`). There are no separate modules, assets, or test folders. Keep related settings grouped (theme/appearance, clipboard, keybinds, startup command) to make diffs readable.
+This directory is the Ghostty configuration inside the dotfiles repo. The source
+of truth is the `config` file, stowed to `~/.config/ghostty/config`. Keep related
+settings grouped (theme/appearance, clipboard, keybinds, startup command) to make
+diffs readable.
 
 ## Build, Test, and Development Commands
 
@@ -27,7 +30,9 @@ No automated tests exist. Use `ghostty +validate-config --config-file config` af
 
 ## Commit & Pull Request Guidelines
 
-This directory is not a Git repo, so no history-based conventions exist. If you initialize one, use short, descriptive commit messages (e.g., `Update keybinds for tmux`) and include the reason for the change. For PRs, include a brief summary plus any Ghostty behavior changes and validation steps.
+This directory is part of the parent dotfiles git repo. Use short, descriptive
+commit messages and include the reason for behavior changes. For PRs, include a
+brief summary plus any Ghostty behavior changes and validation steps.
 
 ## Configuration Tips
 
