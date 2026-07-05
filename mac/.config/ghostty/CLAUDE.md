@@ -19,8 +19,7 @@ ghostty +show-config  # Show effective config vs defaults
 
 The live config is intentionally small:
 
-- `theme = mercedes-petronas` (custom theme in `~/.config/ghostty/themes/`) — black
-  (#0A0A0A) background, teal (#00D2BE) cursor/accents
+- `theme = mercedes-petronas` — custom black/teal theme with distinct ANSI roles
 - `background-opacity = 0.97` — slight transparency
 - `font-size = 19` — on Ghostty's **default** font (no custom font-family/style)
 - `macos-titlebar-style = native`

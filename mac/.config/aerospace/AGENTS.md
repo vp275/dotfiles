@@ -76,8 +76,18 @@ Rules are ordered. Specific rules must stay above broader rules, and the final c
 Additional rules:
 
 - `mpv` is floating only and is not moved to a fixed workspace.
+- `exec-on-workspace-change` runs `~/.local/bin/aerospace-pip-guardian auto`, which keeps known PiP cases visible without using a generic sticky-window workaround.
 - Cloudflare WARP, 1Password, and `com.apple.LocalAuthentication.UIAgent` are floating match-and-stop rules so menu-bar popovers do not hit the catch-all.
 - Unassigned apps hit the final catch-all and move to the first empty workspace on the focused monitor.
+
+## PiP Troubleshooting
+
+- The `YouTube` app is a Brave app-mode wrapper with bundle id `com.brave.Browser.app.agimnkijcaahngcdmfeangaknmldooml`.
+- Its picture-in-picture window can be owned by the hidden parent `Brave Browser` process (`com.brave.Browser`), not by the visible `YouTube` app window that AeroSpace manages on workspace `Y`.
+- Symptom: `aerospace list-windows --all` shows only the `YouTube` window, while System Events or CoreGraphics sees `Brave Browser` with a `Picture-in-picture` window marked offscreen or hidden.
+- Automatic recovery: `~/.local/bin/aerospace-pip-guardian auto` runs on workspace changes. It moves managed Helium PiP windows and activates hidden Brave when a Brave-owned `Picture-in-picture` window exists.
+- Manual recovery: `ctrl-alt-p` runs `~/.local/bin/aerospace-pip-guardian recover`. It also recreates stale Helium native PiP windows, where CoreGraphics sees `Helium` / `Picture-in-picture` but `aerospace list-windows --all` does not.
+- Keep YouTube/Brave and Helium branches separate. YouTube PWA PiP is usually a hidden-parent-Brave problem; Helium PiP is usually an AeroSpace-managed-window or stale-native-window problem.
 
 ## Keybindings
 

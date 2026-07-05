@@ -1,5 +1,25 @@
 # Ghostty Config Changelog
 
+## 2026-07-01 - Add ranger launcher keybind
+
+- Added `Cmd+R` (`super+r`) to clear the current shell prompt and run `ranger`.
+
+## 2026-07-01 - Disable ranger autostart
+
+- Removed the `command` override so new Ghostty sessions start with the normal
+  login shell again instead of opening `ranger`.
+
+## 2026-07-01 - Rebalance Mercedes Petronas theme
+
+- Restored `theme = mercedes-petronas`.
+- Adjusted the custom theme so ANSI black is visible against the background and
+  restored cyan/bright-cyan to the Petronas teal values used by shell tools.
+
+## 2026-06-30 - Preserve ranger exit directory
+
+- Updated `ghostty-ranger-session` to launch `ranger` with `--choosedir`, then
+  `cd` to ranger's final directory before starting the fallback login `zsh`.
+
 ## 2026-06-29 — Start Ghostty in ranger
 
 - Added `command = /Users/vp/.local/bin/ghostty-ranger-session` so new Ghostty

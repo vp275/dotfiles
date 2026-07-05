@@ -32,6 +32,10 @@ default-root-container-orientation = 'auto'
 # Fallback value (if you omit the key): on-focused-monitor-changed = []
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 
+# AeroSpace has no native sticky windows. Keep managed PiP windows visible and
+# recover hidden Brave-owned PWA PiP windows when workspaces change.
+exec-on-workspace-change = ['/Users/vp/.local/bin/aerospace-pip-guardian', 'auto']
+
 # You can effectively turn off macOS "Hide application" (cmd-h) feature by toggling this flag
 # Useful if you don't use this macOS feature, but accidentally hit cmd-h or cmd-alt-h key
 # Also see: https://nikitabobko.github.io/AeroSpace/goodies#disable-hide-app
@@ -241,7 +245,6 @@ run = 'move-node-to-workspace O'
 if.app-name-regex-substring = 'Spotify'
 run = 'move-node-to-workspace 10'
 
-# Workspace C - Codex (with ChatGPT, Chrome)
 [[on-window-detected]]
 if.app-name-regex-substring = 'Codex'
 run = ['layout floating', 'move-node-to-workspace C']
@@ -431,6 +434,7 @@ run = ['exec-and-forget /bin/bash -c "aerospace list-workspaces --monitor focuse
     # Application launchers
     # Add your app launch shortcuts here
     ctrl-alt-n = 'exec-and-forget osascript ~/.config/myFiles/macos/safari_incognito.scpt'
+    ctrl-alt-p = 'exec-and-forget /Users/vp/.local/bin/aerospace-pip-guardian recover'
 
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes

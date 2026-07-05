@@ -1,8 +1,19 @@
 #!/bin/zsh
 
-# Open Ghostty directly into ranger, but keep the terminal alive after quitting it.
+# Open Ghostty directly into ranger, then keep the terminal alive in ranger's
+# last directory after quitting it.
 if [[ -x /opt/homebrew/bin/ranger ]]; then
-  /opt/homebrew/bin/ranger "$@"
+  cwd_file="$(mktemp -t ghostty-ranger-cwd)"
+  /opt/homebrew/bin/ranger --choosedir="$cwd_file" "$@"
+
+  if [[ -s "$cwd_file" ]]; then
+    ranger_cwd="$(<"$cwd_file")"
+    if [[ -d "$ranger_cwd" ]]; then
+      cd -- "$ranger_cwd" || print -u2 "ghostty-ranger-session: could not cd to $ranger_cwd"
+    fi
+  fi
+
+  rm -f -- "$cwd_file"
 else
   print -u2 "ghostty-ranger-session: ranger not found at /opt/homebrew/bin/ranger"
 fi

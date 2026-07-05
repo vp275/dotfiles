@@ -1,5 +1,13 @@
 # Aerospace Configuration Changelog
 
+## 2026-07-04
+- Added `aerospace-pip-guardian` with separate PiP branches instead of one-off fixes:
+  - `auto` runs from `exec-on-workspace-change`, moves managed Helium PiP windows to the focused workspace, and unhides hidden Brave-owned YouTube PWA PiP windows.
+  - `recover` is bound to `ctrl-alt-p` and additionally recreates stale Helium native PiP windows by toggling Helium's Google Picture-in-Picture extension.
+
+## 2026-07-01
+- Documented YouTube Brave app-mode PiP recovery notes. The YouTube PWA (`com.brave.Browser.app.agimnkijcaahngcdmfeangaknmldooml`) can create PiP under the hidden parent Brave process (`com.brave.Browser`), leaving the PiP present but offscreen. Runtime recovery is to activate Brave Browser; no persistent AeroSpace config change was kept.
+
 ## 2026-06-29
 - Added Alacritty (`org.alacritty`) to workspace 1 with the same floating treatment as Ghostty: `run = ['layout floating', 'move-node-to-workspace 1']`.
 

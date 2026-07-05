@@ -84,6 +84,12 @@ stow mac
 - **Keyboard-driven** - AeroSpace WM, tmux, minimal mouse usage
 - **Terminal workflow** - Ghostty is native/minimal; tmux remains available for multiplexing
 
+## Notes
+
+- [MX Master 3S, Logitech Options+, and Wispr Flow setup](docs/logitech-options-wispr-flow.md)
+- [BetterTouchTool gesture setup](docs/btt/README.md)
+- [Ducky One 2 macOS setup](docs/ducky-one-2-setup.md)
+
 ## Theme: Mercedes Petronas
 
 Custom dark theme inspired by Mercedes-AMG Petronas F1. See [theme-colors.md](theme-colors.md) for full palette.

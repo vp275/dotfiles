@@ -1,16 +1,18 @@
 # Mercedes Petronas colorscheme for ranger
-# Directories and accents use cyan (teal) instead of blue
+# Directories and accents use the Petronas teal palette slot.
 
 from ranger.gui.colorscheme import ColorScheme
 from ranger.gui.color import (
-    black, blue, cyan, green, magenta, red, white, yellow, default,
+    black, blue, green, magenta, red, white, yellow, default,
     normal, bold, reverse, dim, BRIGHT,
     default_colors,
 )
 
+petronas_teal = yellow
+
 
 class Default(ColorScheme):
-    progress_bar_color = cyan  # Teal progress bar
+    progress_bar_color = petronas_teal
 
     def use(self, context):
         fg, bg, attr = default_colors
@@ -31,7 +33,7 @@ class Default(ColorScheme):
                 fg = default
             if context.media:
                 if context.image:
-                    fg = cyan  # Images: teal
+                    fg = petronas_teal
                 else:
                     fg = magenta
             if context.container:
@@ -39,7 +41,7 @@ class Default(ColorScheme):
             if context.directory:
                 attr |= bold
                 if not context.selected:
-                    fg = cyan  # Directories: teal (was blue)
+                    fg = petronas_teal
                     fg += BRIGHT
             elif context.executable and not \
                     any((context.media, context.container,
@@ -57,7 +59,7 @@ class Default(ColorScheme):
                     attr |= bold
                     fg += BRIGHT
             if context.link:
-                fg = cyan if context.good else magenta
+                fg = petronas_teal if context.good else magenta
             if context.tag_marker and not context.selected:
                 attr |= bold
                 if fg in (red, magenta):
@@ -85,33 +87,33 @@ class Default(ColorScheme):
                     fg = magenta
 
             if context.inactive_pane:
-                fg = cyan
+                fg = petronas_teal
 
         elif context.in_titlebar:
             if context.hostname:
                 fg = red if context.bad else green
             elif context.directory:
-                fg = cyan  # Titlebar directory: teal (was blue)
+                fg = petronas_teal
             elif context.tab:
                 if context.good:
                     bg = green
             elif context.link:
-                fg = cyan
+                fg = petronas_teal
             attr |= bold
 
         elif context.in_statusbar:
             if context.permissions:
                 if context.good:
-                    fg = cyan
+                    fg = petronas_teal
                 elif context.bad:
                     fg = magenta
             if context.marked:
                 attr |= bold | reverse
-                fg = cyan  # Marked status: teal (was yellow)
+                fg = petronas_teal
                 fg += BRIGHT
             if context.frozen:
                 attr |= bold | reverse
-                fg = cyan
+                fg = petronas_teal
                 fg += BRIGHT
             if context.message:
                 if context.bad:
@@ -121,13 +123,13 @@ class Default(ColorScheme):
             if context.loaded:
                 bg = self.progress_bar_color
             if context.vcsinfo:
-                fg = cyan  # VCS info: teal (was blue)
+                fg = petronas_teal
                 attr &= ~bold
             if context.vcscommit:
                 fg = yellow
                 attr &= ~bold
             if context.vcsdate:
-                fg = cyan
+                fg = petronas_teal
                 attr &= ~bold
 
         if context.text:
@@ -136,7 +138,7 @@ class Default(ColorScheme):
 
         if context.in_taskview:
             if context.title:
-                fg = cyan  # Task title: teal (was blue)
+                fg = petronas_teal
 
             if context.selected:
                 attr |= reverse
@@ -152,7 +154,7 @@ class Default(ColorScheme):
             if context.vcsconflict:
                 fg = magenta
             elif context.vcsuntracked:
-                fg = cyan
+                fg = petronas_teal
             elif context.vcschanged:
                 fg = red
             elif context.vcsunknown:
@@ -171,7 +173,7 @@ class Default(ColorScheme):
             elif context.vcsbehind:
                 fg = red
             elif context.vcsahead:
-                fg = cyan  # VCS ahead: teal (was blue)
+                fg = petronas_teal
             elif context.vcsdiverged:
                 fg = magenta
             elif context.vcsunknown:
