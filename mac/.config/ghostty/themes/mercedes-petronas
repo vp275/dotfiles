@@ -2,7 +2,7 @@
 # Black + Teal color scheme inspired by Mercedes-AMG Petronas F1 team
 
 # Standard colors (0-7)
-palette = 0=#0A0A0A
+palette = 0=#151515
 palette = 1=#ee5396
 palette = 2=#25be6a
 palette = 3=#00D2BE
@@ -26,5 +26,5 @@ background = #0A0A0A
 foreground = #f2f4f8
 cursor-color = #00D2BE
 cursor-text = #0A0A0A
-selection-background = #1A1A1A
+selection-background = #242424
 selection-foreground = #f2f4f8

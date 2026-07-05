@@ -70,10 +70,13 @@ aerospace list-workspaces        # See all workspaces
 
 These apps launch floating instead of tiled: Ghostty, Alacritty, cmux, Warp, SuperWhisper, Finder, Books, mpv.
 
+PiP handling is centralized in `~/.local/bin/aerospace-pip-guardian`. Its automatic workspace-change mode moves AeroSpace-managed Helium `Picture-in-picture` windows to the focused workspace and unhides hidden Brave-owned YouTube PWA PiP windows. Press `ctrl-alt-p` to run the stronger recovery mode, which also recreates stale Helium native PiP windows by toggling the Google PiP extension.
+
 ## Gotchas
 
 - **App matching**: Uses `app-name-regex-substring` (partial match) or `app-id` for specific bundle IDs
 - **Terminals float on workspace 1**: Ghostty, Alacritty, cmux, and Warp all use `layout floating` and pin to workspace 1, since they rely on native macOS tabs/windows rather than aerospace tiling. (Ghostty workspace switching historically went through tmux.)
+- **YouTube PWA PiP can vanish**: The `YouTube` app is a Brave app-mode wrapper (`com.brave.Browser.app...`), but its PiP window is owned by the parent `Brave Browser` process. If PiP disappears, check whether `Brave Browser` is hidden while `YouTube` is visible. `aerospace-pip-guardian auto` usually recovers this; use `ctrl-alt-p` for manual recovery.
 - **Zero gaps**: `[gaps]` section has all values at 0
 - **Mouse follows monitor**: When focus changes monitors, mouse moves to center
 - **No sticky windows**: Feature not yet supported (issue #2)

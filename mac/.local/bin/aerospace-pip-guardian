@@ -1,0 +1,146 @@
+#!/bin/zsh
+
+emulate -L zsh
+set -euo pipefail
+
+mode="${1:-auto}"
+callback_workspace="${AEROSPACE_FOCUSED_WORKSPACE:-}"
+callback_mode=0
+if [[ "$mode" == "auto" && -n "$callback_workspace" ]]; then
+  callback_mode=1
+fi
+
+target_workspace="$callback_workspace"
+[[ -n "$target_workspace" ]] || target_workspace="$(aerospace list-workspaces --focused 2>/dev/null || true)"
+
+focused_window=""
+if [[ "$callback_mode" == "0" ]]; then
+  focused_window="$(aerospace list-windows --focused --format '%{window-id}' 2>/dev/null || true)"
+fi
+
+follow_managed_pip() {
+  local workspace="$1"
+  [[ -n "$workspace" ]] || return 0
+
+  aerospace list-windows --all --format '%{window-id}%{tab}%{app-bundle-id}%{tab}%{workspace}%{tab}%{window-title}' |
+  while IFS=$'\t' read -r window_id app_id current_workspace title; do
+    [[ "$title" == 'Picture-in-picture' ]] || continue
+
+    case "$app_id" in
+      net.imput.helium)
+        ;;
+      *)
+        continue
+        ;;
+    esac
+
+    aerospace layout --window-id "$window_id" floating || true
+
+    if [[ "$current_workspace" != "$workspace" ]]; then
+      aerospace move-node-to-workspace --window-id "$window_id" "$workspace" || true
+    fi
+  done
+}
+
+has_brave_pip() {
+  osascript <<'APPLESCRIPT' 2>/dev/null
+tell application "System Events"
+  if not (exists process "Brave Browser") then
+    return "0"
+  end if
+  tell process "Brave Browser"
+    repeat with w in windows
+      try
+        if name of w is "Picture-in-picture" then return "1"
+      end try
+    end repeat
+  end tell
+end tell
+return "0"
+APPLESCRIPT
+}
+
+is_brave_hidden() {
+  osascript <<'APPLESCRIPT' 2>/dev/null
+tell application "System Events"
+  if not (exists process "Brave Browser") then return "0"
+  tell process "Brave Browser"
+    if visible is false then return "1"
+  end tell
+end tell
+return "0"
+APPLESCRIPT
+}
+
+activate_brave_if_pip_hidden() {
+  [[ "$(has_brave_pip)" == "1" ]] || return 0
+  [[ "$(is_brave_hidden)" == "1" ]] || return 0
+
+  osascript -e 'tell application "Brave Browser" to activate' >/dev/null 2>&1 || true
+  sleep 0.4
+}
+
+has_managed_helium_pip() {
+  aerospace list-windows --all --format '%{app-bundle-id}%{tab}%{window-title}' |
+    awk -F '\t' '$1 == "net.imput.helium" && $2 == "Picture-in-picture" { found=1 } END { print found ? "1" : "0" }'
+}
+
+has_native_helium_pip() {
+  swift - <<'SWIFT' 2>/dev/null
+import CoreGraphics
+
+let windows = CGWindowListCopyWindowInfo(CGWindowListOption(arrayLiteral: .optionAll), CGWindowID(0)) as? [[String: AnyObject]] ?? []
+let found = windows.contains { window in
+    let owner = window[kCGWindowOwnerName as String] as? String ?? ""
+    let name = window[kCGWindowName as String] as? String ?? ""
+    return owner == "Helium" && name == "Picture-in-picture"
+}
+
+print(found ? "1" : "0")
+SWIFT
+}
+
+recreate_stale_helium_pip() {
+  [[ "$(has_native_helium_pip)" == "1" ]] || return 0
+  [[ "$(has_managed_helium_pip)" == "0" ]] || return 0
+
+  osascript <<'APPLESCRIPT' >/dev/null 2>&1 || true
+tell application "Helium" to activate
+delay 0.2
+tell application "System Events" to keystroke "i" using {command down, shift down}
+delay 0.7
+tell application "System Events" to keystroke "i" using {command down, shift down}
+APPLESCRIPT
+  sleep 1
+}
+
+restore_focus() {
+  if [[ "$callback_mode" == "1" ]]; then
+    [[ -n "$target_workspace" ]] && aerospace workspace "$target_workspace" >/dev/null 2>&1 || true
+    return 0
+  fi
+
+  if [[ -n "$focused_window" ]]; then
+    aerospace focus --window-id "$focused_window" >/dev/null 2>&1 && return 0
+  fi
+
+  [[ -n "$target_workspace" ]] && aerospace workspace "$target_workspace" >/dev/null 2>&1 || true
+}
+
+case "$mode" in
+  auto)
+    follow_managed_pip "$target_workspace"
+    activate_brave_if_pip_hidden
+    restore_focus
+    ;;
+  recover)
+    activate_brave_if_pip_hidden
+    recreate_stale_helium_pip
+    follow_managed_pip "$target_workspace"
+    restore_focus
+    ;;
+  *)
+    print -u2 "usage: aerospace-pip-guardian [auto|recover]"
+    exit 2
+    ;;
+esac
