@@ -3,9 +3,12 @@
 # Map the built-in MacBook F4 Spotlight/Search key to a normal F4 key event.
 # The Proton listener catches normal F4 and clicks Proton VPN's native
 # Quick Connect/Disconnect button.
+# Keep this scoped to the internal Apple keyboard so it does not overwrite the
+# Ducky One 2's device-specific media key mapping.
 
+MATCH='{"VendorID":0x5ac,"ProductID":0x342,"PrimaryUsagePage":1,"PrimaryUsage":6}'
 MAPPING='{"UserKeyMapping":[
   {"HIDKeyboardModifierMappingSrc":0xC00000221,"HIDKeyboardModifierMappingDst":0x70000003D}
 ]}'
 
-/usr/bin/hidutil property --set "$MAPPING" >/dev/null 2>&1 || true
+/usr/bin/hidutil property --matching "$MATCH" --set "$MAPPING" >/dev/null 2>&1 || true

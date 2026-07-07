@@ -37,7 +37,8 @@ mapping on login and every 30 seconds so it survives keyboard replugging.
   not bounce the VPN state. The helper opens Proton VPN first, so it still works
   when the main Proton window has been closed.
 - MacBook built-in F4 → `~/.local/bin/macbook-f4-proton-key` remaps Apple's
-  Spotlight/Search HID usage to normal F4, so the same listener handles it.
+  Spotlight/Search HID usage to normal F4, targeted only to the built-in Apple
+  keyboard so it does not overwrite the Ducky media mapping.
 - F8 → the same listener calls `~/.local/bin/aerospace-toggle-enabled` to
   kill/relaunch the AeroSpace app.
   BetterTouchTool starts the listener periodically because BTT has the needed
