@@ -25,7 +25,8 @@ The current known-good setup uses BTT for MacBook trackpad gestures:
   that starts the listener if it is not already running.
 - MacBook built-in F4 is first remapped from Apple's Spotlight/Search HID usage
   to normal F4 by `~/.local/bin/macbook-f4-proton-key`, then handled by the same
-  listener.
+  listener. The remap is scoped to the built-in Apple keyboard so it does not
+  overwrite Ducky media-key mappings.
 
 Related Logitech/Wispr docs live here:
 
