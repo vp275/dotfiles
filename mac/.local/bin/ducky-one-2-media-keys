@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# Map Ducky One 2 plain F10/F11/F12 to macOS media controls.
+# Source usages are Keyboard/Keypad page (0x07); media destinations are Consumer page (0x0c).
+
+MATCH='{"VendorID":0x4d9,"ProductID":0x295,"PrimaryUsagePage":1,"PrimaryUsage":6}'
+MAPPING='{"UserKeyMapping":[
+  {"HIDKeyboardModifierMappingSrc":0x700000043,"HIDKeyboardModifierMappingDst":0xC000000E2},
+  {"HIDKeyboardModifierMappingSrc":0x700000044,"HIDKeyboardModifierMappingDst":0xC000000EA},
+  {"HIDKeyboardModifierMappingSrc":0x700000045,"HIDKeyboardModifierMappingDst":0xC000000E9}
+]}'
+
+/usr/bin/hidutil property --matching "$MATCH" --set "$MAPPING" >/dev/null 2>&1 || true

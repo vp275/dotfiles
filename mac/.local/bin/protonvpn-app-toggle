@@ -1,0 +1,206 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+service="${PROTONVPN_SERVICE:-ProtonVPN}"
+log_file="${PROTONVPN_APP_TOGGLE_LOG:-$HOME/Library/Logs/protonvpn-app-toggle.log}"
+lock_dir="${TMPDIR:-/tmp}/protonvpn-app-toggle.lock"
+dry_run=0
+
+case "${1:-}" in
+  --dry-run)
+    dry_run=1
+    ;;
+  "")
+    ;;
+  *)
+    printf 'usage: protonvpn-app-toggle [--dry-run]\n' >&2
+    exit 2
+    ;;
+esac
+
+log() {
+  mkdir -p "$(dirname "$log_file")"
+  printf '%s %s\n' "$(/bin/date '+%Y-%m-%d %H:%M:%S')" "$*" >>"$log_file"
+}
+
+vpn_state() {
+  scutil --nc status "$service" 2>/dev/null | sed -n '1s/[()]//g;1p'
+}
+
+open_proton_window() {
+  /usr/bin/open -a ProtonVPN >/dev/null 2>&1 || true
+  sleep 0.5
+}
+
+with_lock() {
+  if ! mkdir "$lock_dir" 2>/dev/null; then
+    log "already-running"
+    exit 0
+  fi
+  trap 'rmdir "$lock_dir" 2>/dev/null || true' EXIT INT TERM
+}
+
+run_osascript_file() {
+  local timeout_seconds="$1"
+  local script_path="$2"
+  shift 2
+
+  local out_file err_file status_file pid waited status
+  out_file="$(mktemp "${TMPDIR:-/tmp}/protonvpn-toggle-out.XXXXXX")"
+  err_file="$(mktemp "${TMPDIR:-/tmp}/protonvpn-toggle-err.XXXXXX")"
+  status_file="$(mktemp "${TMPDIR:-/tmp}/protonvpn-toggle-status.XXXXXX")"
+
+  (
+    /usr/bin/osascript "$script_path" "$@" >"$out_file" 2>"$err_file"
+    printf '%s' "$?" >"$status_file"
+  ) &
+  pid="$!"
+
+  waited=0
+  while kill -0 "$pid" 2>/dev/null; do
+    if [ "$waited" -ge $((timeout_seconds * 10)) ]; then
+      kill "$pid" 2>/dev/null || true
+      sleep 0.2
+      kill -9 "$pid" 2>/dev/null || true
+      log "osascript-timeout pid=$pid script=$(basename "$script_path")"
+      cat "$out_file"
+      rm -f "$out_file" "$err_file" "$status_file"
+      return 124
+    fi
+    sleep 0.1
+    waited=$((waited + 1))
+  done
+
+  wait "$pid" 2>/dev/null || true
+  status="$(cat "$status_file" 2>/dev/null || printf '1')"
+  if [ "$status" != "0" ]; then
+    log "osascript-error status=$status err=$(tr '\n' ' ' <"$err_file" | sed 's/[[:space:]]*$//')"
+  fi
+
+  cat "$out_file"
+  rm -f "$out_file" "$err_file" "$status_file"
+  return "$status"
+}
+
+detect_button() {
+  local script_path
+  script_path="$(mktemp "${TMPDIR:-/tmp}/protonvpn-detect.XXXXXX")"
+  cat >"$script_path" <<'APPLESCRIPT'
+on waitForProtonWindow()
+  tell application "System Events"
+    repeat 20 times
+      if exists process "ProtonVPN" then
+        tell process "ProtonVPN"
+          if exists window "Proton VPN" then return true
+        end tell
+      end if
+      delay 0.1
+    end repeat
+  end tell
+  return false
+end waitForProtonWindow
+
+if not waitForProtonWindow() then error "Proton VPN window did not appear"
+
+tell application "System Events"
+  tell process "ProtonVPN"
+    set frontmost to true
+    tell window "Proton VPN"
+      if exists button "Disconnect" then return "Disconnect"
+      if exists button "Quick Connect" then return "Quick Connect"
+      if exists button "Cancel connection" then return "Cancel connection"
+    end tell
+  end tell
+end tell
+
+error "No Proton VPN connect/disconnect button found"
+APPLESCRIPT
+
+  run_osascript_file 4 "$script_path"
+  rm -f "$script_path"
+}
+
+press_button() {
+  local button_name="$1"
+  local script_path
+  script_path="$(mktemp "${TMPDIR:-/tmp}/protonvpn-press.XXXXXX")"
+  cat >"$script_path" <<'APPLESCRIPT'
+on waitForProtonWindow()
+  tell application "System Events"
+    repeat 20 times
+      if exists process "ProtonVPN" then
+        tell process "ProtonVPN"
+          if exists window "Proton VPN" then return true
+        end tell
+      end if
+      delay 0.1
+    end repeat
+  end tell
+  return false
+end waitForProtonWindow
+
+on run argv
+  set buttonName to item 1 of argv
+
+  if not waitForProtonWindow() then error "Proton VPN window did not appear"
+
+  tell application "System Events"
+    tell process "ProtonVPN"
+      set frontmost to true
+      tell window "Proton VPN"
+        perform action "AXPress" of button buttonName
+      end tell
+    end tell
+  end tell
+
+  return "pressed"
+end run
+APPLESCRIPT
+
+  run_osascript_file 2 "$script_path" "$button_name" >/dev/null || true
+  rm -f "$script_path"
+}
+
+with_lock
+
+before="$(vpn_state || true)"
+log "before=$before"
+
+open_proton_window
+
+button="$(detect_button || true)"
+button="$(printf '%s' "$button" | tr -d '\r' | tail -n 1)"
+
+case "$button" in
+  Disconnect)
+    action="disconnect"
+    ;;
+  "Quick Connect")
+    action="quick-connect"
+    if [[ "$before" == "Connected" || "$before" == "Connecting" ]]; then
+      log "stale-macos-tunnel=true action=stop-before-app-quick-connect"
+      scutil --nc stop "$service" >/dev/null 2>&1 || true
+      sleep 1
+    fi
+    ;;
+  "Cancel connection")
+    action="cancel-connection"
+    ;;
+  *)
+    log "no-button-detected button=$button"
+    exit 1
+    ;;
+esac
+
+log "press button=$button action=$action"
+if [ "$dry_run" -eq 1 ]; then
+  log "dry-run button=$button action=$action"
+  printf '%s\n' "$button"
+  exit 0
+fi
+
+press_button "$button"
+
+sleep 0.5
+after="$(vpn_state || true)"
+log "action=$action after=$after"

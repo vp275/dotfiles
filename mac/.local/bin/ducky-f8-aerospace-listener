@@ -1,0 +1,26 @@
+#!/bin/sh
+
+set -eu
+
+src="$HOME/.dotfiles/mac/.local/bin/ducky-f8-aerospace-listener.swift"
+bin="$HOME/Library/Caches/dotfiles/ducky-f8-aerospace-listener"
+
+mkdir -p "$(dirname "$bin")"
+
+needs_restart=0
+
+if [ ! -x "$bin" ] || [ "$src" -nt "$bin" ]; then
+  /usr/bin/swiftc "$src" -o "$bin"
+  needs_restart=1
+fi
+
+if /usr/bin/pgrep -f "$bin" >/dev/null 2>&1; then
+  if [ "$needs_restart" -eq 1 ]; then
+    /usr/bin/pkill -f "$bin" || true
+    sleep 0.2
+  else
+    exit 0
+  fi
+fi
+
+exec "$bin"

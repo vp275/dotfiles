@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# Toggle the AeroSpace app process itself.
+
+LOG="$HOME/Library/Logs/aerospace-toggle-enabled.log"
+
+if /usr/bin/pgrep -x AeroSpace >/dev/null 2>&1; then
+  printf '%s killall AeroSpace\n' "$(/bin/date '+%Y-%m-%d %H:%M:%S')" >>"$LOG"
+  /usr/bin/killall AeroSpace
+  exit 0
+fi
+
+printf '%s open -a AeroSpace\n' "$(/bin/date '+%Y-%m-%d %H:%M:%S')" >>"$LOG"
+/usr/bin/open -a AeroSpace

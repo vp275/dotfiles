@@ -1,0 +1,175 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+service="${PROTONVPN_SERVICE:-ProtonVPN}"
+prefs="${PROTONVPN_PREFS:-$HOME/Library/Containers/ch.protonvpn.mac/Data/Library/Preferences/ch.protonvpn.mac.plist}"
+log_file="${PROTONVPN_LOG:-$HOME/Library/Logs/protonvpn-cli.log}"
+notify=0
+
+usage() {
+  cat <<'USAGE'
+Usage: protonvpn <command>
+
+Commands:
+  connect, c [--fastest|-f] [--notify]
+                               Start the ProtonVPN macOS VPN service
+  disconnect, d               Stop the ProtonVPN macOS VPN service
+  reconnect                   Stop, then start the VPN service
+  toggle [--fastest|-f] [--notify]
+                               Connect if disconnected, otherwise disconnect
+  status, s                   Show connection status
+  show                        Show the saved macOS VPN service config
+  intent                      Show Proton's last saved connection intent
+  sync-ui                     Sync Proton's menu-bar state with macOS VPN state
+  help                        Show this help
+
+Notes:
+  On macOS, Proton does not expose an official CLI command for Quick Connect.
+  This wrapper controls the installed ProtonVPN NetworkExtension through scutil.
+USAGE
+}
+
+die() {
+  printf 'protonvpn: %s\n' "$*" >&2
+  exit 1
+}
+
+log() {
+  mkdir -p "$(dirname "$log_file")"
+  printf '%s %s\n' "$(/bin/date '+%Y-%m-%d %H:%M:%S')" "$*" >>"$log_file"
+}
+
+notify_user() {
+  local message="$1"
+
+  [[ "$notify" -eq 1 ]] || return 0
+  /usr/bin/osascript \
+    -e 'on run argv' \
+    -e 'display notification (item 1 of argv) with title "Proton VPN"' \
+    -e 'end run' \
+    "$message" >/dev/null 2>&1 || true
+}
+
+set_intentionally_disconnected() {
+  local value="$1"
+
+  [[ -f "$prefs" ]] || return 0
+  /usr/bin/defaults write "$prefs" IntentionallyDisconnected -bool "$value" >/dev/null 2>&1 || true
+}
+
+refresh_proton_app() {
+  /usr/bin/open -g "protonvpn://refresh" >/dev/null 2>&1 || true
+}
+
+parse_connect_options() {
+  notify=0
+
+  while [[ "$#" -gt 0 ]]; do
+    case "$1" in
+      --fastest|-f) ;;
+      --notify) notify=1 ;;
+      *) die "unknown option: $1" ;;
+    esac
+    shift
+  done
+}
+
+ensure_service() {
+  scutil --nc list | grep -F "\"$service\"" >/dev/null ||
+    die "VPN service '$service' was not found"
+}
+
+state() {
+  ensure_service
+  scutil --nc status "$service" | sed -n '1s/[()]//g;1p'
+}
+
+connect_vpn() {
+  ensure_service
+  set_intentionally_disconnected false
+  log "connect service=$service"
+  scutil --nc start "$service"
+  refresh_proton_app
+}
+
+disconnect_vpn() {
+  ensure_service
+  set_intentionally_disconnected true
+  log "disconnect service=$service"
+  scutil --nc stop "$service"
+  refresh_proton_app
+}
+
+decode_pref() {
+  local key="$1"
+
+  [[ -f "$prefs" ]] || return 0
+  plutil -extract "$key" raw -o - "$prefs" 2>/dev/null | base64 -D 2>/dev/null || true
+}
+
+cmd="${1:-help}"
+shift || true
+
+case "$cmd" in
+  connect|c|start|up)
+    parse_connect_options "$@"
+    connect_vpn
+    notify_user "Connect requested"
+    ;;
+  disconnect|d|stop|down)
+    disconnect_vpn
+    ;;
+  reconnect)
+    disconnect_vpn || true
+    sleep 1
+    connect_vpn
+    ;;
+  toggle)
+    parse_connect_options "$@"
+    before="$(state)"
+    case "$before" in
+      Connected|Connecting)
+        log "toggle before=$before action=disconnect"
+        disconnect_vpn
+        notify_user "Disconnect requested"
+        ;;
+      *)
+        log "toggle before=$before action=connect"
+        connect_vpn
+        notify_user "Connect requested"
+        ;;
+    esac
+    ;;
+  status|s)
+    scutil --nc status "$service"
+    ;;
+  show)
+    scutil --nc show "$service"
+    ;;
+  intent)
+    printf 'LastConnectionIntent: '
+    decode_pref LastConnectionIntent
+    printf '\nLastConnectionRequest: '
+    decode_pref LastConnectionRequest
+    printf '\n'
+    ;;
+  sync-ui)
+    case "$(state)" in
+      Connected|Connecting)
+        set_intentionally_disconnected false
+        log "sync-ui action=set-intentionally-disconnected-false"
+        ;;
+      *)
+        set_intentionally_disconnected true
+        log "sync-ui action=set-intentionally-disconnected-true"
+        ;;
+    esac
+    refresh_proton_app
+    ;;
+  help|-h|--help)
+    usage
+    ;;
+  *)
+    die "unknown command: $cmd"
+    ;;
+esac

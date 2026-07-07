@@ -1,6 +1,6 @@
 # BetterTouchTool Gesture Setup
 
-Last audited: 2026-07-01
+Last audited: 2026-07-07
 
 ## Goal
 
@@ -18,6 +18,14 @@ The current known-good setup uses BTT for MacBook trackpad gestures:
   `Ctrl+Tab` hold window. Lifting the final trackpad finger clicks the currently
   hovered chat and releases Control.
 - 3-finger click is disabled and reserved for future use.
+- Ducky One 2 F4 and F8 are handled outside BTT by
+  `~/.local/bin/ducky-f8-aerospace-listener`, which calls
+  `~/.local/bin/protonvpn-app-toggle` for F4 and
+  `~/.local/bin/aerospace-toggle-enabled` for F8. BTT has a periodic automation
+  that starts the listener if it is not already running.
+- MacBook built-in F4 is first remapped from Apple's Spotlight/Search HID usage
+  to normal F4 by `~/.local/bin/macbook-f4-proton-key`, then handled by the same
+  listener.
 
 Related Logitech/Wispr docs live here:
 
@@ -85,6 +93,12 @@ Current app-specific trackpad gestures:
 | App | Bundle ID | Gesture | BTT trigger type | BTT action / shortcut | UUID |
 | --- | --- | --- | --- | --- | --- |
 | Codex | `com.openai.codex` | 2-finger swipe right | `160` | `137` / terminal command, lift to select | `B3FE5023-2A6D-4A7B-908D-2DB2815F700D` |
+
+Current BTT automation triggers:
+
+| Trigger | BTT trigger type | Action | UUID |
+| --- | --- | --- | --- |
+| Every 30 seconds | `678` | `137` / `~/.local/bin/ducky-f8-aerospace-listener` | `24054644-BB63-47F8-B8A4-4ABB22E7E974` |
 
 This is stored under a Codex app row in BTT, not as a global gesture. BTT's
 loaded scripting API should report `BTTBelongsToApp` as `Codex`.
