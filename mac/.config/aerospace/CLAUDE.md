@@ -22,6 +22,7 @@ aerospace list-workspaces        # See all workspaces
 - `alt-shift-[key]` - Move window to that workspace
 - `alt-tab` - Cycle non-empty workspaces on current monitor
 - `alt-backtick` - Jump to next empty workspace
+- `cmd-shift-backtick` - Move window to first empty workspace on the other monitor
 - `alt-shift-tab` - Move workspace to next monitor
 
 **Layout**:
@@ -37,9 +38,9 @@ aerospace list-workspaces        # See all workspaces
 
 ## Monitor Setup
 
-- Workspace 1: main monitor (default)
-- Workspaces 2-10, E, F, M, Z: secondary monitor
-- Workspace D: main monitor (Emacs)
+- Primary letter workspaces prefer `LG HDR 4K`, falling back to macOS `main`.
+- Workspace 1 plus workspaces 2-10, E, F, M, Y, Z prefer the built-in display, falling back to `secondary` then `main`.
+- AeroSpace `main` follows macOS System Settings -> Displays -> Use as Main Display; the config targets the LG by name so the main workspace group does not depend on that OS setting.
 
 ## App Assignments
 
@@ -53,7 +54,7 @@ aerospace list-workspaces        # See all workspaces
 | 10 | Spotify, YouTube Music |
 | A | Excel, Word, sioyek |
 | B | Arc, Firefox, Brave, Helium |
-| C | ChatGPT, Chrome, Codex (floating) |
+| C | ChatGPT, Chrome |
 | D | Emacs |
 | E | Finder (floating), mpv (floating) |
 | F | Drafts |
@@ -68,7 +69,9 @@ aerospace list-workspaces        # See all workspaces
 
 ## Floating Apps
 
-These apps launch floating instead of tiled: Ghostty, Alacritty, cmux, Warp, SuperWhisper, Finder, Books, mpv.
+These apps launch floating instead of tiled: Ghostty, Alacritty, cmux, Warp, SuperWhisper, Finder, Books, mpv, Codex, CleanShot X, System Settings.
+
+CleanShot X and System Settings are floated in place so utility windows stay in the workspace where they were invoked instead of hitting the empty-workspace catch-all.
 
 PiP handling is centralized in `~/.local/bin/aerospace-pip-guardian`. Its automatic workspace-change mode moves AeroSpace-managed Helium `Picture-in-picture` windows to the focused workspace and unhides hidden Brave-owned YouTube PWA PiP windows. Press `ctrl-alt-p` to run the stronger recovery mode, which also recreates stale Helium native PiP windows by toggling the Google PiP extension.
 

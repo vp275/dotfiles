@@ -1,0 +1,33 @@
+#!/bin/zsh
+
+emulate -L zsh
+set -euo pipefail
+
+window_id="${AEROSPACE_WINDOW_ID:-}"
+if [[ -z "$window_id" ]]; then
+  window_id="$(aerospace list-windows --focused --format '%{window-id}' 2>/dev/null || true)"
+fi
+[[ -n "$window_id" ]] || exit 0
+
+window_workspace="$(
+  aerospace list-windows --all --format '%{window-id}%{tab}%{workspace}' |
+    awk -F '\t' -v id="$window_id" '$1 == id { print $2; exit }'
+)"
+[[ -n "$window_workspace" ]] || exit 0
+
+window_monitor="$(
+  aerospace list-workspaces --all --format '%{workspace}%{tab}%{monitor-id}' |
+    awk -F '\t' -v workspace="$window_workspace" '$1 == workspace { print $2; exit }'
+)"
+[[ -n "$window_monitor" ]] || exit 0
+
+target_monitor="$(
+  aerospace list-monitors --format '%{monitor-id}' |
+    awk -v current="$window_monitor" '$1 != current { print $1; exit }'
+)"
+[[ -n "$target_monitor" ]] || exit 0
+
+target_workspace="$(aerospace list-workspaces --monitor "$target_monitor" --empty | head -n 1)"
+[[ -n "$target_workspace" ]] || exit 0
+
+aerospace move-node-to-workspace --window-id "$window_id" "$target_workspace"

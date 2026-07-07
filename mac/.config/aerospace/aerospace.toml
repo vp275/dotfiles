@@ -43,25 +43,42 @@ automatically-unhide-macos-hidden-apps = false
 
 
 # Workspace to monitor assignments
-# LG monitor as main when connected, MacBook as fallback
+# Primary workspaces prefer the LG display when connected, with macOS main as
+# fallback. Support workspaces prefer the built-in display, then secondary/main.
 [workspace-to-monitor-force-assignment]
-# Numbers (2-10)
-2 = 'secondary'
-3 = 'secondary'
-4 = 'secondary'
-5 = 'secondary'
-6 = 'secondary'
-7 = 'secondary'
-8 = 'secondary'
-9 = 'secondary'
-10 = 'secondary'
+# Primary / default workspace group
+A = ['LG HDR 4K', 'main']  # Documents/Office
+B = ['LG HDR 4K', 'main']  # Browsers
+C = ['LG HDR 4K', 'main']  # AI/Chat
+D = ['LG HDR 4K', 'main']  # Development (Emacs)
+G = ['LG HDR 4K', 'main']  # Gemini AI
+I = ['LG HDR 4K', 'main']
+N = ['LG HDR 4K', 'main']  # Safari/Notion
+O = ['LG HDR 4K', 'main']  # Books/Obsidian
+P = ['LG HDR 4K', 'main']
+Q = ['LG HDR 4K', 'main']
+S = ['LG HDR 4K', 'main']  # Social/Journal
+T = ['LG HDR 4K', 'main']
+U = ['LG HDR 4K', 'main']
+V = ['LG HDR 4K', 'main']  # Claude AI
+W = ['LG HDR 4K', 'main']
 
-# Letters (A-Z)
-D = 'main'       # Development (Emacs)
-E = 'secondary'  # File Management (Finder)
-F = 'secondary'  # Writing/Notes
-M = 'secondary'  # Mail (Gmail)
-Z = 'secondary'  # Journal/Knowledge
+# Support / secondary workspace group
+1 = ['built-in', 'secondary', 'main']  # Terminal
+2 = ['built-in', 'secondary', 'main']
+3 = ['built-in', 'secondary', 'main']
+4 = ['built-in', 'secondary', 'main']
+5 = ['built-in', 'secondary', 'main']
+6 = ['built-in', 'secondary', 'main']
+7 = ['built-in', 'secondary', 'main']
+8 = ['built-in', 'secondary', 'main']
+9 = ['built-in', 'secondary', 'main']
+10 = ['built-in', 'secondary', 'main']
+E = ['built-in', 'secondary', 'main']  # File Management (Finder)
+F = ['built-in', 'secondary', 'main']  # Writing/Notes
+M = ['built-in', 'secondary', 'main']  # Mail (Gmail)
+Y = ['built-in', 'secondary', 'main']  # YouTube
+Z = ['built-in', 'secondary', 'main']  # Journal/Knowledge
 
 # App-specific workspace assignments
 # See: https://nikitabobko.github.io/AeroSpace/guide#assign-apps-to-workspaces
@@ -247,7 +264,16 @@ run = 'move-node-to-workspace 10'
 
 [[on-window-detected]]
 if.app-name-regex-substring = 'Codex'
-run = ['layout floating', 'move-node-to-workspace C']
+run = 'layout floating'
+
+# Utility windows that should stay in the workspace where they were invoked.
+[[on-window-detected]]
+if.app-id = 'pl.maketheweb.cleanshotx'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'com.apple.systempreferences'
+run = ['layout floating']
 
 # Menu bar / status bar app popovers: match-and-stop so the catch-all below
 # does not move them to an empty workspace. Add one block per offender.
@@ -427,6 +453,9 @@ run = ['exec-and-forget /bin/bash -c "aerospace list-workspaces --monitor focuse
     
     # Move window to next empty workspace
     alt-shift-backtick = 'exec-and-forget /bin/bash -c "aerospace list-workspaces --monitor focused --empty | head -1 | xargs -I {} aerospace move-node-to-workspace {}"'
+
+    # Move window to the first empty workspace on the other monitor
+    cmd-shift-backtick = 'exec-and-forget /bin/zsh /Users/vp/.local/bin/aerospace-move-to-empty-workspace-other-monitor'
 
     # Window cycling
     alt-esc = 'focus --boundaries-action wrap-around-the-workspace dfs-next'

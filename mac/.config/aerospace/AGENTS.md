@@ -41,9 +41,9 @@ Run `aerospace reload-config` after changing `aerospace.toml`. For documentation
 
 ## Monitor Assignments
 
-- Workspace `D` is forced to `main`.
-- Workspaces `2`-`10`, `E`, `F`, `M`, and `Z` are forced to `secondary`.
-- Workspace `1` is not forced and acts as the default terminal workspace.
+- Primary letter workspaces are forced to `LG HDR 4K`, falling back to macOS `main`.
+- Workspace `1` plus workspaces `2`-`10`, `E`, `F`, `M`, `Y`, and `Z` are forced to the built-in display, falling back to `secondary` then `main`.
+- AeroSpace `main` follows macOS System Settings -> Displays -> Use as Main Display; prefer explicit monitor names when preserving the LG-primary layout matters.
 
 ## App Assignment Rules
 
@@ -61,7 +61,7 @@ Rules are ordered. Specific rules must stay above broader rules, and the final c
 | `10` | Spotify, YouTube Music |
 | `A` | Microsoft Excel, Microsoft Word, sioyek |
 | `B` | Arc, Firefox, Brave, Helium |
-| `C` | ChatGPT, Chrome, Codex floating |
+| `C` | ChatGPT, Chrome |
 | `D` | Emacs |
 | `E` | Finder floating |
 | `F` | Drafts |
@@ -75,8 +75,9 @@ Rules are ordered. Specific rules must stay above broader rules, and the final c
 
 Additional rules:
 
-- `mpv` is floating only and is not moved to a fixed workspace.
+- `mpv`, `Codex`, CleanShot X, and System Settings are floating only and are not moved to fixed workspaces.
 - `exec-on-workspace-change` runs `~/.local/bin/aerospace-pip-guardian auto`, which keeps known PiP cases visible without using a generic sticky-window workaround.
+- CleanShot X and System Settings are floated in place so utility windows stay in the workspace where they were invoked.
 - Cloudflare WARP, 1Password, and `com.apple.LocalAuthentication.UIAgent` are floating match-and-stop rules so menu-bar popovers do not hit the catch-all.
 - Unassigned apps hit the final catch-all and move to the first empty workspace on the focused monitor.
 
@@ -100,9 +101,10 @@ Additional rules:
 - Letter workspace bindings exist for `A B C D E F G I M N O P Q S T U V W Y Z`; `R` and `X` are commented out.
 - Move-to-workspace bindings mostly mirror switch bindings, but `alt-shift-e`, `alt-shift-r`, and `alt-shift-x` are commented out.
 - `alt-tab`: cycle through non-empty workspaces on the focused monitor.
-- `alt-shift-tab`: move current workspace to the next monitor.
+- `alt-shift-tab`: move current workspace to the next monitor, except for workspaces with forced monitor assignments.
 - `alt-backtick`: switch to the next empty workspace on the focused monitor.
 - `alt-shift-backtick`: move the focused window to the next empty workspace on the focused monitor.
+- `cmd-shift-backtick`: move the focused window to the first empty workspace on the non-focused monitor.
 - `alt-esc`: cycle windows in the current workspace.
 - `ctrl-alt-n`: launch Safari private browsing via `~/.config/myFiles/macos/safari_incognito.scpt`.
 

@@ -1,5 +1,14 @@
 # Aerospace Configuration Changelog
 
+## 2026-07-07
+- Changed Codex from being forced to workspace C and floating to floating only, so new Codex windows are no longer moved to workspace C but still launch floating.
+- Changed monitor assignments to make `LG HDR 4K` the explicit primary workspace target, with built-in-display support workspaces and fallbacks for single-monitor sessions.
+- Added `cmd-shift-backtick` via `~/.local/bin/aerospace-move-to-empty-workspace-other-monitor` to move the focused window to the first empty workspace on the other monitor.
+- Added a CleanShot X float-in-place exception so screenshot annotation windows stay in the invoking workspace instead of hitting the empty-workspace catch-all.
+- Added a System Settings float-in-place exception so settings windows stay in the invoking workspace instead of hitting the empty-workspace catch-all.
+- Moved workspace 1 from the LG primary group to the built-in/secondary display group.
+- Moved workspace Y from the LG primary group to the built-in/secondary display group.
+
 ## 2026-07-04
 - Added `aerospace-pip-guardian` with separate PiP branches instead of one-off fixes:
   - `auto` runs from `exec-on-workspace-change`, moves managed Helium PiP windows to the focused workspace, and unhides hidden Brave-owned YouTube PWA PiP windows.
