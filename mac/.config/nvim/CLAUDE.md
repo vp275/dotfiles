@@ -34,6 +34,7 @@ return {
 | `telescope.lua` | `nvim-telescope/telescope.nvim` | Fuzzy finder |
 | `telescope.lua` | `telescope-fzf-native.nvim` | Native fzf matching |
 | `neo-tree.lua` | `nvim-neo-tree/neo-tree.nvim` | File tree sidebar |
+| `rnvimr.lua` | `kevinhwang91/rnvimr` | Ranger in a floating Neovim window |
 | `which-key.lua` | `folke/which-key.nvim` | Keybinding hints popup |
 | `comment.lua` | `numToStr/Comment.nvim` | Smart code commenting |
 | `zen-mode.lua` | `folke/zen-mode.nvim` | Distraction-free writing mode |
@@ -69,6 +70,15 @@ Leader key is `Space`.
 | `d` | Delete |
 | `r` | Rename |
 | `?` | Show all keybinds |
+
+### Ranger
+
+| Key | Action |
+|-----|--------|
+| `<leader>r` | Toggle Ranger in a floating window |
+
+Ranger keeps its normal keybindings. Press `q` to hide the window, or `Enter`
+to open a selected file and return to Neovim.
 
 ### Comment.nvim
 
