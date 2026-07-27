@@ -25,13 +25,74 @@
 
 (setq doom-theme 'doom-one)
 (setq display-line-numbers-type t)
-(add-hook 'org-mode-hook (lambda () (display-line-numbers-mode -1)))
 (setq doom-modeline-major-mode-icon t)
-(setq org-ellipsis " ▾ ")
-(setq org-startup-folded 'content)
 
-(setq doom-font (font-spec :family "JetBrainsMono Nerd Font Mono" :size 22 :weight 'Light))
-(setq doom-variable-pitch-font (font-spec :family "JetBrainsMono Nerd Font Mono" :size 22 :weight 'Light))
+(setq doom-font (font-spec :family "JetBrainsMono Nerd Font Mono" :size 22 :weight 'Light)
+      doom-variable-pitch-font (font-spec :family "IBM Plex Sans" :size 22 :weight 'regular))
+
+(defun vp/org-writing-setup ()
+  "Make Org buffers comfortable for long-form writing."
+  (display-line-numbers-mode -1)
+  (variable-pitch-mode 1)
+  (setq-local fill-column 90
+              line-spacing 0.2
+              visual-fill-column-width 90
+              visual-fill-column-center-text t
+              +word-wrap-fill-style 'soft)
+  (+word-wrap-mode 1))
+
+(add-hook 'org-mode-hook #'vp/org-writing-setup)
+
+(after! org
+  (setq org-ellipsis " …"
+        org-startup-folded 'content
+        org-hide-emphasis-markers t
+        org-pretty-entities t
+        org-hidden-keywords '(title)
+        org-auto-align-tags nil
+        org-tags-column 0
+        org-agenda-tags-column 0
+        org-catch-invisible-edits 'show-and-error
+        org-special-ctrl-a/e t
+        org-insert-heading-respect-content t
+        org-startup-with-inline-images t
+        org-image-actual-width '(600))
+
+  (custom-set-faces!
+    '(org-document-title :inherit variable-pitch :height 1.6 :weight extra-bold :foreground "#f2f4f8")
+    '(org-level-1 :inherit variable-pitch :height 1.35 :weight extra-bold :foreground "#f2f4f8")
+    '(org-level-2 :inherit variable-pitch :height 1.2 :weight bold :foreground "#00D2BE")
+    '(org-level-3 :inherit variable-pitch :height 1.1 :weight bold :foreground "#D8D8D8")
+    '(org-level-4 :inherit variable-pitch :height 1.05 :weight semi-bold :foreground "#00A896")
+    '(org-block :inherit fixed-pitch :background "#151515" :extend t)
+    '(org-block-begin-line :inherit (shadow fixed-pitch) :background "#151515" :extend t)
+    '(org-block-end-line :inherit (shadow fixed-pitch) :background "#151515" :extend t)
+    '(org-code :inherit (shadow fixed-pitch))
+    '(org-verbatim :inherit fixed-pitch)
+    '(org-table :inherit fixed-pitch)
+    '(org-meta-line :inherit (font-lock-comment-face fixed-pitch))
+    '(org-property-value :inherit fixed-pitch)
+    '(org-tag :inherit fixed-pitch :weight semi-bold)))
+
+(use-package! org-modern
+  :hook (org-mode . org-modern-mode)
+  :hook (org-agenda-finalize . org-modern-agenda)
+  :custom
+  (org-modern-hide-stars 'leading)
+  (org-modern-star '("◉" "○" "◆" "◇"))
+  (org-modern-list '((?+ . "◦") (?- . "•") (?* . "•")))
+  (org-modern-checkbox '((?X . "☑") (?- . "◫") (?  . "☐")))
+  (org-modern-table-vertical 1)
+  (org-modern-table-horizontal 0.2))
+
+(use-package! org-appear
+  :hook (org-mode . org-appear-mode)
+  :custom
+  (org-appear-autoemphasis t)
+  (org-appear-autolinks t)
+  (org-appear-autoentities t)
+  (org-appear-autokeywords t)
+  (org-appear-delay 0.15))
 
 ;; Set frame transparency (93 = 93% opaque)
 (set-frame-parameter (selected-frame) 'alpha 100)
@@ -57,6 +118,36 @@
 (setq +org-capture-todo-file "~/Dropbox/admin/gtd/inbox.org")
 (setq org-deadline-warning-days 7)
 (setq org-agenda-tag-filter-preset '("-someday" "-inbox"))
+
+(setq org-agenda-custom-commands
+      '(("d" "Daily dashboard"
+         ((agenda ""
+                  ((org-agenda-span 7)
+                   (org-agenda-start-day nil)
+                   (org-agenda-overriding-header "Schedule")))
+          (alltodo ""
+                   ((org-agenda-overriding-header "Actions")))))))
+
+(use-package! org-super-agenda
+  :after org-agenda
+  :config
+  (setq org-super-agenda-groups
+        '((:name "Overdue" :deadline past :order 1)
+          (:name "Today" :time-grid t :scheduled today :order 2)
+          (:name "Next actions" :todo "NEXT" :order 3)
+          (:name "Active projects" :todo "PROJ" :order 4)
+          (:name "Inbox" :tag "inbox" :order 5)
+          (:name "Reading" :todo "BOOK" :order 6)
+          (:name "Upcoming" :deadline future :order 7)
+          (:discard (:todo ("DONE" "DROP")))))
+  (org-super-agenda-mode 1))
+
+(map! :leader
+      (:prefix ("d" . "documents")
+       :desc "Daily dashboard" "a" (cmd! (org-agenda nil "d"))
+       :desc "Capture" "c" #'org-capture
+       :desc "Today's note" "d" #'org-roam-dailies-goto-today
+       :desc "Roam backlinks" "b" #'org-roam-buffer-toggle))
 
 ;; (setq org-capture-templates
 ;;       '(("i" "Inbox" entry
@@ -87,13 +178,18 @@
       )
 
 
+(defun vp/maybe-enable-org-auto-tangle ()
+  "Enable auto-tangling only in the literate Doom configuration."
+  (when (and buffer-file-name
+             (file-equal-p buffer-file-name
+                           (expand-file-name "emacs.org" doom-user-dir)))
+    (org-auto-tangle-mode 1)))
+
 (use-package! org-auto-tangle
-  :ensure t
   :defer t
-  :hook (org-mode . org-auto-tangle-mode)
+  :hook (org-mode . vp/maybe-enable-org-auto-tangle)
   :config
-  (setq org-auto-tangle-default t)
-  )
+  (setq org-auto-tangle-default t))
 
 (after! org
   (require 'org-tempo)
@@ -113,6 +209,15 @@
   (org-roam-directory "~/Dropbox/admin/org/org-roam")
   (org-roam-complete-everywhere t)
   (+org-roam-enable-auto-backlinks-buffer-h t)
+  )
+(after! org-roam
+  (setq org-roam-dailies-directory "daily/"
+        org-roam-dailies-capture-templates
+        '(("d" "Daily note" entry "* %?"
+           :target
+           (file+head
+            "%<%Y-%m-%d>.org"
+            "#+title: %<%A, %d %B %Y>\n#+filetags: :daily:\n\n* Focus\n\n* Tasks\n\n* Notes\n\n* Meetings\n\n* End of day\n"))))
   )
 (after! org
   (setq org-fold-core-style 'text-properties)
