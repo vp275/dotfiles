@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# Use the CLI that owns the currently running AeroSpace server. Debug/local
+# builds and released builds use different sockets, so their clients cannot be
+# mixed even for otherwise identical commands.
+
+STICKY_CLI="$HOME/Applications/AeroSpace Sticky.app/Contents/Resources/bin/aerospace"
+RELEASE_CLI="/opt/homebrew/bin/aerospace"
+
+if [ -x "$STICKY_CLI" ]; then
+  VERSION="$("$STICKY_CLI" --version 2>&1 || true)"
+  case "$VERSION" in
+    *'AeroSpace.app server version: 0.0.0-SNAPSHOT SNAPSHOT'*)
+      exec "$STICKY_CLI" "$@"
+      ;;
+  esac
+fi
+
+if [ -x "$RELEASE_CLI" ]; then
+  exec "$RELEASE_CLI" "$@"
+fi
+
+printf '%s\n' 'No usable AeroSpace CLI was found.' >&2
+exit 127

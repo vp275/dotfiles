@@ -18,12 +18,12 @@ Doom Emacs configuration using literate config (org-babel-tangle). Evil mode wit
 
 ### Editing Config
 
-Edit `emacs.org`, not `config.el`. The file auto-tangles on save via org-auto-tangle. Manual tangle: `SPC t t`
+Edit `emacs.org`, not `config.el`. Only this file enables org-auto-tangle on save. Manual tangle: `SPC t t`
 
 ## Key Modules (init.el)
 
 - Completion: `corfu +orderless`, `vertico`
-- Editor: `evil +everywhere`, `snippets`, `fold`
+- Editor: `evil +everywhere`, `snippets`, `fold`, `word-wrap`
 - Org: `org +roam2`
 - Term: `vterm`
 - Tools: `magit`, `eval +overlay`, `lookup`
@@ -50,6 +50,10 @@ Org-roam directory: `~/Dropbox/admin/org/org-roam/`
 | `SPC f x` | Open emacs.org (config) |
 | `SPC d i` | Open inbox.org |
 | `SPC d g` | Open gtd.org |
+| `SPC d a` | Open the grouped daily agenda dashboard |
+| `SPC d c` | Capture an Org item |
+| `SPC d d` | Open today's org-roam daily note |
+| `SPC d b` | Toggle org-roam backlinks |
 | `SPC t t` | org-babel-tangle |
 | `C-c C-'` | claude-code-ide menu |
 
@@ -64,10 +68,15 @@ Org-roam directory: `~/Dropbox/admin/org/org-roam/`
 
 ## Appearance
 
-- Theme: `doom-one`
-- Font: JetBrainsMono Nerd Font Mono (18pt, Light)
-- Transparency: 98%
+- Theme: `doom-one`, with Mercedes Petronas face overrides in Org buffers
+- Code font: JetBrainsMono Nerd Font Mono (22pt, Light)
+- Org prose font: IBM Plex Sans (22pt)
+- Org buffers use a centered 90-column writing area, soft wrapping, and proportional text
+- `org-modern` styles headings, lists, checkboxes, tags, tables, and agenda buffers
+- `org-appear` reveals hidden Org markup around the cursor
+- Transparency: 100%
 
 ## Additional Packages
 
-org-auto-tangle, org-journal, org-roam-ui, xmind-org, org-noter, gptel, claude-code-ide
+org-auto-tangle, org-journal, org-modern, org-appear, org-super-agenda,
+org-roam-ui, xmind-org, org-noter, gptel, claude-code-ide

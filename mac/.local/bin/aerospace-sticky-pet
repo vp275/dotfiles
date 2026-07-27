@@ -1,0 +1,30 @@
+#!/bin/zsh
+
+emulate -L zsh
+set -u
+
+cli="$HOME/Applications/AeroSpace Sticky.app/Contents/Resources/bin/aerospace"
+[[ -x "$cli" ]] || exit 0
+
+version="$("$cli" --version 2>&1 || true)"
+case "$version" in
+  *'server version: 0.0.0-SNAPSHOT SNAPSHOT'*) ;;
+  *) exit 0 ;;
+esac
+
+for _ in {1..20}; do
+  candidates="$($cli list-windows --all \
+    --format '%{window-id}%{tab}%{app-bundle-id}%{tab}%{window-layout}%{tab}%{window-title}' \
+    2>/dev/null | awk -F '\t' '$2 == "com.openai.codex" && $3 == "floating" && $4 == "ChatGPT" { print $1 }')"
+
+  if [[ -n "$candidates" ]]; then
+    for window_id in ${(f)candidates}; do
+      "$cli" layout --window-id "$window_id" sticky >/dev/null 2>&1 || true
+    done
+    exit 0
+  fi
+
+  sleep 0.1
+done
+
+exit 0

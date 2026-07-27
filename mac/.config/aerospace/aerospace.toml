@@ -5,8 +5,9 @@
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
 after-startup-command = []
 
-# Start AeroSpace at login
-start-at-login = true
+# Login is handled by com.vp.aerospace-sticky.plist; keep the released app's
+# built-in login item disabled so the two builds cannot race each other.
+start-at-login = false
 
 # Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
 enable-normalization-flatten-containers = true
@@ -51,10 +52,8 @@ A = ['LG HDR 4K', 'main']  # Documents/Office
 B = ['LG HDR 4K', 'main']  # Browsers
 C = ['LG HDR 4K', 'main']  # AI/Chat
 D = ['LG HDR 4K', 'main']  # Development (Emacs)
-G = ['LG HDR 4K', 'main']  # Gemini AI
 I = ['LG HDR 4K', 'main']
 N = ['LG HDR 4K', 'main']  # Safari/Notion
-O = ['LG HDR 4K', 'main']  # Books/Obsidian
 P = ['LG HDR 4K', 'main']
 Q = ['LG HDR 4K', 'main']
 S = ['LG HDR 4K', 'main']  # Social/Journal
@@ -76,7 +75,9 @@ W = ['LG HDR 4K', 'main']
 10 = ['built-in', 'secondary', 'main']
 E = ['built-in', 'secondary', 'main']  # File Management (Finder)
 F = ['built-in', 'secondary', 'main']  # Writing/Notes
+G = ['built-in', 'secondary', 'main']  # Gemini/Grok AI
 M = ['built-in', 'secondary', 'main']  # Mail (Gmail)
+O = ['built-in', 'secondary', 'main']  # Books/Obsidian
 Y = ['built-in', 'secondary', 'main']  # YouTube
 Z = ['built-in', 'secondary', 'main']  # Journal/Knowledge
 
@@ -104,18 +105,18 @@ run = ['layout floating', 'move-node-to-workspace 1']
 if.app-id = 'dev.warp.Warp-Stable'
 run = ['layout floating', 'move-node-to-workspace 1']
 
-# Workspace 2 - Calendar/Voice
+# Workspace 2 - Calendar
 [[on-window-detected]]
 if.app-name-regex-substring = 'Calendar'
 run = 'move-node-to-workspace 2'
 
-[[on-window-detected]]
-if.app-name-regex-substring = 'SuperWhisper'
-run = ['layout floating', 'move-node-to-workspace 2']
-
 # Workspace 3 - Tasks/Productivity
 [[on-window-detected]]
 if.app-name-regex-substring = 'Things'
+run = 'move-node-to-workspace 3'
+
+[[on-window-detected]]
+if.app-id = 'com.linear'
 run = 'move-node-to-workspace 3'
 
 # Workspace 4 - Trading
@@ -134,6 +135,10 @@ if.app-name-regex-substring = 'Trader Workstation'
 run = 'move-node-to-workspace 6'
 
 # Workspace 8 - Messaging/Communication
+[[on-window-detected]]
+if.app-id = 'com.tinyspeck.slackmacgap'
+run = 'move-node-to-workspace 8'
+
 [[on-window-detected]]
 if.app-name-regex-substring = 'Discord'
 run = 'move-node-to-workspace 8'
@@ -179,7 +184,7 @@ run = 'move-node-to-workspace B'
 # Workspace C - AI/Chat
 [[on-window-detected]]
 if.app-name-regex-substring = 'ChatGPT'
-run = 'move-node-to-workspace C'
+run = ['move-node-to-workspace C', 'exec-and-forget /Users/vp/.local/bin/aerospace-sticky-pet']
 
 [[on-window-detected]]
 if.app-name-regex-substring = 'Chrome'
@@ -200,9 +205,13 @@ run = ['layout floating', 'move-node-to-workspace E']
 if.app-name-regex-substring = 'Drafts'
 run = 'move-node-to-workspace F'
 
-# Workspace G - Gemini AI
+# Workspace G - Gemini/Grok AI
 [[on-window-detected]]
 if.app-name-regex-substring = 'Gemini'
+run = 'move-node-to-workspace G'
+
+[[on-window-detected]]
+if.app-id = 'com.brave.Browser.app.ggjocahimgaohmigbfhghnlfcnjemagj'
 run = 'move-node-to-workspace G'
 
 # Workspace M - Mail
@@ -263,16 +272,28 @@ if.app-name-regex-substring = 'Spotify'
 run = 'move-node-to-workspace 10'
 
 [[on-window-detected]]
+if.app-name-regex-substring = 'CodexBar'
+run = 'layout floating'
+
+[[on-window-detected]]
 if.app-name-regex-substring = 'Codex'
 run = 'layout floating'
 
 # Utility windows that should stay in the workspace where they were invoked.
+[[on-window-detected]]
+if.app-id = 'com.electron.wispr-flow.accessibility-mac-app'
+run = ['layout floating']
+
 [[on-window-detected]]
 if.app-id = 'pl.maketheweb.cleanshotx'
 run = ['layout floating']
 
 [[on-window-detected]]
 if.app-id = 'com.apple.systempreferences'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'com.raycast.macos'
 run = ['layout floating']
 
 # Menu bar / status bar app popovers: match-and-stop so the catch-all below
@@ -291,11 +312,24 @@ run = ['layout floating']
 if.app-id = 'com.apple.LocalAuthentication.UIAgent'
 run = ['layout floating']
 
-# Catch-all: any app without an explicit assignment above goes to the first empty workspace.
+# macOS system dialogs: keep transient copy/install conflicts and crash reports
+# floating in the workspace where they appear instead of hitting the catch-all.
+[[on-window-detected]]
+if.app-id = 'com.apple.coreservices.uiagent'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'com.apple.ProblemReporter'
+run = ['layout floating']
+
+# Catch-all: any tiled app without an explicit assignment above goes to the
+# first empty workspace. Floating windows, including dialogs AeroSpace
+# recognizes, stay where they appeared.
 # KEEP THIS BLOCK LAST. Any [[on-window-detected]] added below this will never fire,
 # because earlier matching rules set check-further-callbacks = false by default and this
-# rule has no `if` clause so it matches everything that fell through.
+# rule matches every tiled window that fell through.
 [[on-window-detected]]
+if = 'test-not %{window-layout} = floating'
 run = ['exec-and-forget /bin/bash -c "aerospace list-workspaces --monitor focused --empty | head -1 | xargs -I {} aerospace move-node-to-workspace {}"']
 
 # Possible values: (qwerty|dvorak|colemak)
@@ -484,3 +518,13 @@ run = ['exec-and-forget /bin/bash -c "aerospace list-workspaces --monitor focuse
     down = 'volume down'
     up = 'volume up'
     shift-down = ['volume set 0', 'mode main']
+
+# Route commands launched by AeroSpace through the client for whichever server
+# is active (the local sticky build or the released Homebrew build). Keep this
+# table last so later top-level settings are not interpreted as environment
+# variables by TOML.
+[exec]
+inherit-env-vars = true
+
+[exec.env-vars]
+PATH = '${HOME}/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}'
