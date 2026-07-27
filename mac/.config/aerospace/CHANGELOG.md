@@ -1,5 +1,48 @@
 # Aerospace Configuration Changelog
 
+## 2026-07-25
+- Added Linear (`com.linear`) to workspace 3 by default.
+
+## 2026-07-23
+- Added Slack (`com.tinyspeck.slackmacgap`) to workspace 8 by default.
+- Restricted the empty-workspace catch-all to tiled windows so floating
+  dialogs recognized by AeroSpace remain in the workspace where they appear.
+
+## 2026-07-21
+- Added the Grok Brave web app
+  (`com.brave.Browser.app.ggjocahimgaohmigbfhghnlfcnjemagj`) to workspace G.
+
+## 2026-07-14
+- Added floating-in-place exclusions for macOS CoreServices UI Agent
+  (`com.apple.coreservices.uiagent`) copy/install conflict prompts and Problem
+  Reporter (`com.apple.ProblemReporter`) crash dialogs so transient system
+  messages bypass the empty-workspace catch-all.
+
+## 2026-07-13
+- Added a Wispr Flow (`com.electron.wispr-flow.accessibility-mac-app`)
+  floating-in-place exclusion so its windows bypass the empty-workspace
+  catch-all.
+- Removed the retired workspace-2 voice utility rule and its documentation.
+
+## 2026-07-10
+- Added a CodexBar floating-in-place rule so its windows bypass the empty-workspace catch-all.
+- Added a local `aerospace` client selector and placed `~/.local/bin` first in
+  AeroSpace's exec `PATH`. The sticky and released builds use different server
+  sockets, so shell-based bindings and helpers must use the matching client.
+- Added a separate local `AeroSpace Sticky.app` built from upstream PR #2083.
+  The released `/Applications/AeroSpace.app` remains installed for rollback.
+- Disabled AeroSpace's built-in login registration and added
+  `com.vp.aerospace-sticky.plist` so the sticky build launches at login.
+- Added `aerospace-sticky-pet`, invoked from the ChatGPT detection rule, to
+  apply `layout sticky` only when the custom snapshot server is active. The
+  helper safely does nothing when the released AeroSpace server is running.
+- Updated the F8 process toggle to prefer `AeroSpace Sticky.app` when starting
+  AeroSpace.
+
+## 2026-07-08
+- Moved workspace G from the LG primary group to the built-in/secondary display group.
+- Added a Raycast float-in-place exception so launcher windows stay in the invoking workspace instead of hitting the empty-workspace catch-all.
+
 ## 2026-07-07
 - Changed Codex from being forced to workspace C and floating to floating only, so new Codex windows are no longer moved to workspace C but still launch floating.
 - Changed monitor assignments to make `LG HDR 4K` the explicit primary workspace target, with built-in-display support workspaces and fallbacks for single-monitor sessions.
@@ -8,6 +51,7 @@
 - Added a System Settings float-in-place exception so settings windows stay in the invoking workspace instead of hitting the empty-workspace catch-all.
 - Moved workspace 1 from the LG primary group to the built-in/secondary display group.
 - Moved workspace Y from the LG primary group to the built-in/secondary display group.
+- Moved workspace O from the LG primary group to the built-in/secondary display group.
 
 ## 2026-07-04
 - Added `aerospace-pip-guardian` with separate PiP branches instead of one-off fixes:
@@ -48,8 +92,7 @@
 
 ## 2025-09-20
 - Fixed workspace 0/10 keybinding inconsistency: unified alt+0 and alt+shift+0 to workspace 10
-- Reorganized workspace 2: moved Calendar and SuperWhisper from ws4/ws6, removed Terminal assignment
-- Added SuperWhisper floating layout mode
+- Reorganized workspace 2 around Calendar and removed the Terminal assignment
 - Assigned trading apps: TradingView→ws4, IB Gateway→ws5, Trader Workstation→ws6
 - Added music streaming apps to workspace 10: Spotify and YouTube Music
 - Fixed YouTube Music rule precedence to prevent assignment to workspace Y

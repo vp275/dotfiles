@@ -31,7 +31,9 @@ Run `aerospace reload-config` after changing `aerospace.toml`. For documentation
 
 ## Current Config Model
 
-- Starts AeroSpace at login.
+- Launches the local `AeroSpace Sticky.app` at login through
+  `com.vp.aerospace-sticky.plist`; the config's built-in login registration is
+  disabled so the released and custom builds do not race.
 - Uses flattened container normalization and opposite-orientation normalization.
 - Default layout is `tiles`; root orientation is `auto`.
 - Accordion padding is `30`.
@@ -42,7 +44,7 @@ Run `aerospace reload-config` after changing `aerospace.toml`. For documentation
 ## Monitor Assignments
 
 - Primary letter workspaces are forced to `LG HDR 4K`, falling back to macOS `main`.
-- Workspace `1` plus workspaces `2`-`10`, `E`, `F`, `M`, `Y`, and `Z` are forced to the built-in display, falling back to `secondary` then `main`.
+- Workspace `1` plus workspaces `2`-`10`, `E`, `F`, `G`, `M`, `O`, `Y`, and `Z` are forced to the built-in display, falling back to `secondary` then `main`.
 - AeroSpace `main` follows macOS System Settings -> Displays -> Use as Main Display; prefer explicit monitor names when preserving the LG-primary layout matters.
 
 ## App Assignment Rules
@@ -52,12 +54,12 @@ Rules are ordered. Specific rules must stay above broader rules, and the final c
 | Workspace | Current automatic assignments |
 | --- | --- |
 | `1` | Ghostty, Alacritty, cmux, Warp; all floating |
-| `2` | Calendar; SuperWhisper floating |
-| `3` | Things |
+| `2` | Calendar |
+| `3` | Things, Linear |
 | `4` | TradingView |
 | `5` | IB Gateway |
 | `6` | Trader Workstation |
-| `8` | Discord, Telegram, WhatsApp |
+| `8` | Slack, Discord, Telegram, WhatsApp |
 | `10` | Spotify, YouTube Music |
 | `A` | Microsoft Excel, Microsoft Word, sioyek |
 | `B` | Arc, Firefox, Brave, Helium |
@@ -65,7 +67,7 @@ Rules are ordered. Specific rules must stay above broader rules, and the final c
 | `D` | Emacs |
 | `E` | Finder floating |
 | `F` | Drafts |
-| `G` | Gemini |
+| `G` | Gemini, Grok |
 | `M` | Gmail |
 | `N` | Safari, Notion |
 | `O` | Books floating, Obsidian |
@@ -75,11 +77,19 @@ Rules are ordered. Specific rules must stay above broader rules, and the final c
 
 Additional rules:
 
-- `mpv`, `Codex`, CleanShot X, and System Settings are floating only and are not moved to fixed workspaces.
+- `mpv`, `CodexBar`, `Codex`, Wispr Flow, CleanShot X, System Settings, and Raycast are floating only and are not moved to fixed workspaces.
+- ChatGPT stays assigned to workspace `C`. When the local sticky build is
+  active, `~/.local/bin/aerospace-sticky-pet` marks only floating ChatGPT
+  windows sticky; it is a no-op with the released AeroSpace server.
 - `exec-on-workspace-change` runs `~/.local/bin/aerospace-pip-guardian auto`, which keeps known PiP cases visible without using a generic sticky-window workaround.
-- CleanShot X and System Settings are floated in place so utility windows stay in the workspace where they were invoked.
-- Cloudflare WARP, 1Password, and `com.apple.LocalAuthentication.UIAgent` are floating match-and-stop rules so menu-bar popovers do not hit the catch-all.
-- Unassigned apps hit the final catch-all and move to the first empty workspace on the focused monitor.
+- Wispr Flow, CleanShot X, System Settings, and Raycast are floated in place so utility windows stay in the workspace where they were invoked.
+- Cloudflare WARP, 1Password, `com.apple.LocalAuthentication.UIAgent`,
+  `com.apple.coreservices.uiagent`, and `com.apple.ProblemReporter` are floating
+  match-and-stop rules so popovers and transient system dialogs do not hit the
+  catch-all.
+- Unassigned tiled apps hit the final catch-all and move to the first empty
+  workspace on the focused monitor. Floating windows, including dialogs
+  AeroSpace recognizes, bypass it and stay where they appeared.
 
 ## PiP Troubleshooting
 
@@ -128,6 +138,10 @@ Service mode starts with `alt-shift-;`:
 - Add menu-bar/popover exclusions above the catch-all using `run = ['layout floating']`.
 - Keep the catch-all as the final `[[on-window-detected]]` block.
 - For significant behavior changes, update `CHANGELOG.md` and keep `CLAUDE.md`/`AGENTS.md` aligned with the real config.
+- Keep the main TOML compatible with released AeroSpace. Do not put `layout
+  sticky` directly in `aerospace.toml`; route it through
+  `aerospace-sticky-pet` so `/Applications/AeroSpace.app` remains a working
+  rollback.
 
 ## Known Doc Drift To Watch
 

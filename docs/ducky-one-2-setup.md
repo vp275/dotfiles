@@ -40,9 +40,12 @@ mapping on login and every 30 seconds so it survives keyboard replugging.
   Spotlight/Search HID usage to normal F4, targeted only to the built-in Apple
   keyboard so it does not overwrite the Ducky media mapping.
 - F8 → the same listener calls `~/.local/bin/aerospace-toggle-enabled` to
-  kill/relaunch the AeroSpace app.
-  BetterTouchTool starts the listener periodically because BTT has the needed
-  keyboard event permissions.
+  kill/relaunch the AeroSpace process. Starting prefers
+  `~/Applications/AeroSpace Sticky.app`; `/Applications/AeroSpace.app` remains
+  the manual rollback.
+  A LaunchAgent at
+  `~/Library/LaunchAgents/com.vp.ducky-f8-aerospace-listener.plist` keeps the
+  listener running.
 - F10 → Mute
 - F11 → Volume Down
 - F12 → Volume Up
