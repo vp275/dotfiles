@@ -1,8 +1,11 @@
 #!/bin/sh
 
-# Toggle the AeroSpace app process itself.
+# Toggle the AeroSpace app process itself. Prefer the local sticky build while
+# retaining the released app as a fallback.
 
 LOG="$HOME/Library/Logs/aerospace-toggle-enabled.log"
+STICKY_APP="$HOME/Applications/AeroSpace Sticky.app"
+RELEASE_APP="/Applications/AeroSpace.app"
 
 if /usr/bin/pgrep -x AeroSpace >/dev/null 2>&1; then
   printf '%s killall AeroSpace\n' "$(/bin/date '+%Y-%m-%d %H:%M:%S')" >>"$LOG"
@@ -10,5 +13,10 @@ if /usr/bin/pgrep -x AeroSpace >/dev/null 2>&1; then
   exit 0
 fi
 
-printf '%s open -a AeroSpace\n' "$(/bin/date '+%Y-%m-%d %H:%M:%S')" >>"$LOG"
-/usr/bin/open -a AeroSpace
+if [ -d "$STICKY_APP" ]; then
+  printf '%s open %s\n' "$(/bin/date '+%Y-%m-%d %H:%M:%S')" "$STICKY_APP" >>"$LOG"
+  /usr/bin/open -n "$STICKY_APP"
+else
+  printf '%s open %s\n' "$(/bin/date '+%Y-%m-%d %H:%M:%S')" "$RELEASE_APP" >>"$LOG"
+  /usr/bin/open "$RELEASE_APP"
+fi

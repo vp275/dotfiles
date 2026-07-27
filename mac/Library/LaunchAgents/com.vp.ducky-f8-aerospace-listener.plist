@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.vp.ducky-f8-aerospace-listener</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/vp/.local/bin/ducky-f8-aerospace-listener</string>
+  </array>
+
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>StartInterval</key>
+  <integer>30</integer>
+
+  <key>StandardOutPath</key>
+  <string>/Users/vp/Library/Logs/ducky-f8-aerospace-listener.launchd.out.log</string>
+
+  <key>StandardErrorPath</key>
+  <string>/Users/vp/Library/Logs/ducky-f8-aerospace-listener.launchd.err.log</string>
+</dict>
+</plist>
