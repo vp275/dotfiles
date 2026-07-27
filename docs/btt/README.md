@@ -1,6 +1,6 @@
 # BetterTouchTool Gesture Setup
 
-Last audited: 2026-07-07
+Last audited: 2026-07-09
 
 ## Goal
 
@@ -17,12 +17,21 @@ The current known-good setup uses BTT for MacBook trackpad gestures:
 - In Codex only, 2-finger swipe right opens the chat switcher list with one
   `Ctrl+Tab` hold window. Lifting the final trackpad finger clicks the currently
   hovered chat and releases Control.
+- Magic Mouse TipTap Left (1 Finger Fix) triggers Wispr Flow hands-free through
+  right Option.
+- Magic Mouse 1-finger tap performs a standard left click.
+- Magic Mouse 1-finger tap right performs a standard right click.
+- Magic Mouse 2-finger swipe right opens BTT's native Application Switcher.
+- Magic Mouse 3-finger tap performs a standard middle click globally.
+- In Codex only, Magic Mouse 3-finger tap sends `Return`.
 - 3-finger click is disabled and reserved for future use.
 - Ducky One 2 F4 and F8 are handled outside BTT by
   `~/.local/bin/ducky-f8-aerospace-listener`, which calls
   `~/.local/bin/protonvpn-app-toggle` for F4 and
-  `~/.local/bin/aerospace-toggle-enabled` for F8. BTT has a periodic automation
-  that starts the listener if it is not already running.
+  `~/.local/bin/aerospace-toggle-enabled` for F8. The AeroSpace toggle prefers
+  `~/Applications/AeroSpace Sticky.app` and keeps the released app as rollback.
+  A LaunchAgent keeps the listener running; BTT is no longer the owner of this
+  path.
 - MacBook built-in F4 is first remapped from Apple's Spotlight/Search HID usage
   to normal F4 by `~/.local/bin/macbook-f4-proton-key`, then handled by the same
   listener. The remap is scoped to the built-in Apple keyboard so it does not
@@ -87,22 +96,23 @@ Disabled / reserved BTT triggers:
 | --- | --- | --- | --- | --- |
 | 3-finger click | `112` | `36` / Return | `44022E95-1E33-48C6-BAC4-D7838FFBD70A` | Disabled; reserved for future use |
 
-## App-Specific Trackpad Gestures
+## App-Specific Gestures
 
-Current app-specific trackpad gestures:
+Current app-specific gestures:
 
 | App | Bundle ID | Gesture | BTT trigger type | BTT action / shortcut | UUID |
 | --- | --- | --- | --- | --- | --- |
 | Codex | `com.openai.codex` | 2-finger swipe right | `160` | `137` / terminal command, lift to select | `B3FE5023-2A6D-4A7B-908D-2DB2815F700D` |
+| Codex | `com.openai.codex` | Magic Mouse 3-finger tap | `9` | `36` / Return, sends Enter | `C7595FBE-FF9E-402C-84A6-915C1EFB0D4E` |
 
 Current BTT automation triggers:
 
 | Trigger | BTT trigger type | Action | UUID |
 | --- | --- | --- | --- |
-| Every 30 seconds | `678` | `137` / `~/.local/bin/ducky-f8-aerospace-listener` | `24054644-BB63-47F8-B8A4-4ABB22E7E974` |
+| None | - | - | - |
 
-This is stored under a Codex app row in BTT, not as a global gesture. BTT's
-loaded scripting API should report `BTTBelongsToApp` as `Codex`.
+The Ducky F4/F8 listener is owned by the LaunchAgent
+`~/Library/LaunchAgents/com.vp.ducky-f8-aerospace-listener.plist`, not BTT.
 
 The Codex trigger runs this helper:
 
@@ -214,10 +224,20 @@ macOS's built-in 3-finger horizontal swipe is disabled in the matching
 trackpad preference domains so it does not fight BTT. Four-finger horizontal
 swipe remains enabled for Spaces/full-screen navigation.
 
-## Magic Mouse Notes
+## Magic Mouse Gestures
 
-As of 2026-07-01, no Magic Mouse gestures are configured. The Magic Mouse
-section in BTT is clean.
+Current Magic Mouse gestures:
+
+| Gesture | BTT trigger type | BTT action / shortcut | UUID |
+| --- | --- | --- | --- |
+| 1-finger tap | `1` | `3` / Left Click at current mouse position | `73D46814-59D7-450D-8B99-FEB4FDE8CDF1` |
+| 1-finger tap right | `3` | `4` / Right Click at current mouse position | `042FC1A5-03DD-4C9D-9424-C5D6297DABBC` |
+| TipTap Left (1 Finger Fix) | `16` | `61` / right Option, triggers Wispr hands-free | `497F16E1-1725-4D6E-BD16-B8F88259EF2F` |
+| 2-finger swipe right | `6` | `46` / Application Switcher | `95B221B7-9EC1-4C8A-8D15-5542228FCF02` |
+| 3-finger tap | `9` | `1` / Middle Click at current mouse position | `CFBD7467-2660-467F-ABB4-D30CE1E9F021` |
+
+These are global Magic Mouse gestures. Their BTT trigger class is
+`BTTTriggerTypeMagicMouse`, not the trackpad trigger class.
 
 BTT does support a dedicated Magic Mouse trigger class:
 
@@ -229,6 +249,10 @@ Useful Magic Mouse triggers observed in BTT's bundled trigger definitions:
 
 | Gesture | Trigger type |
 | --- | --- |
+| 1 Finger Tap | `1` |
+| 1 Finger Tap Right | `3` |
+| 1 Finger Tap Above Apple | `32` |
+| 1 Finger Swipe Right | `36` |
 | 2 Finger Swipe Left | `5` |
 | 2 Finger Swipe Right | `6` |
 | 2 Finger Tap | `4` |
@@ -248,10 +272,9 @@ Possible future mappings:
 
 | Goal | Candidate Magic Mouse gesture | Candidate action |
 | --- | --- | --- |
-| App switcher | 2-finger swipe right | BTT native Application Switcher |
 | App switcher | TipTap gesture | BTT native Application Switcher |
-| Wispr hands-free | 3-finger tap | `61` / right Option |
-| Enter/send | 2-finger double-tap or 3-finger click | `36` / Return |
+| Wispr hands-free alternate | 3-finger double-tap | `61` / right Option |
+| Enter/send alternate | 2-finger double-tap or 3-finger click | `36` / Return |
 
 TipTap means keeping one or more fingers resting on the Magic Mouse surface and
 tapping with another finger. BTT specifically notes that its special
@@ -338,6 +361,68 @@ Backup from before adding lift-to-select for the Codex chat switcher:
 ~/.dotfiles/backups/bettertouchtool/20260701-213123-before-codex-lift-to-select
 ```
 
+Backup from before adding Magic Mouse Wispr/Enter gestures:
+
+```text
+~/.dotfiles/backups/bettertouchtool/20260708-095816-before-magic-mouse-wispr-enter
+```
+
+Backup from before adding Magic Mouse 2-finger swipe right app switcher:
+
+```text
+~/.dotfiles/backups/bettertouchtool/20260708-101237-before-magic-mouse-2finger-swipe-right-appswitcher
+```
+
+Backup from before moving Magic Mouse Wispr Flow to TipTap Left:
+
+```text
+~/.dotfiles/backups/bettertouchtool/20260708-103559-before-magic-mouse-wispr-tiptap-left
+```
+
+Backup from before adding Magic Mouse 1-finger tap as left click:
+
+```text
+~/.dotfiles/backups/bettertouchtool/20260709-002955-before-magic-mouse-1finger-tap-left-click
+```
+
+Backup from before adding Magic Mouse right tap and above-Apple Wispr:
+
+```text
+~/.dotfiles/backups/bettertouchtool/20260709-022252-before-magic-mouse-right-tap-and-above-apple-wispr
+```
+
+Backup from before removing Magic Mouse above-Apple Wispr:
+
+```text
+~/.dotfiles/backups/bettertouchtool/20260709-022852-before-removing-magic-mouse-above-apple-wispr
+```
+
+Backup from before moving Magic Mouse app switcher to 1-finger swipe right:
+
+```text
+~/.dotfiles/backups/bettertouchtool/20260709-024538-before-magic-mouse-1finger-swipe-right-appswitcher
+```
+
+Backup from before tuning Magic Mouse gesture sensitivity to `0.05`:
+
+```text
+~/.dotfiles/backups/bettertouchtool/20260709-025139-before-magic-mouse-sensitivity-005
+```
+
+Backup from before reverting Magic Mouse app switcher to 2-finger swipe right
+and removing the Magic Mouse sensitivity override:
+
+```text
+~/.dotfiles/backups/bettertouchtool/20260709-025442-before-revert-magic-mouse-appswitcher-to-2finger
+```
+
+Backup from before scoping Magic Mouse 3-finger tap Return to Codex and making
+the global action middle click:
+
+```text
+~/.dotfiles/backups/bettertouchtool/20260709-030123-before-codex-scoped-magic-mouse-3finger-enter
+```
+
 ## Troubleshooting
 
 If the BTT gestures stop working, first check:
@@ -358,6 +443,13 @@ If the BTT gestures stop working, first check:
 ```bash
 sqlite3 "$HOME/Library/Application Support/BetterTouchTool/btt_data_store.version_6_609_build_2026062603" \
   "select Z_PK, ZACTION, ZGESTURETYPE, ZISTOUCHPAD, ZSHORTCUT, ZUNIQUEIDENTIFIER, ZENABLEDNEW, ZISENABLED, ZNOTES, ZDESC from ZBTTBASEENTITY where ZISTOUCHPAD=1 order by ZGESTURETYPE, Z_PK;"
+```
+
+### Current Magic Mouse Trigger Rows
+
+```bash
+sqlite3 "$HOME/Library/Application Support/BetterTouchTool/btt_data_store.version_6_609_build_2026062603" \
+  "select Z_PK, ZACTION, ZGESTURETYPE, ZISTOUCHPAD, ZSHORTCUT, ZUNIQUEIDENTIFIER, ZENABLEDNEW, ZISENABLED, ZNOTES, ZDESC from ZBTTBASEENTITY where ZUNIQUEIDENTIFIER in ('73D46814-59D7-450D-8B99-FEB4FDE8CDF1', '042FC1A5-03DD-4C9D-9424-C5D6297DABBC', '497F16E1-1725-4D6E-BD16-B8F88259EF2F', '95B221B7-9EC1-4C8A-8D15-5542228FCF02', 'CFBD7467-2660-467F-ABB4-D30CE1E9F021', 'C7595FBE-FF9E-402C-84A6-915C1EFB0D4E') order by ZGESTURETYPE;"
 ```
 
 ### Codex App-Specific Trigger

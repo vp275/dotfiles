@@ -1,6 +1,6 @@
 # Logitech Options+ and Wispr Flow Setup
 
-Last audited: 2026-07-04
+Last audited: 2026-07-18
 
 ## Goal
 
@@ -54,14 +54,14 @@ Useful slots:
 | `mx-master-3s-2b034_c82` | Wheel click / middle button | `Enter` in terminal-like apps and Codex, `MB3` in browsers. |
 | `mx-master-3s-2b034_c83` | Back button | Native Back in browsers/default; `Ctrl+Tab` in Codex. |
 | `mx-master-3s-2b034_c86` | Forward button | Native Forward in browsers/default; `Cmd+K` in Codex. |
-| `mx-master-3s-2b034_c195` | Aux/thumb-style button | Right Option in Desktop/default and Codex for Wispr hands-free. Previously used as raw aux for Wispr. |
+| `mx-master-3s-2b034_c195` | Aux/thumb-style button | Right Option in Desktop/default, Codex, and Ghostty for Wispr hands-free. Previously used as raw aux for Wispr. |
 | `mx-master-3s-2b034_c196` | Gesture/top button | App navigation gesture card. |
 
 ## Current Logitech Profile Benchmark
 
 ### Full Profile Snapshot
 
-Generated from the live Logitech Options+ database on 2026-07-04.
+Generated from the live Logitech Options+ database on 2026-07-18.
 
 | App/profile | Bundle id | Thumb button `c195` | Wheel click `c82` | Back `c83` | Forward `c86` |
 | --- | --- | --- | --- | --- | --- |
@@ -69,7 +69,7 @@ Generated from the live Logitech Options+ database on 2026-07-04.
 | Codex | `com.openai.codex` | Right Option / `Opt ->` | `Enter` | `Ctrl+Tab` | `Cmd+K` |
 | Claude | `com.anthropic.claudefordesktop` | Empty shortcut / no action | `Enter` | Native Back | Native Forward |
 | Warp | `dev.warp.Warp-Stable` | Empty shortcut / no action | `Enter` | Native Back | Native Forward |
-| Ghostty | `com.mitchellh.ghostty` | Empty shortcut / no action | `Enter` | Native Back | Native Forward |
+| Ghostty | `com.mitchellh.ghostty` | Right Option / `Opt ->` | `Enter` | Native Back | Native Forward |
 | Safari | `com.apple.Safari` | Empty shortcut / no action | Real middle click: `MB3` | Native Back | Native Forward |
 | Google Chrome | `com.google.Chrome` | Empty shortcut / no action | Real middle click: `MB3` | Native Back | Native Forward |
 | Brave Browser | `com.brave.Browser` | Empty shortcut / no action | Real middle click: `MB3` | Native Back | Native Forward |

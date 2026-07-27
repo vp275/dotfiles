@@ -21,6 +21,9 @@ palette = 13=#c8a5ff
 palette = 14=#33E0CE
 palette = 15=#f2f4f8
 
+# xterm-256 teal used by ranger across terminal emulators
+palette = 43=#00D2BE
+
 # Core colors
 background = #0A0A0A
 foreground = #f2f4f8
