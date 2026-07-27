@@ -252,6 +252,9 @@ alias cldc="claude --continue --dangerously-skip-permissions"
 
 alias cldp="claude --dangerously-skip-permissions --model sonnet --effort medium -p"
 
+# codex
+alias cx="codex --yolo"
+
 # Usage aliases with model breakdown
 alias ccu="ccusage --since \$(date +%Y%m%d) -b"
 alias ccuw="ccusage weekly -b"
