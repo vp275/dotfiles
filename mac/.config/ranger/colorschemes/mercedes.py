@@ -8,7 +8,8 @@ from ranger.gui.color import (
     default_colors,
 )
 
-petronas_teal = yellow
+petronas_teal = 43  # xterm-256 approximation of #00D2BE
+selection_text = 232  # xterm-256 near-black for consistent focus-bar text
 
 
 class Default(ColorScheme):
@@ -23,7 +24,7 @@ class Default(ColorScheme):
         elif context.in_browser:
             if context.selected:
                 attr = bold
-                fg = black
+                fg = selection_text
                 bg = white  # White focus bar
             else:
                 attr = normal
@@ -42,7 +43,6 @@ class Default(ColorScheme):
                 attr |= bold
                 if not context.selected:
                     fg = petronas_teal
-                    fg += BRIGHT
             elif context.executable and not \
                     any((context.media, context.container,
                          context.fifo, context.socket)):
@@ -110,11 +110,9 @@ class Default(ColorScheme):
             if context.marked:
                 attr |= bold | reverse
                 fg = petronas_teal
-                fg += BRIGHT
             if context.frozen:
                 attr |= bold | reverse
                 fg = petronas_teal
-                fg += BRIGHT
             if context.message:
                 if context.bad:
                     attr |= bold
