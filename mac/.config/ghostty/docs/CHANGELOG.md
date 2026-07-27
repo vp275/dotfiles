@@ -1,5 +1,10 @@
 # Ghostty Config Changelog
 
+## 2026-07-18 - Restore ranger's exact Petronas teal
+
+- Mapped xterm-256 color 43 to `#00D2BE` so ranger keeps its portable indexed
+  color while matching the original Petronas teal in Ghostty.
+
 ## 2026-07-01 - Add ranger launcher keybind
 
 - Added `Cmd+R` (`super+r`) to clear the current shell prompt and run `ranger`.
