@@ -1,5 +1,5 @@
 {
-  "$schema" : "https:\/\/schema.linearmouse.app\/0.11.2",
+  "$schema" : "https:\/\/schema.linearmouse.app\/0.11.3",
   "schemes" : [
     {
       "buttons" : {
@@ -61,8 +61,10 @@
         }
       },
       "pointer" : {
-        "acceleration" : 0.6874,
-        "speed" : 0.1262
+        "acceleration" : "unset",
+        "disableAcceleration" : false,
+        "redirectsToScroll" : false,
+        "speed" : "unset"
       },
       "scrolling" : {
         "reverse" : {
@@ -81,9 +83,9 @@
         }
       },
       "pointer" : {
-        "acceleration" : 0.5,
+        "acceleration" : 17.2564,
         "disableAcceleration" : false,
-        "speed" : 0.19
+        "speed" : 0.4712
       },
       "scrolling" : {
         "acceleration" : {
