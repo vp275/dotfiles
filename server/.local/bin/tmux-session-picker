@@ -1,0 +1,11 @@
+#!/bin/bash
+# Flat session picker for tmux
+
+{
+    printf "SESSION\tWINDOWS\tATTACHED\tPATH\n"
+    tmux list-sessions -F "#{session_name}	#{session_windows}	#{?session_attached,yes,no}	#{session_path}"
+} | \
+    column -t -s '	' | \
+    fzf --header-lines=1 --reverse --border | \
+    awk '{print $1}' | \
+    xargs -I {} tmux switch-client -t {}
