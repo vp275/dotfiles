@@ -5,7 +5,8 @@ Codex-facing guide for working in `/Users/vp/.dotfiles`.
 ## Core Model
 
 - This is a personal macOS dotfiles repo managed with GNU Stow.
-- `mac/` is the only active Stow package. Deploy with `cd ~/.dotfiles && stow mac`.
+- `mac/` and `server/` are active Stow packages. Deploy the relevant package
+  with `cd ~/.dotfiles && stow <package>`.
 - `archive/linux/` preserves the old Linux package for reference only.
 - The workflow is Vim-centric and keyboard-driven.
 - The main visual identity is Mercedes Petronas: black backgrounds, teal
@@ -19,7 +20,7 @@ Codex-facing guide for working in `/Users/vp/.dotfiles`.
 
 ```text
 ~/.dotfiles/
-|-- mac/                    # Active Stow package
+|-- mac/                    # Active macOS Stow package
 |   |-- .zshrc
 |   |-- .p10k.zsh
 |   |-- .gitconfig
@@ -41,6 +42,7 @@ Codex-facing guide for working in `/Users/vp/.dotfiles`.
 |       |-- btop/
 |       `-- neofetch/
 |-- archive/linux/          # Inactive Linux configs
+|-- server/                 # Ubuntu server terminal Stow package
 |-- docs/
 |-- README.md
 |-- CLAUDE.md
@@ -68,6 +70,7 @@ first and treat it as more specific than this root guide.
 ```bash
 # Deploy configs
 cd ~/.dotfiles && stow mac
+cd ~/.dotfiles && stow server
 
 # Validate/reload Ghostty
 ghostty +validate-config --config-file ~/.config/ghostty/config
@@ -95,7 +98,7 @@ tmux source-file ~/.config/tmux/tmux.conf
 
 Stow creates symlinks from `$HOME` and `$HOME/.config` into `mac/`. Examples:
 
-- `~/.zshrc` points at `mac/.zshrc`.
+- `~/.zshrc` points at the `.zshrc` in the deployed package.
 - `~/.p10k.zsh` points at `mac/.p10k.zsh`.
 - `~/.gitconfig` points at `mac/.gitconfig`.
 - `~/.fzf.zsh` points at `mac/.fzf.zsh`.
@@ -103,6 +106,9 @@ Stow creates symlinks from `$HOME` and `$HOME/.config` into `mac/`. Examples:
 - `~/.config/tmux/` points at `mac/.config/tmux/`.
 - `~/.config/doom/` points at `mac/.config/doom/`.
 - `~/.config/git/` points at `mac/.config/git/`.
+
+Do not deploy `mac` and `server` to the same home directory. Both packages own
+the shell and terminal configuration paths.
 
 Machine-specific files are intentionally gitignored:
 

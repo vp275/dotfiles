@@ -26,6 +26,9 @@ git clone git@github.com:vp275/dotfiles.git ~/.dotfiles
 # Deploy
 cd ~/.dotfiles
 stow mac
+
+# Ubuntu server terminal
+scripts/provision-server-terminal.sh
 ```
 
 ## What's Inside
@@ -42,6 +45,7 @@ stow mac
 | [karabiner](mac/.config/karabiner/) | `mac` | Keyboard customization | - |
 | [bat](mac/.config/bat/) | `mac` | Cat clone with syntax highlighting | - |
 | [btop](mac/.config/btop/) | `mac` | System monitor | - |
+| [server terminal](docs/server-terminal.md) | `server` | Ubuntu zsh, P10K, Neovim, Ranger, bat, btop, tmux | [setup](docs/server-terminal.md) |
 
 ## Structure
 
@@ -70,6 +74,9 @@ stow mac
 |       `-- neofetch/       # System info
 |-- archive/
 |   `-- linux/              # Inactive Linux package kept for reference
+|-- server/                 # Ubuntu server terminal package
+|-- scripts/
+|   `-- provision-server-terminal.sh
 |-- docs/
 |-- CLAUDE.md
 |-- AGENTS.md
@@ -79,7 +86,7 @@ stow mac
 
 ## Key Features
 
-- **macOS-focused** - one active Stow package: `mac`
+- **Two focused packages** - `mac` for the Mac and `server` for Ubuntu servers
 - **Vim-centric** - Evil mode in Emacs, vim keybinds everywhere
 - **Keyboard-driven** - AeroSpace WM, tmux, minimal mouse usage
 - **Terminal workflow** - Ghostty is native/minimal; tmux remains available for multiplexing
