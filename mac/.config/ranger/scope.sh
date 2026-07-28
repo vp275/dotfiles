@@ -36,6 +36,21 @@ IMAGE_CACHE_PATH="${4}"  # Full path that should be used to cache image preview
 PV_IMAGE_ENABLED="${5}"  # 'True' if image previews are enabled, 'False' otherwise.
 
 FILE_EXTENSION="${FILE_PATH##*.}"
+
+## Fast path for the note format used throughout the Obsidian vault. Supplying
+## the language and line range avoids the generic MIME and terminal probes.
+case "${FILE_EXTENSION}" in
+    md|MD|markdown|MARKDOWN)
+        COLORTERM=8bit bat \
+            --paging=never \
+            --color=always \
+            --style=plain \
+            --language=Markdown \
+            --line-range=:200 \
+            -- "${FILE_PATH}" && exit 5
+        exit 2;;
+esac
+
 FILE_EXTENSION_LOWER="$(printf "%s" "${FILE_EXTENSION}" | tr '[:upper:]' '[:lower:]')"
 
 ## Settings
@@ -108,6 +123,10 @@ handle_extension() {
             jq --color-output . "${FILE_PATH}" && exit 5
             python -m json.tool -- "${FILE_PATH}" && exit 5
             ;;
+
+        ## Parquet
+        parq|parquet)
+            exit 1;;
 
         ## Direct Stream Digital/Transfer (DSDIFF) and wavpack aren't detected
         ## by file(1).
@@ -292,7 +311,13 @@ handle_mime() {
         ## Text
         text/* | */xml)
             ## Syntax highlight
-            if [[ "$( stat --printf='%s' -- "${FILE_PATH}" )" -gt "${HIGHLIGHT_SIZE_MAX}" ]]; then
+            local file_size
+            if [[ "${OSTYPE:-}" == darwin* ]]; then
+                file_size="$(stat -f '%z' -- "${FILE_PATH}")"
+            else
+                file_size="$(stat --printf='%s' -- "${FILE_PATH}")"
+            fi
+            if [[ "${file_size}" -gt "${HIGHLIGHT_SIZE_MAX}" ]]; then
                 exit 2
             fi
             if [[ "$( tput colors )" -ge 256 ]]; then

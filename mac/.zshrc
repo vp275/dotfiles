@@ -157,6 +157,7 @@ export BAT_THEME='Mercedes-Petronas'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias szsh='source ~/.zshrc'
+alias hetzner='ssh myserver'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
