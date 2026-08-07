@@ -6,6 +6,9 @@
 **/.zshrc.local
 **/config.local
 
+# Device-specific identifiers
+mac/.config/linearmouse/linearmouse.json
+
 # GCP credentials
 **/gcloud/
 *-service-account.json
