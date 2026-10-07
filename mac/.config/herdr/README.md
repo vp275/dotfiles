@@ -1,16 +1,38 @@
+# Herdr
+
+## What lives here
+
+| Path | What it is | Docs |
+|---|---|---|
+| `config.toml` | Keybindings, UI, sidebar rows and colours | `docs/shortcut-reference.md`, `docs/herdr-sidebar.md` |
+| `agent-icons/` | Local plugin that reports agent logos to the sidebar | `docs/herdr-sidebar.md` |
+| `workspace-keepers/` | Local plugin that restores protected spaces and sets their logos | `docs/herdr-workspace-keepers.md` |
+| `fonts/` | Donor glyphs and build script for the logo fonts | `docs/herdr-sidebar.md` |
+| `plugins/herdr-focus-notify/` | Separate clone, ignored by Git | end of this file |
+| `initial-host-theme-replay.patch` | Local binary patch, ignored by Git | below |
+| `herdr-sidebar-setup/` | Undo record from a disabled earlier logo plugin | `docs/herdr-sidebar.md` |
+
+Stow links only `config.toml` into `~/.config/herdr/`. The two local plugins
+are registered by path with `herdr plugin link`, so they keep working from
+this directory.
+
 # Herdr maintenance handoff
 
-Last checked: 2026-09-21. Read this before updating or troubleshooting this user's Herdr installation. This note is a historical record, not a live release check.
+Last checked: 2026-10-07. Read this before updating or troubleshooting this user's Herdr installation. This note is a historical record, not a live release check.
 
 ## Current state
 
 - Installed executable: `/Users/vp/.local/bin/herdr`.
-- Version: **0.9.1 with a local 8-line host-theme replay patch**. `herdr --version` still prints `herdr 0.9.1`; the version string does not identify the patch.
-- Patched binary SHA-256: `8097f9969e7a6f392abf7678984dff5003ac58b88779d9b39290121d93a32a9e`.
-- Original, UNPATCHED backup: `/Users/vp/.local/bin/herdr.pre-theme-replay-0.9.1`.
-- Original backup SHA-256: `5fc7a7e7adfaca56fa80aa89dcb025693357268dab8285b9ce2d08a2313c89de`.
+- Version: **0.9.3 with the local 8-line host-theme replay patch**. `herdr --version` prints `herdr 0.9.3`; the version string does not identify the patch.
+- Patched 0.9.3 binary SHA-256: `58de075e0391a9517adb10d975e2bf5325915054d8a6f6a4bd48c530dd37f006`.
+- Built from official tag `v0.9.3`, commit `7b116c05bfda646af39d2524c54e70c751f57ee8`. The saved patch applied with `git apply` unchanged.
+- Previous working build, patched 0.9.1: `/Users/vp/.local/bin/herdr.0.9.1-theme-replay`, SHA-256 `8097f9969e7a6f392abf7678984dff5003ac58b88779d9b39290121d93a32a9e`. This is the rollback target.
+- Original UNPATCHED 0.9.1: `/Users/vp/.local/bin/herdr.pre-theme-replay-0.9.1`, SHA-256 `5fc7a7e7adfaca56fa80aa89dcb025693357268dab8285b9ce2d08a2313c89de`.
 - Exact patch is saved alongside this note as `initial-host-theme-replay.patch`.
-- On September 21, the latest official stable release was still v0.9.1. Its source did not include this patch. Recheck online before giving future update advice.
+- On October 7, the latest official stable release was v0.9.3. Its `install_client_shell_snapshot` still did not replay the host theme, so the patch is still needed. Recheck online before giving future update advice.
+- The binary was swapped while the 0.9.1 server kept running (both speak private protocol 22), then the user reattached and later restarted the server. `herdr status` now reports client and server 0.9.3 with `server_binary_stale: no`.
+- Checked on 0.9.3: the user confirmed the reattach and the gray Codex composer background; after the server restart all five spaces came back with their logo tokens, the three local plugins loaded, and plugin runs exited 0.
+- Rollback: `cp -p ~/.local/bin/herdr.0.9.1-theme-replay ~/.local/bin/herdr`, then reattach.
 - Homebrew did not manage Herdr when checked. Ordinary `brew upgrade` did not affect this installation. Recheck ownership/path if the user's installation changes.
 
 ## User's problem and diagnosis
@@ -56,6 +78,8 @@ The downstream patch was backported to official Herdr source. The full fork was 
 9. Update this note after an approved change with the actual version, source revision, checksum, test outcome, and rollback location.
 
 ## Build record
+
+The 0.9.1 and 0.9.3 builds both used macOS arm64, the repository-pinned Rust 1.96.1 toolchain, and Zig 0.16.0 (Homebrew Zig 0.17.0 is too new; a 0.16.0 tarball from ziglang.org was unpacked to a temporary directory and passed through `ZIG`). The 0.9.3 release build took about two and a half minutes. The paths below are from the 0.9.1 build.
 
 Successful build used macOS arm64, the repository-pinned Rust 1.96.1 toolchain, and Zig 0.16.0. Cargo downloaded Rust 1.96.1 through rustup; Zig was unpacked into a temporary directory. The global default Rust toolchain was not intentionally changed.
 

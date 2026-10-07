@@ -1,0 +1,116 @@
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.11"
+# dependencies = ["fonttools"]
+# ///
+"""Rebuild the JetBrains Mono Herdr fonts that carry the sidebar logo glyphs.
+
+Each output is a stock JetBrainsMono Nerd Font Mono face with the glyphs from
+a donor font in this directory grafted on at U+E1A0 and up, renamed so it
+installs as its own family. See docs/herdr-sidebar.md.
+
+    build-fonts                 # write to ./build
+    build-fonts --install       # write to ~/Library/Fonts
+    build-fonts --check         # compare a fresh build with ~/Library/Fonts
+"""
+import argparse
+import sys
+import tempfile
+from pathlib import Path
+
+from fontTools.pens.recordingPen import RecordingPen
+from fontTools.ttLib import TTFont
+
+HERE = Path(__file__).resolve().parent
+FONTS = Path.home() / "Library/Fonts"
+STYLES = ("Regular", "Italic", "Light", "LightItalic")
+# output file stem -> (family name, donor font)
+FAMILIES = {
+    "JetBrainsMonoHerdr": ("JetBrains Mono Herdr", "logos.ttf"),
+    "JetBrainsMonoHerdrXL": ("JetBrains Mono Herdr XL", "logos-xl.ttf"),
+}
+FIRST, LAST = 0xE1A0, 0xE1BF
+
+
+def logo_glyphs(font):
+    cmap = font.getBestCmap()
+    return {code: cmap[code] for code in sorted(cmap) if FIRST <= code <= LAST}
+
+
+def build(stem, style, base_dir):
+    family, donor_name = FAMILIES[stem]
+    base_path = base_dir / f"JetBrainsMonoNerdFontMono-{style}.ttf"
+    if not base_path.is_file():
+        sys.exit(f"missing base font {base_path} (brew install --cask font-jetbrains-mono-nerd-font)")
+    font = TTFont(base_path)
+    donor = TTFont(HERE / donor_name)
+    if font["head"].unitsPerEm != donor["head"].unitsPerEm:
+        sys.exit(f"{donor_name} and {base_path.name} use different units per em")
+
+    order = font.getGlyphOrder()
+    for code, name in logo_glyphs(donor).items():
+        glyph = donor["glyf"][name]
+        if glyph.isComposite():
+            sys.exit(f"{donor_name}: {name} is a composite glyph")
+        order.append(name)
+        font["glyf"][name] = glyph
+        font["hmtx"][name] = donor["hmtx"][name]
+        for table in font["cmap"].tables:
+            if table.isUnicode():
+                table.cmap[code] = name
+    font.setGlyphOrder(order)
+
+    names = {
+        1: family,
+        3: f"HerdrLocal-{style}-1",
+        4: f"{family} {style}",
+        6: f"{stem}-{style}",
+        16: family,
+    }
+    for record in font["name"].names:
+        if record.nameID in names:
+            record.string = names[record.nameID]
+    return font
+
+
+def fingerprint(font):
+    """Everything a terminal reads: names, the full cmap, logo outlines, widths."""
+    glyphs = font.getGlyphSet()
+    outlines = {}
+    for code, name in logo_glyphs(font).items():
+        pen = RecordingPen()
+        glyphs[name].draw(pen)
+        outlines[code] = (name, font["hmtx"][name], pen.value)
+    names = sorted((r.nameID, r.platformID, r.langID, r.toUnicode()) for r in font["name"].names)
+    return names, font.getBestCmap(), outlines, font["hmtx"].metrics, font.getGlyphOrder()
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--install", action="store_true", help="write into ~/Library/Fonts")
+    parser.add_argument("--check", action="store_true", help="compare a fresh build with the installed fonts")
+    parser.add_argument("--base-dir", type=Path, default=FONTS, help="where the JetBrainsMono Nerd Font Mono files live")
+    args = parser.parse_args()
+
+    out = FONTS if args.install else Path(tempfile.mkdtemp()) if args.check else HERE / "build"
+    out.mkdir(parents=True, exist_ok=True)
+    stale = []
+    for stem in FAMILIES:
+        for style in STYLES:
+            target = out / f"{stem}-{style}.ttf"
+            font = build(stem, style, args.base_dir)
+            if args.check:
+                installed = FONTS / target.name
+                if not installed.is_file() or fingerprint(TTFont(installed)) != fingerprint(font):
+                    stale.append(target.name)
+                continue
+            font.save(target)
+            print(target)
+    if args.check:
+        print("stale or missing: " + ", ".join(stale) if stale else "installed fonts match a fresh build")
+        return 1 if stale else 0
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

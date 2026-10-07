@@ -90,10 +90,17 @@ showing `allowedTerminal=true` and one `Fn tap triggered Ctrl+B` entry.
 | 3-finger tap | Three Finger Switcher waits for release, then opens `Spokenly Toggle.app` |
 | 3-finger swipe right | Three Finger Switcher opens the macOS app switcher and supports two-finger scrubbing |
 | 3-finger swipe left | After 3.5 mm and 40 ms confirmation, sends one context-aware line-clear shortcut |
-| 4-finger tap | Return |
+| 4-finger tap | Three Finger Switcher sends Return on full release |
 
-Three Finger Switcher owns both three-finger tap and horizontal swipe
-classification. A tap must last 5 to 600 ms with no more than 2.0 mm of
+Three Finger Switcher owns three-finger tap and horizontal swipe
+classification, plus the four-finger Return tap. The latter requires 20–600 ms
+of stationary contact, at most 2 mm travel per finger, and full release within
+150 ms of the first lift. Added during switching, the fourth finger only
+cancels. The saved BTT four-finger Return mapping is superseded and must stay
+inactive to avoid duplicate Enter presses. The user confirmed the installed
+four-finger Return tap works on 2026-10-03.
+
+The three-finger Spokenly tap must last 5 to 600 ms with no more than 2.0 mm of
 per-finger travel. Once the existing swipe threshold is crossed, swipe wins and
 Spokenly is not toggled. A left swipe uses the cached frontmost application:
 `Ctrl+U` in Ghostty, Alacritty, Terminal, cmux, Warp, and iTerm2, no shortcut
@@ -121,8 +128,20 @@ pending physical verification; exact values and rollback are in the
 | --- | --- |
 | 1-finger tap | Left click at the pointer |
 | 1-finger tap right | Right click at the pointer |
-| 2-finger swipe right | Open BTT's Application Switcher |
-| 3-finger tap | Middle click at the pointer |
+| 2-finger swipe left | Three Finger Switcher clears text once using the trackpad’s app-aware route: Control-U in supported terminals, Command-Delete elsewhere, same app exclusions |
+| 2-finger swipe right | Three Finger Switcher opens native Command-Tab; lift one finger and slide the remaining finger left/right to browse, lift the final finger to select |
+| 2-finger tap | Three Finger Switcher toggles Spokenly on release through `Spokenly Toggle.app` |
+| 3-finger tap | Three Finger Switcher presses Return on release in the focused app |
+
+The Magic Mouse two-finger switcher is owned by Three Finger Switcher as of
+2026-10-03. It requires no BTT. The user confirmed the installed two-finger
+activation and one-finger browsing interaction feels better. It starts with
+the trackpad helper through the existing login LaunchAgent. The other BTT-owned mouse
+gestures require BTT to be running. See [the switcher guide](three-finger-switcher.md)
+for calibration and scrolling behavior. The custom two-finger Spokenly tap
+and three-finger Return tap were mapped on 2026-10-03 and await physical verification. Saved BTT three-finger
+middle-click and Codex Return mappings are superseded and must stay inactive
+while the custom tap is enabled.
 
 ### Application-specific BTT shortcuts
 
@@ -153,8 +172,8 @@ double-toggle.
 The MacBook trackpad three-finger tap also reaches Spokenly through that helper,
 but only after Three Finger Switcher classifies and releases a valid tap. The
 unnamed Spokenly `threeFingerLight` mode was backed up and deleted so it cannot
-race the switcher. Magic Mouse activation remains governed by its current BTT
-configuration.
+race the switcher. Magic Mouse two-finger tap also reaches the same helper through Three Finger
+Switcher; its three-finger tap presses Return.
 
 The complete machine-readable profile inventory, including Logitech card
 payloads and thumb-wheel directions, is in the [MX Master 3S reconstruction

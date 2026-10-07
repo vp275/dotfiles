@@ -79,13 +79,9 @@ preserves the v1 behavior for all currently bound workspace keys.
 
 ## Floating Apps
 
-mpv floats and follows the focused workspace, including across monitors, through
-`~/.local/bin/aerospace-pip-guardian`. All managed `io.mpv` windows follow.
-`~/.config/mpv/mpv.conf` sets `ontop=yes` to keep video above ordinary windows.
-Restart existing mpv instances to load this setting. Workspace following can
-briefly reposition the window; it is a helper, not native sticky-window support.
-See [mpv workspace following](../../../docs/mpv-workspace-following.md) for
-configuration details, verification, limitations, and disable instructions.
+mpv floats where it opens. `~/.config/mpv/mpv.conf` sets `ontop=yes` to keep
+video above ordinary windows. Automatic workspace following was removed on
+2026-10-03. See [mpv configuration](../../../docs/mpv-workspace-following.md).
 
 These apps launch floating instead of tiled: Ghostty, Finder, Books, mpv, CodexBar, Codex, CleanShot X, System Settings, and Raycast. Ghostty stays floating because macOS native tabs are exposed to AeroSpace as separate windows and can trigger unwanted BSP retiling. Alacritty, cmux, and Warp use tiled layout where they open so separate terminal windows can participate in BSP. Native tabs remain inside the terminal application.
 
@@ -98,7 +94,7 @@ The final empty-workspace catch-all applies only to tiled windows. Windows
 AeroSpace recognizes as dialogs are floating by default, so they remain beside
 the application that opened them instead of being moved to another workspace.
 
-PiP handling is centralized in `~/.local/bin/aerospace-pip-guardian`. Its automatic workspace-change mode moves AeroSpace-managed Helium `Picture-in-picture` windows to the focused workspace and unhides hidden Brave-owned YouTube PWA PiP windows. Press `ctrl-alt-p` to run the stronger recovery mode, which also recreates stale Helium native PiP windows by toggling the Google PiP extension.
+The custom PiP guardian, workspace-change hook, and `ctrl-alt-p` recovery binding were removed on 2026-10-03. No custom PiP following or recovery automation is installed.
 
 The main ChatGPT window stays assigned to workspace `C`. AeroSpace
 `0.21.0-Beta` and later recognizes the always-on-top `com.openai.codex` Pet as
@@ -125,7 +121,6 @@ sticky-window rule or helper.
   separate windows and trigger unwanted BSP retiling, so Ghostty uses
   `layout floating`. Alacritty, cmux, and Warp use `layout tiling` where they
   open. Native tabs remain inside the terminal application.
-- **YouTube PWA PiP can vanish**: The `YouTube` app is a Brave app-mode wrapper (`com.brave.Browser.app...`), but its PiP window is owned by the parent `Brave Browser` process. If PiP disappears, check whether `Brave Browser` is hidden while `YouTube` is visible. `aerospace-pip-guardian auto` usually recovers this; use `ctrl-alt-p` for manual recovery.
 - **Zero gaps**: `[gaps]` section has all values at 0
 - **Mouse follows monitor**: When focus changes monitors, mouse moves to center
 - **No generic sticky windows**: Feature not yet supported (issue #2). The

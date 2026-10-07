@@ -47,6 +47,7 @@ tmux source-file ~/.config/tmux/tmux.conf
 |       |-- doom/
 |       |-- aerospace/
 |       |-- ghostty/
+|       |-- herdr/
 |       |-- alacritty/
 |       |-- linearmouse/
 |       |-- git/
@@ -70,6 +71,9 @@ Each app has its own docs with keybindings, settings, and gotchas:
 - `mac/.config/aerospace/AGENTS.md` - Agent notes for AeroSpace edits
 - `mac/.config/ghostty/CLAUDE.md` - Current native/minimal Ghostty setup
 - `mac/.config/ghostty/AGENTS.md` - Agent notes for Ghostty edits
+- `mac/.config/herdr/README.md` - Herdr directory map, patched binary notes
+- `docs/herdr-sidebar.md` - Herdr sidebar logos, colours, plugin, logo fonts
+- `docs/herdr-workspace-keepers.md` - Protected Herdr spaces
 - `docs/airpods-banner-dismiss.md` - AirPods system-banner investigation
 - `docs/web-apps.md` - Web app (PWA) preferences, inventory, `webapp-icon`
 

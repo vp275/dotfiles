@@ -82,13 +82,14 @@ Rules are ordered. Specific rules must stay above broader rules, and the final c
 Additional rules:
 
 - `mpv`, `CodexBar`, `Codex`, CleanShot X, System Settings, and Raycast are floating only and are not moved to fixed workspaces.
-- All managed `io.mpv` windows follow the focused workspace through
-  `aerospace-pip-guardian`, including across monitors. The Stow-managed
-  `mac/.config/mpv/mpv.conf` enables `ontop=yes` above ordinary windows.
+- mpv floats where it opens and does not follow workspace changes. The
+  Stow-managed `mac/.config/mpv/mpv.conf` enables `ontop=yes` above ordinary windows.
 - ChatGPT stays assigned to workspace `C`. AeroSpace `0.21.0-Beta` and later
   classifies the always-on-top `com.openai.codex` Pet as an unmanaged popup,
   so no sticky-window rule or helper is required.
-- `exec-on-workspace-change` runs `~/.local/bin/aerospace-pip-guardian auto`, which keeps known PiP cases visible without using a generic sticky-window workaround.
+- The custom PiP guardian, workspace-change hook, and `ctrl-alt-p` recovery
+  binding were removed on 2026-10-03 at the user's request. Do not restore them
+  without an explicit request.
 - CleanShot X, System Settings, and Raycast are floated in place so utility windows stay in the workspace where they were invoked.
 - Cloudflare WARP, 1Password, `com.apple.LocalAuthentication.UIAgent`,
   `com.apple.coreservices.uiagent`, and `com.apple.ProblemReporter` are floating
@@ -98,14 +99,10 @@ Additional rules:
   workspace on the focused monitor. Floating windows, including dialogs
   AeroSpace recognizes, bypass it and stay where they appeared.
 
-## PiP Troubleshooting
+## PiP
 
-- The `YouTube` app is a Brave app-mode wrapper with bundle id `com.brave.Browser.app.agimnkijcaahngcdmfeangaknmldooml`.
-- Its picture-in-picture window can be owned by the hidden parent `Brave Browser` process (`com.brave.Browser`), not by the visible `YouTube` app window that AeroSpace manages on workspace `Y`.
-- Symptom: `aerospace list-windows --all` shows only the `YouTube` window, while System Events or CoreGraphics sees `Brave Browser` with a `Picture-in-picture` window marked offscreen or hidden.
-- Automatic recovery: `~/.local/bin/aerospace-pip-guardian auto` runs on workspace changes. It moves managed Helium PiP windows and activates hidden Brave when a Brave-owned `Picture-in-picture` window exists.
-- Manual recovery: `ctrl-alt-p` runs `~/.local/bin/aerospace-pip-guardian recover`. It also recreates stale Helium native PiP windows, where CoreGraphics sees `Helium` / `Picture-in-picture` but `aerospace list-windows --all` does not.
-- Keep YouTube/Brave and Helium branches separate. YouTube PWA PiP is usually a hidden-parent-Brave problem; Helium PiP is usually an AeroSpace-managed-window or stale-native-window problem.
+No custom PiP following or recovery automation is installed. Historical details
+are recorded in `docs/aerospace-pip-guardian.md` at the repository root.
 
 ## Keybindings
 
@@ -180,5 +177,5 @@ open -a AeroSpace
 
 - `CLAUDE.md` is closer to current state, but verify workspace tables against `aerospace.toml` before editing.
 - The live config currently has no automatic VS Code assignment even though some docs mention workspace `P`.
-- The live config initially floats `mpv` in place; the PiP guardian then follows
-  workspace changes. It has no fixed workspace `E` assignment.
+- The live config floats `mpv` in place. It has no workspace-following helper
+  or fixed workspace `E` assignment.

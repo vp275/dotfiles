@@ -96,6 +96,25 @@ stronger 2026-08-29 calibration is pending physical verification; its exact
 thresholds and rollback procedure are maintained in the
 [Three Finger Switcher guide](../../three-finger-switcher.md).
 
+The trackpad also supports a custom four-finger Return tap. A valid stationary
+three-finger tap promoted to four fingers sends only Return after release,
+never Spokenly. A fourth finger during app switching still only cancels.
+The user confirmed the four-finger Return tap works on 2026-10-03. This does
+not change the trackpad three-finger Spokenly mapping.
+
+## Custom Magic Mouse tap
+
+Three Finger Switcher also owns a custom Magic Mouse two-finger tap as of
+2026-10-03. This is not a Spokenly built-in default. It opens the same
+`~/Applications/Spokenly Toggle.app` used by the trackpad and MX Master, calling
+`spokenly://toggle`. It triggers only on full release after 20–600 ms of
+two-finger contact and at most 2 mm travel per finger; staggered release is
+limited to 150 ms. Adding a third finger during app switching cancels that
+session and never toggles recording or presses Return. A standalone stationary
+three-finger tap now presses Return instead of toggling Spokenly. Promotion
+from two to three fingers during a tap produces only Return on release.
+Physical verification of the revised mappings is pending.
+
 ## Current Device Compatibility
 
 | Device | Physical input | Route |
@@ -103,12 +122,14 @@ thresholds and rollback procedure are maintained in the
 | MacBook keyboard | Right Option | Right Option bridge toggles the `test` mode |
 | Ducky One 2 | Physical right GUI, immediately right of right Alt | Native mapping to Right Option, then the bridge toggles the `test` mode |
 | MacBook trackpad | Three-finger tap, classified on release by Three Finger Switcher | Opens `Spokenly Toggle.app`, which calls `spokenly://toggle` |
+| Magic Mouse | Custom two-finger tap, classified on release by Three Finger Switcher | Opens `Spokenly Toggle.app`, which calls `spokenly://toggle` |
 | MX Master 3S | Auxiliary/thumb button `c195` | Logitech Smart Action opens `Spokenly Toggle.app`, which calls `spokenly://toggle` |
 
 Three Finger Switcher owns the MacBook trackpad tap and swipe arbitration.
 BetterTouchTool's former three-finger trackpad triggers are disabled so they do
-not race the switcher. The Magic Mouse route remains owned by its current
-BetterTouchTool trigger where configured.
+not race the switcher. The Magic Mouse two-finger tap is also owned by Three Finger Switcher.
+The older BTT TipTap helper route is historical while BTT is stopped; saved
+three-finger middle-click/Return mappings must not run alongside the new tap.
 
 ## Keyboard modifier ownership
 

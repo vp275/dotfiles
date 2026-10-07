@@ -1,4 +1,15 @@
-# mpv: always on top and workspace following
+# mpv: always on top
+
+## Current behavior (2026-10-03)
+
+mpv floats where it opens and uses `ontop=yes` to stay above ordinary windows.
+Automatic workspace following was removed with the PiP guardian, its deployed
+symlink, workspace-change hook, and recovery shortcut.
+
+## Historical workspace-following setup
+
+The remaining sections describe the removed setup and its past verification.
+The helper and its commands are no longer available.
 
 Configured on 2026-09-29.
 
@@ -16,7 +27,7 @@ are obsolete. This applies to all managed mpv windows, not just one player.
 
 - [AeroSpace config](../mac/.config/aerospace/aerospace.toml) floats newly
   detected mpv windows and runs `aerospace-pip-guardian auto` on workspace changes.
-- [PiP guardian](../mac/.local/bin/aerospace-pip-guardian) matches the `io.mpv`
+- `aerospace-pip-guardian` (removed) matches the `io.mpv`
   bundle ID, applies floating layout, and moves each window to the destination
   workspace if needed. It does not explicitly activate mpv. Existing Helium and
   Brave PiP handling remains in the same helper.

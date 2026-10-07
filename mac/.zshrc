@@ -157,7 +157,6 @@ export VISUAL='nvim'
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias szsh='source ~/.zshrc'
 alias hetzner='ssh myserver'
-alias ompg='omp --config "$HOME/.omp/agent/presets/opencode-go.yml"'
 
 # Set the font size used by Ghostty and Alacritty.
 my_terminal_font() {
@@ -309,7 +308,11 @@ cc5() {
 }
 
 # codex
+# Computer-use override (unverified; saved persistently, run manually if needed):
+# defaults write -g ComputerUseAllowForbiddenTargets -bool YES
+# Undo: defaults delete -g ComputerUseAllowForbiddenTargets
 alias cx="$HOME/.local/bin/codex --yolo"
+alias cxa="$HOME/.local/bin/codex --yolo agents"
 alias cx-update='curl -fsSL https://chatgpt.com/codex/install.sh | sh'
 alias cxl="codex -p lean --dangerously-bypass-approvals-and-sandbox"
 alias oc="opencode --auto"

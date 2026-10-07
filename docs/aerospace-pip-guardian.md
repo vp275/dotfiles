@@ -1,4 +1,11 @@
-# AeroSpace Picture-in-Picture Guardian
+# AeroSpace Picture-in-Picture Guardian (removed)
+
+Removed on 2026-10-03 at the user's request after disruptive behavior. The
+helper, deployed symlink, workspace-change hook, and Ctrl+Alt+P recovery binding
+are gone. No custom PiP recovery or workspace following is installed.
+
+The remainder is historical documentation. Its commands are no longer available
+and should not be used as current setup instructions.
 
 `~/.local/bin/aerospace-pip-guardian` keeps supported picture-in-picture windows visible while switching AeroSpace workspaces.
 

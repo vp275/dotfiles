@@ -241,5 +241,15 @@ AirPods banner investigation:
 The protected workspace keeper plugin is tracked at
 `mac/.config/herdr/workspace-keepers/` and documented in
 `docs/herdr-workspace-keepers.md`. It protects `general`, `bte`, `stryde`, and
-`vqa` with event-driven keep-alive tabs. Runtime state and locks live outside
-the repository in `~/.local/state/herdr-workspace-keepers/`; do not commit them.
+`vqa` with event-driven resurrection. Runtime state and locks live outside the
+repository in the directory Herdr passes as `HERDR_PLUGIN_STATE_DIR`; do not
+commit them.
+
+## Herdr sidebar
+
+Sidebar logos, colours, the agent-icons plugin, and the logo fonts are
+documented in `docs/herdr-sidebar.md`. Read it before editing the
+`[ui.sidebar.*]` tables in `mac/.config/herdr/config.toml`, anything under
+`mac/.config/herdr/agent-icons/` or `mac/.config/herdr/fonts/`, or the
+Alacritty font family. Keep its glyph map and colour table current, and run
+`mac/.config/herdr/fonts/build-fonts --check` after touching the fonts.

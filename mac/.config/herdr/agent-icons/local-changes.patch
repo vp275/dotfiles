@@ -1,0 +1,52 @@
+diff --git a/agent_icons.py b/agent_icons.py
+index 23d60c3..e1266f6 100755
+--- a/agent_icons.py
++++ b/agent_icons.py
+@@ -17,6 +17,7 @@ from typing import Any
+ FONT_FAMILY = "Herdr Harness Logos"
+ TOKEN_NAME = "harness_logo"
+ PUA_LOGOS = {
++    "amp": "\ue1ab",
+     "claude": "\ue1a0",
+     "codex": "\ue1a1",
+     "opencode": "\ue1a2",
+@@ -26,8 +27,11 @@ PUA_LOGOS = {
+     "kimi": "\ue1a6",
+     "kilo": "\ue1a7",
+     "maki": "\ue1a8",
++    "pi": "\ue1a9",
++    "fx": "\ue1aa",
+ }
+ TEXT_LOGOS = {
++    "amp": "AMP",
+     "claude": "C",
+     "codex": "AI",
+     "opencode": "OC",
+@@ -37,6 +41,8 @@ TEXT_LOGOS = {
+     "kimi": "KIM",
+     "kilo": "KIL",
+     "maki": "MAK",
++    "pi": "π",
++    "fx": "\ue1aa",
+ }
+ VARIANTS = ("auto", "font", "text", "none")
+ 
+@@ -123,7 +129,8 @@ def report_logo(herdr: str, source: str, pane_id: str, agent: str | None, varian
+     if logo is None:
+         arguments.extend(("--clear-token", TOKEN_NAME))
+     else:
+-        arguments.extend(("--token", f"{TOKEN_NAME}={logo}"))
++        label = logo + "  " if agent == "amp" else f"{logo} {agent}"
++        arguments.extend(("--token", f"{TOKEN_NAME}={label}"))
+     run_herdr(herdr, *arguments)
+     return logo is not None
+ 
+@@ -165,7 +172,7 @@ def startup_targets(herdr: str) -> list[tuple[str, str | None]]:
+     response = run_herdr(herdr, "pane", "list")
+     panes = response.get("result", {}).get("panes", [])
+     return [
+-        (pane["pane_id"], pane["agent"])
++        (pane["pane_id"], pane.get("agent"))
+         for pane in panes
+         if isinstance(pane, dict)
+         and isinstance(pane.get("pane_id"), str)

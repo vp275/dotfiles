@@ -13,6 +13,9 @@ happens. The recreated workspace keeps its label, the most recently observed
 pane directory, and its sidebar logo metadata. Herdr creates one ordinary fresh
 tab because an empty workspace is not supported by the native API.
 
+The plugin also sets each space's sidebar logo token. The logos, their colours,
+and the fonts they need are covered in `docs/herdr-sidebar.md`.
+
 There are no permanent keeper tabs, sleeping processes, polling loops, or
 background daemons. A short-lived Python process runs only for a matching event,
 and a filesystem lock serializes overlapping events. A three-second circuit

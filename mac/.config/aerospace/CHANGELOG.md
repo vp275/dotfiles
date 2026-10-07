@@ -1,5 +1,11 @@
 # Aerospace Configuration Changelog
 
+## 2026-10-03
+- Removed the custom PiP guardian and its deployed symlink at the user's request
+  after disruptive behavior. Removed the workspace-change hook and Ctrl+Alt+P
+  recovery binding. Helium PiP and mpv no longer follow workspaces through the
+  helper, and Brave is no longer automatically activated for PiP recovery.
+
 ## 2026-09-29
 - Made all managed mpv windows follow the focused workspace using the existing
   PiP guardian, retaining floating layout and allowing cross-monitor following.

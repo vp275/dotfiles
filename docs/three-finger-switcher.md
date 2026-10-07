@@ -1,6 +1,6 @@
 # Three Finger Switcher
 
-Last updated: 2026-08-22
+Last updated: 2026-10-03
 
 ## Status
 
@@ -10,7 +10,8 @@ BetterTouchTool for recognition or key emission. It now owns the MacBook
 trackpad's three-finger tap and horizontal swipe arbitration, so Spokenly and
 the switcher cannot independently claim the same contact stream. A right swipe
 opens the app switcher, while a left swipe performs one context-aware line
-clear.
+clear. A four-finger trackpad tap sends Return on full release, confirmed
+working by the user on 2026-10-03. It runs in the same login-started helper.
 
 The source currently lives outside this dotfiles repository:
 
@@ -48,6 +49,127 @@ live BTT data store, and Spokenly's competing `threeFingerLight` mode remains
 removed. The stronger palm-rejection calibration added on 2026-08-29 remains
 pending physical verification on the installed build.
 
+## Magic Mouse support (2026-10-03)
+
+The installed app also recognizes Magic Mouse gestures independently of the
+trackpad. BTT is not required. On 2026-10-03 the user tried the installed
+two-finger activation with one-finger browsing and confirmed it feels much
+better. This is the accepted interaction. Automated checks cover handoff with
+either finger, no selection jump, navigation in both directions, final-finger
+release, cancellation, and replay of the captured mouse input.
+
+- Tap **two fingers** to toggle Spokenly on release through
+  `~/Applications/Spokenly Toggle.app`, the same helper as the trackpad and MX Master.
+- Tap **three fingers** to press an unmodified Return key in the focused app.
+  Adding the third finger to a stationary two-finger tap promotes it to Return
+  without toggling Spokenly. Both taps require 20–600 ms of contact, no more
+  than 2 mm movement per finger, and full release within 150 ms of the first
+  release. Movement beyond that limit disqualifies the tap even if fingers
+  return to their starting position. Physical clicks, fourth fingers, stale
+  input and replacement contacts reject taps. Swipes never fire tap actions.
+  Physical verification of these revised mappings is pending.
+- Slide **two fingers left** to clear text once through the same `LineClearRouter`
+  as the trackpad: Control-U in supported terminals, Command-Delete elsewhere,
+  and no action in the same excluded apps. Both fingers must move left at least
+  1 mm, averaging 3.5 mm, with horizontal movement exceeding vertical by 1.8.
+  Lift both fingers before another clear. Left movement inside an open switcher
+  continues to navigate, never clearing text. Automated checks pass; physical
+  verification of mouse line clearing is pending.
+- Slide **two fingers right** to open native Command-Tab and select the previous app.
+- After opening, lift either finger and slide the remaining finger right or
+  left to navigate. Keeping both fingers down also supports navigation.
+- Lift the final finger to select, with a 65 ms release debounce. One finger
+  can keep the session open; it no longer commits after 160 ms. Switching
+  between one and two initiating fingers re-anchors without changing selection.
+  A new, unrelated contact cancels the session.
+- A third finger or a mouse click cancels selection. A cancelling click is
+  consumed, including its matching button-up.
+- A quick right flick opens and commits. Initial leftward gestures clear text;
+  vertical gestures do not open the switcher or clear text. Swipes do not toggle Spokenly.
+- Pauses in movement do not select an app. A stalled stream cancels after two
+  seconds. Reconnection is checked every two seconds and on wake.
+
+Mouse entry requires 3.5 mm average rightward travel, at least 1 mm from each
+finger, and horizontal movement exceeding vertical movement by a factor of 1.8.
+Navigation uses 3.0 mm per step after a 150 ms HUD delay. These defaults are
+separate from the trackpad's saved 2.5 mm sensitivity. Optional preferences in
+`com.local.ThreeFingerSwitcher` are `magicMouseEnabled` (default true),
+`magicMouseEntryMM` (3.5), and `magicMouseStepMM` (3.0). Restart the app after
+changing distance settings. Disabling mouse support is picked up by the poll.
+
+A Core Graphics event filter suppresses horizontal scrolling during the
+initial two-contact candidate, all scrolling and pointer movement during
+selection, all scrolling during a recognized line-clear gesture, and scrolling
+for a short tail after completion. Vertical scrolling
+passes through before a horizontal swipe is recognized. Scroll events do not
+provide a dependable public device ID, so suppression is session-scoped:
+scrolling from another device during an active mouse selection is also blocked.
+Mouse gestures remain disabled if the filter cannot be installed.
+
+Native Mouse two-finger desktop switching must remain off. The saved BTT
+Magic Mouse Application Switcher mapping is superseded; BTT was not running
+at installation. If BTT is re-enabled, disable that mapping to avoid overlap.
+
+`Sources/MouseBridge/` uses the proven C bridge to retain the device list and
+select the mouse using its IORegistry multitouch ID and mouse preferences.
+It never treats every external touch device as a mouse. The existing default
+trackpad monitor remains separate. Both inputs share a keyboard synthesizer
+with session ownership so one device cannot release the other's Command key.
+
+The passive diagnostic and analyzer are in `diagnostics/magic-mouse/` in the
+source project. Captures are local runtime files in
+`~/Library/Logs/MagicMouseProbe/`, outside the dotfiles repository. Recorded
+mouse data verified 96-byte contacts, roughly 15 ms frame spacing, and a
+3.8-second uninterrupted two-finger right/pause/left sequence. There was a
+104 ms reporting gap, so short gaps must never imply release. Regression
+checks replay the normal-use and continuous-swipe captures without posting keys.
+
+### Startup and everyday use
+
+Mouse and trackpad support run in the same installed
+`/Applications/Three Finger Switcher.app`. The existing per-user LaunchAgent
+starts that app after login, including after a restart. No separate mouse
+helper, BTT process, diagnostic, terminal session, or manual launch is required.
+The app runs without a Dock or menu-bar icon. Mouse support defaults to enabled,
+so an absent `magicMouseEnabled` preference is normal.
+
+On 2026-10-03 the LaunchAgent file and its loaded launchd job were checked:
+`RunAtLoad` is true, the job targets the installed application, and launchd
+reported last exit status 0 for its `/usr/bin/open` launcher. The current app
+was running. A fresh reboot was not performed as part of this verification.
+The app polls for mouse reconnection and restarts its listeners on wake.
+
+The LaunchAgent starts the app at login; it does not continuously supervise
+crashes or restart an intentionally quit app. If gestures stop completely,
+open `/Applications/Three Finger Switcher.app` again. Keep its Accessibility
+permission enabled. A major macOS update may require compatibility maintenance
+because raw touch access uses a private Apple framework.
+
+## Trackpad four-finger Return tap (2026-10-03)
+
+Three Finger Switcher now owns four-finger tap for Return, replacing the saved
+BTT mapping. BTT is not required. Keep its saved four-finger Return trigger
+inactive if BTT is restarted, to avoid duplicate key presses.
+
+A stationary four-finger tap sends one unmodified Return to the focused app
+only after all fingers lift. It needs 20–600 ms contact, at most 2 mm travel
+per finger, and release within 150 ms of the first lift. A valid three-finger
+tap can become this gesture when the fourth finger lands, without toggling
+Spokenly. Movement, long holds, new contact IDs, a fifth finger, stale input,
+and palm rejection disqualify it. Once disqualified, the remaining contact
+sequence cannot become a three-finger gesture. A 300 ms quarantine after the
+four-finger sequence also protects against release tails.
+
+Adding the fourth finger during pending or active switching, or after line
+clearing, cannot produce Return. Four-finger swipes continue to pass to macOS.
+The existing palm indicators now cover four contacts too, with combined area
+normalized to the three-contact baseline. Only three-contact samples train
+that baseline. Automated checks cover valid taps, partial release, swipe
+cancellation, palm protection and existing trackpad/mouse behavior. On
+2026-10-03 the user tested the installed four-finger tap and confirmed it
+works. This confirms the Return tap; broader palm-rejection calibration and
+native four-finger swipe behavior were not separately verified in that test.
+
 ## Three-Finger Arbitration
 
 One recognizer owns the complete three-finger contact:
@@ -66,8 +188,9 @@ One recognizer owns the complete three-finger contact:
 - Contacts that move farther than the tap allowance but do not reach the swipe
   threshold are intentionally ignored. This gap prevents an accidental brush
   from toggling Spokenly.
-- A fourth finger, a stale contact stream, or another cancellation condition
-  produces no Spokenly action and safely cancels any active switcher session.
+- A fourth finger produces no Spokenly action and cancels any active switcher
+  session. During a still-valid stationary three-finger tap, it promotes the
+  gesture to the four-finger Return tap described below. Stale input cancels.
 - Palm rejection examines the complete raw frame before gesture recognition.
   Invalid or exceptionally large contacts reject immediately. Other frames
   require two indicators from pressure, relative contact area, combined area,
@@ -143,8 +266,9 @@ scrubbing uses `1.35` times that distance so it moves through apps more slowly.
 | Normal | 3.5 mm | 4.725 mm |
 | Low | 5.0 mm | 6.75 mm |
 
-The current effective setting is Normal, so the initial gesture needs 3.5 mm
-and each two-finger app step needs about 4.7 mm.
+The saved trackpad setting is High (audited 2026-10-03), so the initial
+gesture needs 2.5 mm and each two-finger step needs 3.375 mm. The old menu
+references below describe earlier builds; the current app runs without a menu.
 
 Other recognizer calibration values are in
 `Sources/SwitcherCore/SwipeRecognizer.swift`:

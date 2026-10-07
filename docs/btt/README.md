@@ -1,18 +1,22 @@
 # BetterTouchTool Gesture Setup
 
-Last audited: 2026-08-22
+Last full BTT audit: 2026-08-22
+Custom gesture ownership updated: 2026-10-03
 
 ## Goal
 
 Keep BetterTouchTool inputs predictable across the MacBook trackpad and Magic
 Mouse. Logitech Options+ remains the owner of the MX Master 3S.
 
-The current setup uses BTT for the remaining MacBook trackpad and Magic Mouse
-gestures. Three Finger Switcher owns the MacBook trackpad's three-finger tap
-and horizontal swipe arbitration:
+BTT retains the saved mappings below but was not running during the
+2026-10-03 deployment. BTT-owned mappings require BTT to run. Three Finger
+Switcher independently owns the trackpad three-finger tap and horizontal
+swipes, four-finger Return tap, and the custom Magic Mouse taps and swipes:
 
 - Triple F4 locks the screen through BTT's native Lock Screen action.
-- 4-finger tap sends `Return`.
+- Trackpad 4-finger tap sends `Return` through Three Finger Switcher. The saved
+  BTT mapping is superseded and must stay inactive to avoid duplicate presses.
+  The user confirmed the custom four-finger tap works on 2026-10-03.
 - In Codex only, 2-finger swipe right opens the chat switcher list with one
   `Ctrl+Tab` hold window. Lifting the final trackpad finger clicks the currently
   hovered chat and releases Control.
@@ -20,9 +24,14 @@ and horizontal swipe arbitration:
   and `In one list`.
 - Magic Mouse 1-finger tap performs a standard left click.
 - Magic Mouse 1-finger tap right performs a standard right click.
-- Magic Mouse 2-finger swipe right opens BTT's native Application Switcher.
-- Magic Mouse 3-finger tap performs a standard middle click globally.
-- In Codex only, Magic Mouse 3-finger tap sends `Return`.
+- Magic Mouse 2-finger swipe right is now owned by Three Finger Switcher
+  (2026-10-03), with one- or two-finger navigation after activation and final-finger
+  release-to-select.
+  The saved BTT trigger is superseded. BTT was not running at deployment.
+- Magic Mouse 2-finger tap now toggles Spokenly and 3-finger tap presses Return
+  through Three Finger Switcher
+  (2026-10-03). Saved BTT middle-click and Codex Return triggers are superseded
+  and must remain inactive while the custom tap is enabled.
 - The former 3-finger click and swipe triggers are absent from the live BTT data
   store so they cannot race Three Finger Switcher.
 - Ducky One 2 F4 passes through to BTT. F8 is handled outside BTT by
@@ -137,7 +146,7 @@ available again.
 
 ## Current Trackpad Gestures
 
-Current global trackpad gestures still owned by BTT:
+Saved global trackpad gesture, superseded by Three Finger Switcher on 2026-10-03:
 
 | Gesture | BTT trigger type | BTT action / shortcut |
 | --- | --- | --- |
@@ -151,7 +160,7 @@ line-clear shortcut. See [the switcher guide](../three-finger-switcher.md) for
 the 5 to 600 ms tap window, 2.0 mm travel allowance, application routing, and
 the pending 2026-08-29 palm-filter calibration. Palm rejection belongs to
 Three Finger Switcher, not BTT.
-Current BTT UUIDs:
+Saved BTT UUIDs, keep inactive while the custom helper runs:
 
 | Gesture | UUID |
 | --- | --- |
@@ -376,7 +385,9 @@ The BTT app-switcher mode below is retained as historical configuration and
 rollback information for the MacBook trackpad. Its former three-finger
 trackpad trigger is disabled because Three Finger Switcher now owns both
 three-finger tap and horizontal swipe classification. The Magic Mouse
-two-finger app-switcher trigger remains active.
+two-finger app-switcher trigger remains enabled in the saved configuration,
+but is superseded by Three Finger Switcher as of 2026-10-03. Disable that
+trigger before running BTT alongside the custom app.
 
 BTT's special app switcher mode is enabled:
 
@@ -418,7 +429,8 @@ horizontal swipe remains enabled for Spaces/full-screen navigation.
 
 ## Magic Mouse Gestures
 
-Current Magic Mouse gestures:
+Saved BTT Magic Mouse gestures (the two-finger switcher and three-finger tap
+are now superseded by Three Finger Switcher):
 
 | Gesture | BTT trigger type | BTT action / shortcut | UUID |
 | --- | --- | --- | --- |
